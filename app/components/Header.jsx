@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
@@ -22,8 +22,14 @@ function Header() {
         <Link href="/" className="text-black hover:text-blue-600">
           Home
         </Link>
-        <Link href="/courses" className="text-black hover:text-blue-600">
-          Courses
+        <Link href="/courses/live" className="text-black hover:text-blue-600">
+          Live Courses
+        </Link>
+        <Link
+          href="/courses/recorded"
+          className="text-black hover:text-blue-600"
+        >
+          Recorded Courses
         </Link>
       </div>
 
@@ -50,11 +56,18 @@ function Header() {
           Home
         </Link>
         <Link
-          href="/courses"
+          href="/courses/live"
           className="text-xl text-black hover:text-blue-600"
           onClick={toggleMenu}
         >
-          Courses
+          Live Courses
+        </Link>
+        <Link
+          href="/courses/recorded"
+          className="text-xl text-black hover:text-blue-600"
+          onClick={toggleMenu}
+        >
+          Recorded Courses
         </Link>
 
         <button
