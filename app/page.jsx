@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+import Hero from "./components/home/Hero";
+import TechStackIcons from "./components/home/TechStack";
 
-function page() {
+function Home() {
   return (
-    <div>home page</div>
-  )
+    <div className="mt-12">
+      {/* hero section */}
+      <Hero />
+      {/* TechStacks */}
+      <TechStackIcons />
+    </div>
+  );
 }
 
-export default page
+export default Home;

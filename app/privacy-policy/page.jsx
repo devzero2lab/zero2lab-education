@@ -13,7 +13,7 @@ function PrivacyPolicy() {
       </Head>
       <div className="min-h-screen px-6 py-12 ">
         <main className="p-8 space-y-12 ">
-          <h1 className="text-4xl font-extrabold ">Privacy Policy</h1>
+          <h1 className="text-4xl font-extrabold">Privacy Policy</h1>
           <p className="text-lg text-gray-800">
             At <strong>Zero2</strong>, your privacy is our priority. We are
             committed to protecting your personal data and ensuring transparency
