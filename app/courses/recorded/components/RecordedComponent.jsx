@@ -33,10 +33,10 @@ function RecordedComponent({ course }) {
           <Clock size={16} />
           <span>Duration: {course.duration}</span>
         </div>
-        <div className="flex items-center gap-1 mt-1">
+        {/* <div className="flex items-center gap-1 mt-1">
           <Users size={16} />
-          {/* <span>Enrolled Students: 25</span> */}
-        </div>
+          <span>Enrolled Students: 25</span>
+        </div> */}
       </div>
     </Link>
   );
