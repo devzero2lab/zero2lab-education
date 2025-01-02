@@ -14,7 +14,9 @@ function LiveCoursesPage() {
     const fetchLCourses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${apiUrl}/api/courses/?type=Live`);
+        const response = await axios.get(`${apiUrl}/api/courses/?type=Live`,{
+          cache: "no-store",
+        });
         setLcourses(response.data.courses);
       } catch (error) {
         setError(error.message || "Failed to fetch courses");
