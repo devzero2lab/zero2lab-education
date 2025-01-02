@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import RecordedComponent from "./components/RecordedComponent";
 import axios from "axios";
 
-const CoursesPage = () => {
+const RecordCoursesPage = () => {
 
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [rcourses, setRcourses] = useState([]);
@@ -48,4 +48,4 @@ const CoursesPage = () => {
   );
 };
 
-export default CoursesPage;
+export default RecordCoursesPage;

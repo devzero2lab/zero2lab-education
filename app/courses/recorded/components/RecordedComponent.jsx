@@ -25,7 +25,7 @@ function RecordedComponent({ course }) {
           {course.level}
         </span>
         <div className="flex items-center gap-1">
-          <span className="font-medium">Price: {course.price}</span>
+          <span className="font-medium">Price: Rs.{course.price}</span>
         </div>
       </div>
       <div className="mt-3 text-sm text-gray-700">
