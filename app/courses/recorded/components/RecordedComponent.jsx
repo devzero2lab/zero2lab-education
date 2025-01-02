@@ -6,7 +6,7 @@ import Image from "next/image";
 function RecordedComponent({ course }) {
   return (
     <Link
-      href="/courses/course-id"
+      href={`/courses/recorded/${course.uniqueName}`}
       className="p-4 transition-shadow duration-300 bg-white border rounded-lg shadow-lg hover:shadow-2xl flex flex-col w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)]"
     >
       <Image
