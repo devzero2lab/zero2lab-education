@@ -17,6 +17,7 @@ export async function POST(request) {
   }
 }
 
+//get all courses by type
 export async function GET(req) {
   try {
     await connectMongoDB();
