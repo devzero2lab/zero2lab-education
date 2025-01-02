@@ -21,7 +21,6 @@ function page() {
         const response = await axios.get(
           `${apiUrl}/api/usercourses?userId=${userID}`
         );
-        console.log(response.data);
         setEnrolledCourses(response.data.userCourses);
       } catch (error) {
         console.error("Error fetching enrolled courses:", error);
@@ -74,7 +73,7 @@ function page() {
                 {/* Conditionally render Link for Approved status, show message for Pending */}
                 {status === "Approved" ? (
                   <Link
-                    href={`/courses/${courseId._id}/learn`}
+                    href={`/courses/${courseId.type}/${courseId.uniqueName}`}
                     className="flex items-center justify-between"
                   >
                     <h3 className="text-xl font-semibold text-gray-800">

@@ -14,7 +14,7 @@ function LiveCoursesPage() {
     const fetchLCourses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${apiUrl}/api/courses/?type=Live`,{
+        const response = await axios.get(`${apiUrl}/api/courses/?type=live`,{
           cache: "no-store",
         });
         setLcourses(response.data.courses);
