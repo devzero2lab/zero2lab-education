@@ -28,6 +28,10 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  uniqueName: {
+    type: String,
+    required: true,
+  },
   type: {
     type: String,
     required: true,
@@ -87,4 +91,5 @@ const courseSchema = new mongoose.Schema({
   },
 });
 
-export const Course = mongoose.models?.Course || mongoose.model("Course", courseSchema);
+export const Course =
+  mongoose.models?.Course || mongoose.model("Course", courseSchema);
