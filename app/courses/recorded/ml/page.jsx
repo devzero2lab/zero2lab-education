@@ -34,10 +34,9 @@ function page() {
             </p>
             <Link
               href={"/#"}
-              className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-64"
+              className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-40"
             >
-              <PlayCircle className="w-5 h-5 mr-2" />
-              Watch Recordings
+              Enroll Now
             </Link>
           </div>
         </section>

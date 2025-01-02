@@ -25,11 +25,11 @@ function Header() {
         <Link href="/courses/live" className="text-black hover:text-blue-600">
           Live Courses
         </Link>
-        <Link
-          href="/courses/recorded"
-          className="text-black hover:text-blue-600"
-        >
+        <Link href="/courses/recorded" className="text-black hover:text-blue-600">
           Recorded Courses
+        </Link>
+        <Link href="/dashboard" className="text-black hover:text-blue-600">
+          Dashboard
         </Link>
       </div>
 
