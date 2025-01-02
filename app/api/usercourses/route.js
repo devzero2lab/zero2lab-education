@@ -34,7 +34,7 @@ export async function GET(request) {
       userCourses = await UserCourse.find({ userId }).populate("courseId");
     } else {
       // Otherwise, fetch all UserCourses
-      userCourses = await UserCourse.find().populate("courseId");
+      userCourses = await UserCourse.find().populate("courseId","courseName");
     }
 
     // Return the fetched userCourses
