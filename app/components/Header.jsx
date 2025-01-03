@@ -23,10 +23,10 @@ function Header() {
           Home
         </Link>
         <Link href="/courses/live" className="text-black hover:text-blue-600">
-          Live Courses
+          Live
         </Link>
         <Link href="/courses/recorded" className="text-black hover:text-blue-600">
-          Recorded Courses
+          Recorded
         </Link>
         <Link href="/dashboard" className="text-black hover:text-blue-600">
           Dashboard
@@ -60,14 +60,21 @@ function Header() {
           className="text-xl text-black hover:text-blue-600"
           onClick={toggleMenu}
         >
-          Live Courses
+          Live
         </Link>
         <Link
           href="/courses/recorded"
           className="text-xl text-black hover:text-blue-600"
           onClick={toggleMenu}
         >
-          Recorded Courses
+          Recorded
+        </Link>
+        <Link
+          href="/dashboard"
+          className="text-xl text-black hover:text-blue-600"
+          onClick={toggleMenu}
+        >
+          Dashboard
         </Link>
 
         <button
