@@ -15,7 +15,7 @@ function Features() {
             height={300}
             width={300}
             className="rounded-t-lg"
-            src="/images/courses/course1.png"
+            src="/images/homepage/course1.png"
             alt="Feature 1"
           />
           <button className="mt-4 bg-gradient-to-r from-[#2678f2] to-[#636df6] text-white px-6 py-1 rounded-full font-medium hover:shadow-lg">
@@ -28,7 +28,7 @@ function Features() {
             height={300}
             width={300}
             className="rounded-t-lg"
-            src="/images/courses/spring.png"
+            src="/images/homepage/spring.png"
             alt="Feature 1"
           />
           <button className="mt-4 bg-gradient-to-r from-[#2678f2] to-[#636df6] text-white px-6 py-1 rounded-full font-medium hover:shadow-lg">
@@ -41,7 +41,7 @@ function Features() {
             height={300}
             width={300}
             className="rounded-t-lg"
-            src="/images/courses/fwd.jpeg"
+            src="/images/homepage/fwd.jpeg"
             alt="Feature 1"
           />
           <button className="mt-4 bg-gradient-to-r from-[#2678f2] to-[#636df6] text-white px-6 py-1 rounded-full font-medium hover:shadow-lg">

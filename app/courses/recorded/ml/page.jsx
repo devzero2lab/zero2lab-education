@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { PlayCircle } from "lucide-react";
 import MLLearningThings from "./MLLearningThings";
 import MLCertificate from "./MLCertificate";
 
