@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 
@@ -13,6 +13,7 @@ export default function Checkout({ params }) {
   };
 
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [course, setCourse] = useState("");
   const [formData, setFormData] = useState({
     firstName: userDetails.firstName,
     lastName: userDetails.lastName,
@@ -27,6 +28,26 @@ export default function Checkout({ params }) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  // Fetch course name based on course ID
+  useEffect(() => {
+    const fetchCourseName = async () => {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/courses/${userDetails.courseId}`
+        );
+        setCourse(response.data.course);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching course name:", error);
+        setCourse("Unknown Course");
+      }
+    };
+
+    if (userDetails.courseId) {
+      fetchCourseName();
+    }
+  }, [userDetails.courseId, apiUrl]);
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -79,29 +100,52 @@ export default function Checkout({ params }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-8 px-6 py-12 bg-gray-50">
       <main className="w-full max-w-4xl">
-        <section className="p-6 mt-12 bg-white shadow-lg rounded-2xl">
-          <h2 className="text-4xl font-bold text-center text-gray-800">
-            Checkout Here
+        <section className="p-6 mt-12 shadow-xl bg-gradient-to-r from-blue-100 to-blue-200 rounded-2xl">
+          <h2 className="text-4xl font-extrabold tracking-wide text-center text-gray-800">
+            Checkout For {course.courseName || "Loading..."}
           </h2>
-
-          <div className="mt-6">
-            <h3 className="text-2xl font-semibold text-gray-700">
+          <div className="p-6 mt-8 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
+            <h3 className="pb-2 mb-4 text-2xl font-semibold text-blue-600 border-b-4 border-blue-300">
               Bank Details
             </h3>
-            <ul className="mt-4 text-lg text-gray-600">
-              <li>
-                <span className="font-bold">Account Name:</span> T.D Jayadeera
+            <ul className="space-y-3 text-lg text-gray-700">
+              <li className="flex items-center">
+                <span className="w-48 font-bold text-gray-800">
+                  Account Name:
+                </span>
+                <span className="text-gray-600">T.D Jayadeera</span>
               </li>
-              <li>
-                <span className="font-bold">Account Number:</span> 89714441
+              <li className="flex items-center">
+                <span className="w-48 font-bold text-gray-800">
+                  Account Number:
+                </span>
+                <span className="text-gray-600">89714441</span>
               </li>
-              <li>
-                <span className="font-bold">Bank Name:</span> Boc - Dickwella
+              <li className="flex items-center">
+                <span className="w-48 font-bold text-gray-800">Bank Name:</span>
+                <span className="text-gray-600">BOC - Dikwella</span>
               </li>
             </ul>
+            <div className="p-5 mt-6 transition-shadow duration-300 rounded-lg shadow-md bg-gradient-to-r from-green-100 to-green-200 hover:shadow-lg">
+              <h4 className="mb-4 text-xl font-bold text-green-800">
+                Course Details
+              </h4>
+              <p className="mb-2 text-gray-800">
+                <span className="font-bold">Course Name:</span>{" "}
+                {course.courseName}
+              </p>
+              <p className="mb-2 text-gray-800">
+                <span className="font-bold">Price:</span> Rs.{course.price}
+              </p>
+              <p className="mb-2 text-gray-800">
+                <span className="font-bold">Duration:</span> {course.duration}
+              </p>
+              <p className="text-gray-800">
+                <span className="font-bold">Level:</span> {course.level}
+              </p>
+            </div>
           </div>
         </section>
-
         <section className="p-6 mt-8 bg-white shadow-lg rounded-2xl">
           <h3 className="mb-6 text-2xl font-semibold text-gray-800">
             Payment Details
@@ -124,13 +168,13 @@ export default function Checkout({ params }) {
               <div className="mb-4 text-gray-600">
                 Upload Bank Payment Slip Or Screenshot Here
               </div>
-              {/* <div className="p-4 text-white border rounded-lg shadow-lg">
+              <div className="p-4 text-white border rounded-lg shadow-lg">
                 <input
                   type="file"
                   accept="image/*"
                   className="block w-full mt-2 text-sm text-gray-500 transition-all duration-300 ease-in-out file:py-3 file:px-6 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 />
-              </div> */}
+              </div>
             </div>
 
             {/* User Details Form */}
