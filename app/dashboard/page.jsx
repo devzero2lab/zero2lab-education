@@ -6,29 +6,36 @@ import axios from "axios";
 function page() {
   const userID = 123;
 
-  const stats = [
-    { title: "Enrolled Courses", value: 0, color: "bg-pink-100" },
-    { title: "Upcoming Tests", value: 0, color: "bg-indigo-50" },
-  ];
-
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [courseCount, setCourseCount] = useState(0);
 
-  // Fetch user enrolled courses
   useEffect(() => {
-    const fetchEnrolledCourses = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
+        // Fetch user enrolled courses
+        const coursesResponse = await axios.get(
           `${apiUrl}/api/usercourses?userId=${userID}`
         );
-        setEnrolledCourses(response.data.userCourses);
+        // Fetch user enrolled courses count
+        const countResponse = await axios.get(
+          `${apiUrl}/api/usercourses?userId=${userID}&action=count`
+        );
+
+        setEnrolledCourses(coursesResponse.data.userCourses);
+        setCourseCount(countResponse.data.count);
       } catch (error) {
-        console.error("Error fetching enrolled courses:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchEnrolledCourses();
-  }, [userID]);
+    fetchData();
+  }, [userID, apiUrl]);
+
+  const stats = [
+    { title: "Enrolled Courses", value: courseCount, color: "bg-pink-100" },
+    { title: "Upcoming Tests", value: 0, color: "bg-indigo-50" },
+  ];
 
   return (
     <div className="relative flex flex-col justify-center px-6 bg-gray-50">
