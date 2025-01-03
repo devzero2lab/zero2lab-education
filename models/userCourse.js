@@ -28,14 +28,6 @@ const userCourseSchema = new mongoose.Schema({
     type: String, // Clerk user ID
     required: true,
   },
-  email: {
-    type: String,
-    required: true,
-  },
-  whatsappNumber: {
-    type: String,
-    required: true,
-  },
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Course",
