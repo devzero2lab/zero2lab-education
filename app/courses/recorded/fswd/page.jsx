@@ -31,7 +31,7 @@ function page() {
               the skills to build and deploy complete, dynamic web applications.
             </p>
             <Link
-              href={"/#"}
+              href={"/courses/recorded/6776ca1540f2de4cdac78fb1/enroll"}
               className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-40"
             >
               Enroll Now
