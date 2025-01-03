@@ -80,7 +80,7 @@ function page() {
                 {/* Conditionally render Link for Approved status, show message for Pending */}
                 {status === "Approved" ? (
                   <Link
-                    href={`/courses/${courseId.type}/${courseId.uniqueName}`}
+                    href={`/courses/${courseId.type}/${courseId._id}/learn`}
                     className="flex items-center justify-between"
                   >
                     <h3 className="text-xl font-semibold text-gray-800">
