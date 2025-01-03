@@ -41,11 +41,38 @@ export default function Checkout({ params }) {
         courseId: formData.courseId,
         paymentSlip: formData.paymentSlip,
       });
+
       console.log("Response:", response.data);
-      alert("Form submitted successfully!");
+
+      if (response.data.message === "You are already enrolled in this course") {
+        alert(response.data.message);
+      } else {
+        alert("Form submitted successfully!");
+      }
+
+      // Reset the form fields after successful submission
+      setFormData({
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+        email: userDetails.email,
+        whatsappNumber: "",
+        paymentSlip: "test",
+        userId: userDetails.userId,
+        courseId: userDetails.courseId,
+      });
     } catch (error) {
       console.error("Error submitting the form:", error);
-      alert("An error occurred while submitting the form.");
+
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === 400 && data.message) {
+          alert(data.message);
+        } else {
+          alert("Something Went Wrong");
+        }
+      } else {
+        alert("Something Went Wrong");
+      }
     }
   };
 
@@ -56,6 +83,7 @@ export default function Checkout({ params }) {
           <h2 className="text-4xl font-bold text-center text-gray-800">
             Checkout Here
           </h2>
+
           <div className="mt-6">
             <h3 className="text-2xl font-semibold text-gray-700">
               Bank Details
@@ -68,7 +96,7 @@ export default function Checkout({ params }) {
                 <span className="font-bold">Account Number:</span> 89714441
               </li>
               <li>
-                <span className="font-bold">Bank Name:</span> Boc -Dikwella
+                <span className="font-bold">Bank Name:</span> Boc - Dickwella
               </li>
             </ul>
           </div>

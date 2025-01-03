@@ -7,6 +7,21 @@ export async function POST(request) {
   try {
     const userCourseData = await request.json();
     await connectMongoDB();
+
+    // Check if the user is already enrolled in the course
+    const existingEnrollment = await UserCourse.findOne({
+      userId: userCourseData.userId,
+      courseId: userCourseData.courseId,
+    });
+
+    if (existingEnrollment) {
+      return NextResponse.json(
+        { message: "You are already enrolled in this course" },
+        { status: 400 } // Return a 400 status code indicating bad request
+      );
+    }
+
+    // Create a new UserCourse
     const newUserCourse = await UserCourse.create(userCourseData);
     return NextResponse.json(
       { message: "UserCourse created", newUserCourse },
@@ -34,7 +49,10 @@ export async function GET(request) {
         status: "Approved",
       });
 
-      return NextResponse.json({ count: enrolledCoursesCount }, { status: 200 });
+      return NextResponse.json(
+        { count: enrolledCoursesCount },
+        { status: 200 }
+      );
     }
 
     // Fetch user courses (default behavior)
