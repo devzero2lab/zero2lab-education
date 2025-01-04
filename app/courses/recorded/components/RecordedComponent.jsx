@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { BookOpen, Users, Clock } from "lucide-react";
+import { BookOpen, Clock, TvMinimal } from "lucide-react";
 import Image from "next/image";
 
 function RecordedComponent({ course }) {
@@ -34,8 +34,8 @@ function RecordedComponent({ course }) {
           <span>Duration: {course.duration}</span>
         </div>
         {/* <div className="flex items-center gap-1 mt-1">
-          <Users size={16} />
-          <span>Enrolled Students: 25</span>
+          <TvMinimal size={16} />
+          <span>Course Type : {course.type}</span>
         </div> */}
       </div>
     </Link>
