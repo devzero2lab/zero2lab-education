@@ -32,10 +32,10 @@ function page() {
               decision trees, and regression models to kickstart your AI career.
             </p>
             <Link
-              href={"/courses/recorded"}
-              className="flex items-center justify-center bg-[#ff595c] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-60"
+              href={"/courses/recorded/6776ca2540f2de4cdac78fb6/enroll"}
+              className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-60"
             >
-              Enrollment Over
+              Enroll Now
             </Link>
           </div>
         </section>
