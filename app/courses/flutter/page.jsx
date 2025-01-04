@@ -32,7 +32,7 @@ function page() {
               journey.
             </p>
             <Link
-              href={"/courses/6776c9d440f2de4cdac78fac/enroll"}
+              href={"/courses/6778dcf27972680042a1f08e/enroll"}
               className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-40"
             >
               Enroll Now
