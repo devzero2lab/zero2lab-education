@@ -23,73 +23,76 @@ function getCurrentTime() {
   );
 }
 
-const courseSchema = new mongoose.Schema({
-  courseName: {
-    type: String,
-    required: true,
-  },
-  uniqueName: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-    enum: ["Live", "Recorded"],
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  level: {
-    type: String,
-    required: true,
-    enum: ["Beginner", "Intermediate"],
-  },
-  duration: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  instructor: {
-    type: String,
-    required: true,
-  },
-  content: {
-    type: [
-      {
-        day: {
-          type: Number,
-          required: true,
+const courseSchema = new mongoose.Schema(
+  {
+    courseName: {
+      type: String,
+      required: true,
+    },
+    uniqueName: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: ["Live", "Recorded"],
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    level: {
+      type: String,
+      required: true,
+      enum: ["Beginner", "Intermediate"],
+    },
+    duration: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    instructor: {
+      type: String,
+      required: true,
+    },
+    content: {
+      type: [
+        {
+          day: {
+            type: Number,
+            required: true,
+          },
+          videoUrl: {
+            type: String,
+            required: true,
+          },
+          notes: {
+            type: String,
+            required: false,
+          },
         },
-        videoUrl: {
-          type: String,
-          required: true,
-        },
-        notes: {
-          type: String,
-          required: false,
-        },
-      },
-    ],
-    required: true,
+      ],
+      required: true,
+    },
+    date: {
+      type: String,
+      default: getCurrentDate,
+    },
+    time: {
+      type: String,
+      default: getCurrentTime,
+    },
   },
-  date: {
-    type: String,
-    default: getCurrentDate,
-  },
-  time: {
-    type: String,
-    default: getCurrentTime,
-  },
-});
+  { timestamps: true }
+);
 
 export const Course =
   mongoose.models?.Course || mongoose.model("Course", courseSchema);
