@@ -1,8 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import MLLearningThings from "./MLLearningThings";
-import MLCertificate from "./MLCertificate";
+import FlLearningThings from "./FlLearningThings";
 
 function page() {
   return (
@@ -21,29 +20,29 @@ function page() {
           </div>
           <div className="flex flex-col mt-5 max-w-full lg:max-w-[700px]">
             <p className="text-2xl font-bold md:text-4xl xl:text-5xl">
-              Machine Learning Course
+              Flutter For Beginners
             </p>
             <p className="my-2 font-semibold text-1xl opacity-90 xl:text-lg">
               Professional Certification
             </p>
             <p className="font-semibold text-1xl xl:text-lg opacity-90">
-              Learn the essentials of machine learning with Python.This course
-              covers core concepts like supervised and unsupervised learning,
-              decision trees, and regression models to kickstart your AI career.
+              Learn to build stunning, cross platform mobile apps with Flutter.
+              This beginner friendly course covers Flutter basics, responsive
+              UIs, and state management to kickstart your app development
+              journey.
             </p>
             <Link
-              href={"/courses/recorded/6776ca2540f2de4cdac78fb6/enroll"}
-              className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-60"
+              href={"/courses/6776c9d440f2de4cdac78fac/enroll"}
+              className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-40"
             >
               Enroll Now
             </Link>
           </div>
         </section>
-        <div className="my-5"></div>
-        {/* learning things */}
-        <MLLearningThings />
-        {/* certificate section */}
-        <MLCertificate />
+        <div className="my-5">
+          {/* learning things */}
+          <FlLearningThings />
+        </div>
       </div>
       {/* Blue gradient on the left */}
       <div className="absolute top-0 left-0 w-[200px] sm:w-1/3 h-[200px] bg-blue-200 rounded-full blur-[50px]"></div>

@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import FlLearningThings from "./FlLearningThings";
+import FDLearningThings from "./FDLearningThings";
 
 function page() {
   return (
@@ -20,19 +20,18 @@ function page() {
           </div>
           <div className="flex flex-col mt-5 max-w-full lg:max-w-[700px]">
             <p className="text-2xl font-bold md:text-4xl xl:text-5xl">
-              Flutter For Beginners
+              Full Stack Web Development
             </p>
             <p className="my-2 font-semibold text-1xl opacity-90 xl:text-lg">
               Professional Certification
             </p>
             <p className="font-semibold text-1xl xl:text-lg opacity-90">
-              Learn to build stunning, cross platform mobile apps with Flutter.
-              This beginner friendly course covers Flutter basics, responsive
-              UIs, and state management to kickstart your app development
-              journey.
+              Become a full stack web developer by mastering frontend design,
+              backend logic, and database management.This course equips you with
+              the skills to build and deploy complete, dynamic web applications.
             </p>
             <Link
-              href={"/courses/recorded/6776c9d440f2de4cdac78fac/enroll"}
+              href={"/courses/6776ca1540f2de4cdac78fb1/enroll"}
               className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-40"
             >
               Enroll Now
@@ -41,7 +40,7 @@ function page() {
         </section>
         <div className="my-5">
           {/* learning things */}
-          <FlLearningThings />
+          <FDLearningThings />
         </div>
       </div>
       {/* Blue gradient on the left */}

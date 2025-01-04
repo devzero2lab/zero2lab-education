@@ -1,7 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import FDLearningThings from "./FDLearningThings";
+import MLLearningThings from "./MLLearningThings";
+import MLCertificate from "./MLCertificate";
 
 function page() {
   return (
@@ -20,28 +21,29 @@ function page() {
           </div>
           <div className="flex flex-col mt-5 max-w-full lg:max-w-[700px]">
             <p className="text-2xl font-bold md:text-4xl xl:text-5xl">
-              Full Stack Web Development
+              Machine Learning Course
             </p>
             <p className="my-2 font-semibold text-1xl opacity-90 xl:text-lg">
               Professional Certification
             </p>
             <p className="font-semibold text-1xl xl:text-lg opacity-90">
-              Become a full stack web developer by mastering frontend design,
-              backend logic, and database management.This course equips you with
-              the skills to build and deploy complete, dynamic web applications.
+              Learn the essentials of machine learning with Python.This course
+              covers core concepts like supervised and unsupervised learning,
+              decision trees, and regression models to kickstart your AI career.
             </p>
             <Link
-              href={"/courses/recorded/6776ca1540f2de4cdac78fb1/enroll"}
-              className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-40"
+              href={"/courses/6776ca2540f2de4cdac78fb6/enroll"}
+              className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-60"
             >
               Enroll Now
             </Link>
           </div>
         </section>
-        <div className="my-5">
-          {/* learning things */}
-          <FDLearningThings />
-        </div>
+        <div className="my-5"></div>
+        {/* learning things */}
+        <MLLearningThings />
+        {/* certificate section */}
+        <MLCertificate />
       </div>
       {/* Blue gradient on the left */}
       <div className="absolute top-0 left-0 w-[200px] sm:w-1/3 h-[200px] bg-blue-200 rounded-full blur-[50px]"></div>

@@ -3,10 +3,10 @@ import React from "react";
 import { BookOpen, Clock, TvMinimal } from "lucide-react";
 import Image from "next/image";
 
-function RecordedComponent({ course }) {
+function CourseComponent({ course }) {
   return (
     <Link
-      href={`/courses/recorded/${course.uniqueName}`}
+      href={`/courses/${course.uniqueName}`}
       className="p-4 transition-shadow duration-300 bg-white border rounded-lg shadow-lg hover:shadow-2xl flex flex-col w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)]"
     >
       <Image
@@ -33,13 +33,13 @@ function RecordedComponent({ course }) {
           <Clock size={16} />
           <span>Duration: {course.duration}</span>
         </div>
-        {/* <div className="flex items-center gap-1 mt-1">
+        <div className="flex items-center gap-1 mt-1">
           <TvMinimal size={16} />
           <span>Course Type : {course.type}</span>
-        </div> */}
+        </div>
       </div>
     </Link>
   );
 }
 
-export default RecordedComponent;
+export default CourseComponent;

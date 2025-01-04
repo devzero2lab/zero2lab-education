@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import RecordedComponent from "./components/RecordedComponent";
 import axios from "axios";
+import CourseComponent from "./components/CourseComponent";
 
 const RecordCoursesPage = () => {
 
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const [rcourses, setRcourses] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,10 +14,10 @@ const RecordCoursesPage = () => {
     const fetchRCourses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${apiUrl}/api/courses/?type=recorded`,{
+        const response = await axios.get(`${apiUrl}/api/courses/`,{
           cache: "no-store",
         });
-        setRcourses(response.data.courses);
+        setCourses(response.data.courses);
       } catch (error) {
         setError(error.message || "Failed to fetch courses");
       } finally {
@@ -38,9 +38,9 @@ const RecordCoursesPage = () => {
     {error && <div className="text-center text-red-500">{error}</div>}
 
       <div className="flex flex-wrap justify-center gap-6">
-      {rcourses.length > 0 ? (
-        rcourses.map((course) => (
-          <RecordedComponent key={course._id} course={course} />
+      {courses.length > 0 ? (
+        courses.map((course) => (
+          <CourseComponent key={course._id} course={course} />
         ))
       ) : (
         <div>No courses available</div>
