@@ -1,9 +1,62 @@
-import React from 'react'
+"use client";
+import { useState, useEffect } from "react";
+import Sidebar from "./Sidebar";
+import VideoSection from "./VideoSection";
+import axios from "axios";
 
-function page() {
+export default function Page({ params }) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const { type, id } = params; // Extract dynamic route parameters
+  const [courseData, setCourseData] = useState(null); // Store fetched course data
+  const [currentDay, setCurrentDay] = useState(1); // Track the selected day
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/api/courses/${id}`);
+        setCourseData(response.data.course);
+        console.log(response.data.course);
+      } catch (error) {
+        console.error("Error fetching course data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCourseData();
+  }, [type, id]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg text-gray-500">Loading course data...</p>
+      </div>
+    );
+  }
+
+  if (!courseData) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg text-gray-500">Course not found.</p>
+      </div>
+    );
+  }
+
+  const currentLesson = courseData.content.find(
+    (lesson) => lesson.day === currentDay
+  );
+
   return (
-    <div className='mt-12'>watch recording section page</div>
-  )
+    <div className="flex flex-col h-screen md:flex-row">
+      {/* Sidebar */}
+      <Sidebar
+        lessons={courseData.content}
+        currentDay={currentDay}
+        setCurrentDay={setCurrentDay}
+      />
+      {/* Video Section */}
+      <VideoSection lesson={currentLesson} />
+    </div>
+  );
 }
-
-export default page
