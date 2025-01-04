@@ -35,7 +35,7 @@ const courseSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["live", "recorded"],
+    enum: ["Live", "Recorded"],
   },
   description: {
     type: String,
