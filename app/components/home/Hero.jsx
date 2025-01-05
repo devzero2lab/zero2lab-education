@@ -25,7 +25,7 @@ function Hero() {
             className="mx-auto md:mx-0"
           />
           <Link
-            href={"/courses/recorded"}
+            href={"/courses"}
             className="bg-gradient-to-r py-1 w-[180px] md:w-[220px] text-lg md:text-xl px-5 rounded-full text-white font-bold from-[#F24B26] to-[#F67E63] mt-5 mx-auto md:mx-0"
           >
             Browse Courses

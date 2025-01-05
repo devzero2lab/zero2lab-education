@@ -37,7 +37,10 @@ function Header() {
         {/* sign in links */}
         <SignedIn>
           <UserButton />
-          <Link href="/dashboard" className="text-black hover:text-blue-600">
+          <Link
+            href="/dashboard"
+            className="text-black bg-[#5e6ef6] text-white px-4 py-2 rounded-lg font-bold"
+          >
             Dashboard
           </Link>
         </SignedIn>
@@ -72,13 +75,23 @@ function Header() {
         >
           Courses
         </Link>
-        <Link
-          href="/dashboard"
-          className="text-xl text-black hover:text-blue-600"
-          onClick={toggleMenu}
-        >
-          Dashboard
-        </Link>
+        <SignedOut>
+          <Link href="/sign-in" className="text-black hover:text-blue-600">
+            Sign In
+          </Link>
+          <Link href="/sign-up" className="text-black hover:text-blue-600">
+            Sign Up
+          </Link>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+          <Link
+            href="/dashboard"
+            className="text-black bg-[#5e6ef6] text-white px-4 py-2 rounded-lg font-bold"
+          >
+            Dashboard
+          </Link>
+        </SignedIn>
 
         <button
           onClick={toggleMenu}
