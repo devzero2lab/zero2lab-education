@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Checkout({ params }) {
   const userDetails = {
@@ -12,6 +13,7 @@ export default function Checkout({ params }) {
     courseId: params?.id,
   };
 
+  const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [course, setCourse] = useState("");
   const [formData, setFormData] = useState({
@@ -37,9 +39,7 @@ export default function Checkout({ params }) {
           `${apiUrl}/api/courses/${userDetails.courseId}`
         );
         setCourse(response.data.course);
-        console.log(response.data);
       } catch (error) {
-        console.error("Error fetching course name:", error);
         setCourse("Unknown Course");
       }
     };
@@ -63,13 +63,13 @@ export default function Checkout({ params }) {
         paymentSlip: formData.paymentSlip,
       });
 
-      console.log("Response:", response.data);
-
       if (response.data.message === "You are already enrolled in this course") {
         alert(response.data.message);
       } else {
         alert("Form submitted successfully!");
       }
+
+      router.push("/dashboard");
 
       // Reset the form fields after successful submission
       setFormData({
@@ -82,7 +82,6 @@ export default function Checkout({ params }) {
         courseId: userDetails.courseId,
       });
     } catch (error) {
-      console.error("Error submitting the form:", error);
 
       if (error.response) {
         const { status, data } = error.response;
