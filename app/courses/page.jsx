@@ -14,9 +14,7 @@ const RecordCoursesPage = () => {
     const fetchRCourses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${apiUrl}/api/courses/`,{
-          cache: "no-store",
-        });
+        const response = await axios.get(`${apiUrl}/api/courses/`);
         setCourses(response.data.courses);
       } catch (error) {
         setError(error.message || "Failed to fetch courses");
