@@ -35,7 +35,6 @@ const RecordCoursesPage = () => {
       </h1>
 
     {loading && <div className="text-center">Loading...</div>}
-    {error && <div className="text-center text-red-500">{error}</div>}
 
       <div className="flex flex-wrap justify-center gap-6">
       {courses.length > 0 ? (

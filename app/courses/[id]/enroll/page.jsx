@@ -3,17 +3,26 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function Checkout({ params }) {
+  const router = useRouter();
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  // Wait for authentication state to load or handle unauthenticated state
+  if (!isLoaded) return <div>Loading...</div>;
+  if (!isSignedIn) {
+    router.push("/sign-in"); // Redirect to the login page
+    return null; // Return null to prevent rendering
+  }
   const userDetails = {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    userId: 123,
-    courseId: params?.id,
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.emailAddresses?.[0]?.emailAddress || "",
+    userId: user?.id || "",
+    courseId: params?.id || "",
   };
 
-  const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [course, setCourse] = useState("");
   const [formData, setFormData] = useState({
@@ -25,6 +34,13 @@ export default function Checkout({ params }) {
     userId: userDetails.userId,
     courseId: userDetails.courseId,
   });
+
+  // Wait for authentication state to load or handle unauthenticated state
+  if (!isLoaded) return <div>Loading...</div>;
+  if (!isSignedIn) {
+    router.push("/sign-in"); // Redirect to the login page
+    return null; // Return null to prevent rendering
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -82,7 +98,6 @@ export default function Checkout({ params }) {
         courseId: userDetails.courseId,
       });
     } catch (error) {
-
       if (error.response) {
         const { status, data } = error.response;
         if (status === 400 && data.message) {

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,9 +26,21 @@ function Header() {
         <Link href="/courses" className="text-black hover:text-blue-600">
           Courses
         </Link>
-        <Link href="/dashboard" className="text-black hover:text-blue-600">
-          Dashboard
-        </Link>
+        <SignedOut>
+          <Link href="/sign-in" className="text-black hover:text-blue-600">
+            Sign In
+          </Link>
+          <Link href="/sign-up" className="text-black hover:text-blue-600">
+            Sign Up
+          </Link>
+        </SignedOut>
+        {/* sign in links */}
+        <SignedIn>
+          <UserButton />
+          <Link href="/dashboard" className="text-black hover:text-blue-600">
+            Dashboard
+          </Link>
+        </SignedIn>
       </div>
 
       {/* Mobile Menu Button */}

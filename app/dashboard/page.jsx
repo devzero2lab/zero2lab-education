@@ -2,9 +2,21 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 function page() {
-  const userID = 123;
+  const router = useRouter();
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  // Wait for authentication state to load or handle unauthenticated state
+  if (!isLoaded) return <div>Loading...</div>;
+  if (!isSignedIn) {
+    router.push("/sign-in"); // Redirect to the login page
+    return null; // Return null to prevent rendering
+  }
+
+  const userID = user?.id || "";
 
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [enrolledCourses, setEnrolledCourses] = useState([]);
