@@ -4,6 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { UploadButton } from "@/utils/uploadthing";
 
 export default function Checkout({ params }) {
   const router = useRouter();
@@ -30,17 +31,29 @@ export default function Checkout({ params }) {
     lastName: userDetails.lastName,
     email: userDetails.email,
     whatsappNumber: "",
-    paymentSlip: "test",
     userId: userDetails.userId,
     courseId: userDetails.courseId,
   });
 
-  // Wait for authentication state to load or handle unauthenticated state
-  if (!isLoaded) return <div>Loading...</div>;
-  if (!isSignedIn) {
-    router.push("/sign-in"); // Redirect to the login page
-    return null; // Return null to prevent rendering
-  }
+  const [slipImages, setSlipImages] = useState([]);
+
+  // Handle file upload completion
+  const handleUploadComplete = (res, paymentStage) => {
+    if (res && res.length > 0) {
+      const uploadedFileUrl = res[0]?.url;
+      setSlipImages((prev) => [
+        ...prev,
+        { stage: paymentStage, image: uploadedFileUrl },
+      ]);
+    } else {
+      alert("Upload Completed! No files returned.");
+    }
+  };
+
+  // Handle upload errors
+  const handleUploadError = (error) => {
+    console.error("Upload failed", error);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -68,6 +81,9 @@ export default function Checkout({ params }) {
   const handlePayment = async (e) => {
     e.preventDefault();
 
+    // Assuming you want the most recent slip (if there are multiple)
+    const paymentSlipUrl = slipImages[slipImages.length - 1]?.image || "";
+
     try {
       const response = await axios.post(`${apiUrl}/api/usercourses/`, {
         userId: formData.userId,
@@ -76,7 +92,7 @@ export default function Checkout({ params }) {
         email: formData.email,
         whatsappNumber: formData.whatsappNumber,
         courseId: formData.courseId,
-        paymentSlip: formData.paymentSlip,
+        paymentSlip: paymentSlipUrl,
       });
 
       if (response.data.message === "You are already enrolled in this course") {
@@ -93,7 +109,6 @@ export default function Checkout({ params }) {
         lastName: userDetails.lastName,
         email: userDetails.email,
         whatsappNumber: "",
-        paymentSlip: "test",
         userId: userDetails.userId,
         courseId: userDetails.courseId,
       });
@@ -183,10 +198,23 @@ export default function Checkout({ params }) {
                 Upload Bank Payment Slip Or Screenshot Here
               </div>
               <div className="p-4 text-white border rounded-lg shadow-lg">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="block w-full mt-2 text-sm text-gray-500 transition-all duration-300 ease-in-out file:py-3 file:px-6 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                <UploadButton
+                  className="w-full py-4 font-medium text-white transition-all duration-300 rounded-xl"
+                  appearance={{
+                    button: {
+                      padding: "1rem 3rem",
+                      fontSize: "1rem",
+                      fontWeight: "600",
+                      borderRadius: "1rem",
+                      background: "linear-gradient(to right, #4F46E5, #3B82F6)",
+                      color: "#FFFFFF",
+                    },
+                  }}
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res) =>
+                    handleUploadComplete(res, "full")
+                  }
+                  onUploadError={handleUploadError}
                 />
               </div>
             </div>
