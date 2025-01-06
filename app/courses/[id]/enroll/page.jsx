@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { UploadButton } from "@/utils/uploadthing";
+import { toast } from "sonner";
 
 export default function Checkout({ params }) {
   const router = useRouter();
@@ -83,6 +84,27 @@ export default function Checkout({ params }) {
   const handlePayment = async (e) => {
     e.preventDefault();
 
+    // Regular expression for a 10-digit number
+    const whatsappNumberRegex = /^\d{10}$/;
+
+    // Validation: Check if all required fields are filled
+    if (
+      !formData.firstName.trim() ||
+      !formData.lastName.trim() ||
+      !formData.email.trim() ||
+      !formData.whatsappNumber.trim() ||
+      slipImages.length === 0
+    ) {
+      toast.error("Please fill in all fields and upload a payment slip.");
+      return;
+    }
+
+    // Validation: Check if WhatsApp number is valid
+    if (!whatsappNumberRegex.test(formData.whatsappNumber.trim())) {
+      toast.error("WhatsApp number must contain exactly 10 digits.");
+      return;
+    }
+
     // Assuming you want the most recent slip (if there are multiple)
     const paymentSlipUrl = slipImages[slipImages.length - 1]?.image || "";
 
@@ -98,9 +120,9 @@ export default function Checkout({ params }) {
       });
 
       if (response.data.message === "You are already enrolled in this course") {
-        alert(response.data.message);
+        toast.error(response.data.message); // Error toast for already enrolled
       } else {
-        alert("Form submitted successfully!");
+        toast.success("Enrollment successfully!"); // Success toast for successful submission
       }
 
       router.push("/dashboard");
@@ -118,12 +140,12 @@ export default function Checkout({ params }) {
       if (error.response) {
         const { status, data } = error.response;
         if (status === 400 && data.message) {
-          alert(data.message);
+          toast.error(data.message); // Error toast for specific error message
         } else {
-          alert("Something Went Wrong");
+          toast.error("Something went wrong!"); // General error toast
         }
       } else {
-        alert("Something Went Wrong");
+        toast.error("Something went wrong!"); // General error toast
       }
     }
   };
