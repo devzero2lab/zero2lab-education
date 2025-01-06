@@ -36,6 +36,7 @@ export default function Checkout({ params }) {
   });
 
   const [slipImages, setSlipImages] = useState([]);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
   // Handle file upload completion
   const handleUploadComplete = (res, paymentStage) => {
@@ -45,6 +46,7 @@ export default function Checkout({ params }) {
         ...prev,
         { stage: paymentStage, image: uploadedFileUrl },
       ]);
+      setUploadedImageUrl(uploadedFileUrl); // Store the uploaded image URL for display
     } else {
       alert("Upload Completed! No files returned.");
     }
@@ -181,6 +183,7 @@ export default function Checkout({ params }) {
           </h3>
           <div className="flex flex-col lg:flex-row lg:space-x-8">
             {/* Full Payment Section */}
+            {/* Full Payment Section */}
             <div className="w-full lg:w-1/2">
               <h4 className="mb-4 text-xl font-semibold text-gray-800">
                 Upload Slip
@@ -199,13 +202,12 @@ export default function Checkout({ params }) {
               </div>
               <div className="p-4 text-white border rounded-lg shadow-lg">
                 <UploadButton
-                  className="w-full py-4 font-medium text-white transition-all duration-300 rounded-xl"
+                  className="w-full py-4 font-medium text-white transition-all duration-300 rounded-xl sm:w-auto"
                   appearance={{
                     button: {
-                      padding: "1rem 3rem",
+                      padding: "1rem 1rem",
                       fontSize: "1rem",
                       fontWeight: "600",
-                      borderRadius: "1rem",
                       background: "linear-gradient(to right, #4F46E5, #3B82F6)",
                       color: "#FFFFFF",
                     },
@@ -217,6 +219,19 @@ export default function Checkout({ params }) {
                   onUploadError={handleUploadError}
                 />
               </div>
+              {/* Display Uploaded Image */}
+              {uploadedImageUrl && (
+                <div className="my-4">
+                  <h5 className="text-xl font-semibold text-gray-800">
+                    Uploaded Image Preview:
+                  </h5>
+                  <img
+                    src={uploadedImageUrl}
+                    alt="Uploaded Payment Slip"
+                    className="h-auto max-w-full mt-2 rounded-lg shadow-lg"
+                  />
+                </div>
+              )}
             </div>
 
             {/* User Details Form */}
