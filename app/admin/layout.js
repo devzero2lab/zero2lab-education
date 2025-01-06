@@ -21,7 +21,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <div className="admin-layout">
-      <main className="p-4">{children}</main>
+      <main>{children}</main>
     </div>
   );
 }
