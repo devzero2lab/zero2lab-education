@@ -20,7 +20,7 @@ export default function AdminLayout({ children }) {
   }, [isLoaded, isSignedIn, user, router]);
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading screen
+    return <div className="mt-14">Loading...</div>; // Show a loading screen
   }
 
   return (
