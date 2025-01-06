@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.9.6",
+    "@uploadthing/react": "^7.1.5",
     "axios": "^1.7.9",
     "framer-motion": "^11.15.0",
     "hls.js": "^1.5.18",
@@ -22,7 +23,8 @@
     "react-dom": "^18",
     "sonner": "^1.7.1",
     "tailwind-scrollbar": "^3.1.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^7.4.4"
   },
   "devDependencies": {
     "eslint": "^8",
