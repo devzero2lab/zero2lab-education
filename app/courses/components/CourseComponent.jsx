@@ -12,7 +12,7 @@ function CourseComponent({ course }) {
       <Image
         width={200}
         height={200}
-        src="/images/homepage/course1.png"
+        src={course.image}
         alt="Course Image"
         className="object-contain w-full mb-4 bg-gray-100 rounded-md h-60"
       />
