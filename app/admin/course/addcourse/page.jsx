@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
+import { UploadButton } from "@/utils/uploadthing";
+import { toast } from "sonner";
 
 function AddCoursePage() {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -17,6 +19,25 @@ function AddCoursePage() {
     content: [], // Initially empty
   });
 
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+
+  // Handle upload completion
+  const handleUploadComplete = (res) => {
+    if (res && res.length > 0) {
+      const uploadedFileUrl = res[0]?.url;
+      setUploadedImageUrl(uploadedFileUrl); // Update the image state with the uploaded URL
+      setFormData({ ...formData, image: uploadedFileUrl }); // Update the form data
+    } else {
+      toast.error("No file was uploaded.");
+    }
+  };
+
+  // Handle upload errors
+  const handleUploadError = (error) => {
+    console.error("Upload failed", error);
+    toast.error("Failed to upload the image.");
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -24,12 +45,26 @@ function AddCoursePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Data:", formData);
+
+    // Check if any field in formData is empty
+    const missingFields = Object.entries(formData).filter(
+      ([key, value]) => key !== "image" && value === ""
+    );
+
+    if (missingFields.length > 0) {
+      toast.error("All fields are required.");
+      return;
+    }
+
+    if (!formData.image) {
+      toast.error("Please upload an image for the course.");
+      return;
+    }
 
     try {
       const response = await axios.post(`${apiUrl}/api/courses/`, formData);
 
-      console.log("Course submitted successfully:", response.data);
+      toast.success("Course added successfully!");
 
       // Optionally, reset the form or show a success message
       setFormData({
@@ -43,8 +78,10 @@ function AddCoursePage() {
         price: 0,
         instructor: "",
       });
+      setUploadedImageUrl(""); // Reset the uploaded image preview
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("Failed to add the course.");
     }
   };
 
@@ -61,7 +98,6 @@ function AddCoursePage() {
               value={formData.courseName}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
-              required
             />
           </div>
           <div>
@@ -72,7 +108,6 @@ function AddCoursePage() {
               value={formData.uniqueName}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
-              required
             />
           </div>
           <div>
@@ -99,13 +134,27 @@ function AddCoursePage() {
           </div>
           <div>
             <label className="block mb-1 font-medium">Image URL</label>
-            <input
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded"
+            <UploadButton
+              appearance={{
+                button: {
+                  padding: "1rem 1rem",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  background: "linear-gradient(to right, #4F46E5, #3B82F6)",
+                  color: "#FFFFFF",
+                },
+              }}
+              endpoint="imageUploader"
+              onClientUploadComplete={handleUploadComplete}
+              onUploadError={handleUploadError}
             />
+            {uploadedImageUrl && (
+              <img
+                src={uploadedImageUrl}
+                alt="Uploaded Course"
+                className="w-32 h-32 mt-4 rounded shadow-md"
+              />
+            )}
           </div>
           <div>
             <label className="block mb-1 font-medium">Level</label>
