@@ -11,33 +11,51 @@ export default function Checkout({ params }) {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
 
-  // Wait for authentication state to load or handle unauthenticated state
-  if (!isLoaded) return <div>Loading...</div>;
-  if (!isSignedIn) {
-    router.push("/sign-in"); // Redirect to the login page
-    return null; // Return null to prevent rendering
-  }
-  const userDetails = {
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    email: user?.emailAddresses?.[0]?.emailAddress || "",
-    userId: user?.id || "",
-    courseId: params?.id || "",
-  };
-
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  // Initialize state hooks at the top level
   const [course, setCourse] = useState("");
   const [formData, setFormData] = useState({
-    firstName: userDetails.firstName,
-    lastName: userDetails.lastName,
-    email: userDetails.email,
+    firstName: "",
+    lastName: "",
+    email: "",
     whatsappNumber: "",
-    userId: userDetails.userId,
-    courseId: userDetails.courseId,
+    userId: "",
+    courseId: params?.id || "",
   });
-
   const [slipImages, setSlipImages] = useState([]);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+
+  // Fetch user details once loaded
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        email: user?.emailAddresses?.[0]?.emailAddress || "",
+        userId: user?.id || "",
+      }));
+    }
+  }, [isLoaded, isSignedIn, user]);
+
+  // Fetch course name based on course ID
+  useEffect(() => {
+    const fetchCourseName = async () => {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/courses/${formData.courseId}`
+        );
+        setCourse(response.data.course);
+      } catch (error) {
+        setCourse("Unknown Course");
+      }
+    };
+
+    if (formData.courseId) {
+      fetchCourseName();
+    }
+  }, [formData.courseId, apiUrl]);
 
   // Handle file upload completion
   const handleUploadComplete = (res) => {
@@ -50,7 +68,6 @@ export default function Checkout({ params }) {
     }
   };
 
-  // Handle upload errors
   const handleUploadError = (error) => {
     console.error("Upload failed", error);
   };
@@ -60,31 +77,11 @@ export default function Checkout({ params }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Fetch course name based on course ID
-  useEffect(() => {
-    const fetchCourseName = async () => {
-      try {
-        const response = await axios.get(
-          `${apiUrl}/api/courses/${userDetails.courseId}`
-        );
-        setCourse(response.data.course);
-      } catch (error) {
-        setCourse("Unknown Course");
-      }
-    };
-
-    if (userDetails.courseId) {
-      fetchCourseName();
-    }
-  }, [userDetails.courseId, apiUrl]);
-
   const handlePayment = async (e) => {
     e.preventDefault();
 
-    // Regular expression for a 10-digit number
     const whatsappNumberRegex = /^\d{10}$/;
 
-    // Validation: Check if all required fields are filled
     if (
       !formData.firstName.trim() ||
       !formData.lastName.trim() ||
@@ -96,56 +93,42 @@ export default function Checkout({ params }) {
       return;
     }
 
-    // Validation: Check if WhatsApp number is valid
     if (!whatsappNumberRegex.test(formData.whatsappNumber.trim())) {
       toast.error("WhatsApp number must contain exactly 10 digits.");
       return;
     }
 
-    // Assuming you want the most recent slip (if there are multiple)
     const paymentSlipUrl = slipImages[slipImages.length - 1]?.image || "";
 
     try {
       const response = await axios.post(`${apiUrl}/api/usercourses/`, {
-        userId: formData.userId,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        whatsappNumber: formData.whatsappNumber,
-        courseId: formData.courseId,
+        ...formData,
         paymentSlip: paymentSlipUrl,
       });
 
       if (response.data.message === "You are already enrolled in this course") {
-        toast.error(response.data.message); // Error toast for already enrolled
+        toast.error(response.data.message);
       } else {
-        toast.success("Enrollment successfully!"); // Success toast for successful submission
+        toast.success("Enrollment successful!");
+        router.push("/dashboard");
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          whatsappNumber: "",
+        }));
       }
-
-      router.push("/dashboard");
-
-      // Reset the form fields after successful submission
-      setFormData({
-        firstName: userDetails.firstName,
-        lastName: userDetails.lastName,
-        email: userDetails.email,
-        whatsappNumber: "",
-        userId: userDetails.userId,
-        courseId: userDetails.courseId,
-      });
     } catch (error) {
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 400 && data.message) {
-          toast.error(data.message); // Error toast for specific error message
-        } else {
-          toast.error("Something went wrong!"); // General error toast
-        }
-      } else {
-        toast.error("Something went wrong!"); // General error toast
-      }
+      toast.error(error.response?.data?.message || "Something went wrong!");
     }
   };
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isSignedIn) {
+    router.push("/sign-in");
+    return null;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-8 px-6 py-12 bg-gray-50">
