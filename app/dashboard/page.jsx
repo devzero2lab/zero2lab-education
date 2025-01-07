@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 
-function page() {
+function Page() {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
 
@@ -129,4 +129,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
