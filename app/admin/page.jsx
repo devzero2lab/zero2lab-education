@@ -1,32 +1,13 @@
-"use client"
-import React, { useState } from 'react';
-import Sidebar from './Sidebar';
-import Courses from './Courses';
-import Users from './Users';
-import Settings from './Settings';
+"use client";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-function AdminPage() {
-  const [activePage, setActivePage] = useState('courses');
+export default function AdminPage() {
+  const router = useRouter();
 
-  const renderContent = () => {
-    switch (activePage) {
-      case 'courses':
-        return <Courses />;
-      case 'users':
-        return <Users />;
-      case 'settings':
-        return <Settings />;
-      default:
-        return <div>Select a page</div>;
-    }
-  };
+  useEffect(() => {
+    router.push("/admin/course"); // Redirect to the courses page
+  }, [router]);
 
-  return (
-    <div className="flex mt-12">
-      <Sidebar onMenuSelect={setActivePage} />
-      <div className="w-full h-screen bg-gray-100">{renderContent()}</div>
-    </div>
-  );
+  return null; // Render nothing while redirecting
 }
-
-export default AdminPage;
