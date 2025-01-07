@@ -1,9 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import axios from "axios";
 
-function AddCoursePage() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+function UpdateCoursePage() {
   const [formData, setFormData] = useState({
     courseName: "",
     uniqueName: "",
@@ -17,40 +15,39 @@ function AddCoursePage() {
     content: [], // Initially empty
   });
 
+  const [contentItem, setContentItem] = useState({
+    day: "",
+    videoUrl: "",
+    notes: "",
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleContentInputChange = (e) => {
+    const { name, value } = e.target;
+    setContentItem({ ...contentItem, [name]: value });
+  };
+
+  const addContent = () => {
+    setFormData({
+      ...formData,
+      content: [...formData.content, { ...contentItem }],
+    });
+    setContentItem({ day: "", videoUrl: "", notes: "" }); // Clear content inputs
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted Data:", formData);
-
-    try {
-      const response = await axios.post(`${apiUrl}/api/courses/`, formData);
-
-      console.log("Course submitted successfully:", response.data);
-
-      // Optionally, reset the form or show a success message
-      setFormData({
-        courseName: "",
-        uniqueName: "",
-        type: "Live",
-        description: "",
-        image: "",
-        level: "",
-        duration: "",
-        price: 0,
-        instructor: "",
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
+    // Send formData to your backend or API here
   };
 
   return (
     <div className="p-6 bg-white rounded shadow-md ">
-      <h1 className="mb-4 text-2xl font-bold">Add Course</h1>
+      <h1 className="mb-4 text-2xl font-bold">Update Course</h1>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -109,17 +106,13 @@ function AddCoursePage() {
           </div>
           <div>
             <label className="block mb-1 font-medium">Level</label>
-            <select
+            <input
+              type="text"
               name="level"
               value={formData.level}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
-            >
-              <option value="">Select Level</option>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-            </select>
+            />
           </div>
           <div>
             <label className="block mb-1 font-medium">Duration</label>
@@ -152,6 +145,50 @@ function AddCoursePage() {
             />
           </div>
         </div>
+
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold">Course Content</h2>
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            <div>
+              <label className="block mb-1 font-medium">Day</label>
+              <input
+                type="number"
+                name="day"
+                value={contentItem.day}
+                onChange={handleContentInputChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Video URL</label>
+              <input
+                type="text"
+                name="videoUrl"
+                value={contentItem.videoUrl}
+                onChange={handleContentInputChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Notes</label>
+              <input
+                type="text"
+                name="notes"
+                value={contentItem.notes}
+                onChange={handleContentInputChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={addContent}
+            className="px-4 py-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600"
+          >
+            Add Content
+          </button>
+        </div>
+
         <button
           type="submit"
           className="px-4 py-2 mt-6 text-white bg-green-500 rounded hover:bg-green-600"
@@ -163,4 +200,4 @@ function AddCoursePage() {
   );
 }
 
-export default AddCoursePage;
+export default UpdateCoursePage;

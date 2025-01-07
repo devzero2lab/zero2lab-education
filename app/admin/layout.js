@@ -25,7 +25,7 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className="flex h-screen mt-12">
+    <div className="flex mt-12">
       {/* Sidebar remains static on the left */}
       <Sidebar />
       {/* Dynamic content on the right */}

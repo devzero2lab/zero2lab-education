@@ -10,7 +10,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="w-64 h-full p-4 text-white bg-gray-800">
+    <div className="w-64 h-screen p-4 text-white bg-gray-800">
       <ul className="space-y-4">
         {/* Add more links as needed */}
         {[
