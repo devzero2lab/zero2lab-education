@@ -40,13 +40,10 @@ export default function Checkout({ params }) {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
   // Handle file upload completion
-  const handleUploadComplete = (res, paymentStage) => {
+  const handleUploadComplete = (res) => {
     if (res && res.length > 0) {
       const uploadedFileUrl = res[0]?.url;
-      setSlipImages((prev) => [
-        ...prev,
-        { stage: paymentStage, image: uploadedFileUrl },
-      ]);
+      setSlipImages((prev) => [...prev, { image: uploadedFileUrl }]);
       setUploadedImageUrl(uploadedFileUrl); // Store the uploaded image URL for display
     } else {
       alert("Upload Completed! No files returned.");
