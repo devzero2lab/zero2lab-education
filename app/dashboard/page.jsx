@@ -8,41 +8,44 @@ import { useUser } from "@clerk/nextjs";
 function Page() {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
-
-  // Wait for authentication state to load or handle unauthenticated state
-  if (!isLoaded) return <div>Loading...</div>;
-  if (!isSignedIn) {
-    router.push("/sign-in"); // Redirect to the login page
-    return null; // Return null to prevent rendering
-  }
-
   const userID = user?.id || "";
-
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [courseCount, setCourseCount] = useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch user enrolled courses
-        const coursesResponse = await axios.get(
-          `${apiUrl}/api/usercourses?userId=${userID}`
-        );
-        // Fetch user enrolled courses count
-        const countResponse = await axios.get(
-          `${apiUrl}/api/usercourses?userId=${userID}&action=count`
-        );
+    if (isLoaded && isSignedIn) {
+      const fetchData = async () => {
+        try {
+          // Fetch user enrolled courses
+          const coursesResponse = await axios.get(
+            `${apiUrl}/api/usercourses?userId=${userID}`
+          );
+          // Fetch user enrolled courses count
+          const countResponse = await axios.get(
+            `${apiUrl}/api/usercourses?userId=${userID}&action=count`
+          );
 
-        setEnrolledCourses(coursesResponse.data.userCourses);
-        setCourseCount(countResponse.data.count);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+          setEnrolledCourses(coursesResponse.data.userCourses);
+          setCourseCount(countResponse.data.count);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
 
-    fetchData();
-  }, [userID, apiUrl]);
+      fetchData();
+    }
+  }, [isLoaded, isSignedIn, userID, apiUrl]);
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isSignedIn) {
+    router.push("/sign-in"); // Redirect to the login page
+    return null; // Prevent rendering
+  }
 
   const stats = [
     { title: "Enrolled Courses", value: courseCount, color: "bg-pink-100" },
