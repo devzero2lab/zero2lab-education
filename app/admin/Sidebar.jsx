@@ -18,19 +18,19 @@ function Sidebar() {
           { menu: "users", path: "/admin/users" },
           { menu: "settings", path: "/admin/settings" },
         ].map(({ menu, path }) => (
-          <li
-            key={menu}
-            className={`cursor-pointer p-4 rounded-md text-center ${
-              activeMenu === menu
-                ? "bg-blue-500 shadow-lg"
-                : "bg-gray-700 hover:bg-gray-600"
-            }`}
-            onClick={() => handleMenuClick(menu)}
-          >
-            <Link href={path}>
+          <Link href={path}>
+            <li
+              key={menu}
+              className={`cursor-pointer p-4 rounded-md text-center my-4 ${
+                activeMenu === menu
+                  ? "bg-blue-500 shadow-lg"
+                  : "bg-gray-700 hover:bg-gray-600"
+              }`}
+              onClick={() => handleMenuClick(menu)}
+            >
               <span>{menu.charAt(0).toUpperCase() + menu.slice(1)}</span>
-            </Link>
-          </li>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>
