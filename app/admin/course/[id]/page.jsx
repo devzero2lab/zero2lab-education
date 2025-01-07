@@ -1,7 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-function UpdateCoursePage() {
+function UpdateCoursePage({ params }) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [course, setCourse] = useState(null); // Fetch course details
   const [formData, setFormData] = useState({
     courseName: "",
     uniqueName: "",
@@ -39,17 +42,57 @@ function UpdateCoursePage() {
     setContentItem({ day: "", videoUrl: "", notes: "" }); // Clear content inputs
   };
 
+  const courseId = params?.id || "";
+
+  // Fetch course details based on course ID
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/api/courses/${courseId}`);
+        const courseData = response.data.course;
+        console.log(courseData);
+
+        // Set course details to formData state
+        setFormData({
+          courseName: courseData.courseName,
+          uniqueName: courseData.uniqueName,
+          type: courseData.type,
+          description: courseData.description,
+          image: courseData.image,
+          level: courseData.level,
+          duration: courseData.duration,
+          price: courseData.price,
+          instructor: courseData.instructor,
+          content: courseData.content, // Prepopulate content
+        });
+
+        // Set the course state to signal that the data has been loaded
+        setCourse(courseData);
+      } catch (error) {
+        console.error("Error fetching course details:", error);
+      }
+    };
+
+    if (courseId) {
+      fetchCourseDetails();
+    }
+  }, [courseId, apiUrl]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted Data:", formData);
     // Send formData to your backend or API here
   };
 
+  if (!course) {
+    return <p>Loading...</p>; // Show loading state while fetching course data
+  }
+
   return (
-    <div className="p-6 bg-white rounded shadow-md ">
+    <div className="p-6 bg-white rounded shadow-md">
       <h1 className="mb-4 text-2xl font-bold">Update Course</h1>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-6">
           <div>
             <label className="block mb-1 font-medium">Course Name</label>
             <input
@@ -95,14 +138,17 @@ function UpdateCoursePage() {
             />
           </div>
           <div>
-            <label className="block mb-1 font-medium">Image URL</label>
-            <input
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded"
-            />
+            <label className="block mb-1 font-medium">Course Image</label>
+            {/* If there's an image URL, display the image; otherwise, show a fallback message */}
+            {formData.image ? (
+              <img
+                src={formData.image}
+                alt="Course Image"
+                className="w-full h-auto mb-4 rounded"
+              />
+            ) : (
+              <p className="text-gray-500">No image available</p>
+            )}
           </div>
           <div>
             <label className="block mb-1 font-medium">Level</label>
@@ -148,38 +194,71 @@ function UpdateCoursePage() {
 
         <div className="mt-6">
           <h2 className="text-lg font-semibold">Course Content</h2>
-          <div className="grid grid-cols-3 gap-4 mt-4">
-            <div>
-              <label className="block mb-1 font-medium">Day</label>
-              <input
-                type="number"
-                name="day"
-                value={contentItem.day}
-                onChange={handleContentInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Video URL</label>
-              <input
-                type="text"
-                name="videoUrl"
-                value={contentItem.videoUrl}
-                onChange={handleContentInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Notes</label>
-              <input
-                type="text"
-                name="notes"
-                value={contentItem.notes}
-                onChange={handleContentInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
+          <div className="grid grid-cols-3 gap-6 mt-4">
+            {/* Loop through content to render each field in columns */}
+            {formData.content.map((contentItem, index) => (
+              <React.Fragment key={index}>
+                <div>
+                  <label className="block mb-1 font-medium">Day</label>
+                  <input
+                    type="number"
+                    name="day"
+                    value={contentItem.day}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        content: formData.content.map((item, idx) =>
+                          idx === index
+                            ? { ...item, day: e.target.value }
+                            : item
+                        ),
+                      })
+                    }
+                    className="w-full p-2 border rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 font-medium">Video URL</label>
+                  <input
+                    type="text"
+                    name="videoUrl"
+                    value={contentItem.videoUrl}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        content: formData.content.map((item, idx) =>
+                          idx === index
+                            ? { ...item, videoUrl: e.target.value }
+                            : item
+                        ),
+                      })
+                    }
+                    className="w-full p-2 border rounded"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 font-medium">Notes</label>
+                  <textarea
+                    name="notes"
+                    value={contentItem.notes}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        content: formData.content.map((item, idx) =>
+                          idx === index
+                            ? { ...item, notes: e.target.value }
+                            : item
+                        ),
+                      })
+                    }
+                    className="w-full p-2 border rounded resize-none"
+                    rows="3" // Adjust the number of rows as needed
+                  />
+                </div>
+              </React.Fragment>
+            ))}
           </div>
+
           <button
             type="button"
             onClick={addContent}

@@ -15,7 +15,6 @@ export default function CoursePage() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(`${apiUrl}/api/courses/`);
-        console.log(response.data);
         setCourses(response.data.courses);
       } catch (err) {
         console.error("Error fetching courses:", err);
