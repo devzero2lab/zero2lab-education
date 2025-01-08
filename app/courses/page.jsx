@@ -29,7 +29,7 @@ const RecordCoursesPage = () => {
   return (
     <div className="px-8 py-4 mt-12">
       <h1 className="mt-6 mb-8 text-2xl font-semibold text-center">
-        Explore Our Recorded Courses
+        Explore Our Courses
       </h1>
 
     {loading && <div className="text-center">Loading...</div>}

@@ -30,9 +30,6 @@ function Header() {
           <Link href="/sign-in" className="text-black hover:text-blue-600">
             Sign In
           </Link>
-          <Link href="/sign-up" className="text-black hover:text-blue-600">
-            Sign Up
-          </Link>
         </SignedOut>
         {/* sign in links */}
         <SignedIn>
@@ -78,9 +75,6 @@ function Header() {
         <SignedOut>
           <Link href="/sign-in" className="text-black hover:text-blue-600">
             Sign In
-          </Link>
-          <Link href="/sign-up" className="text-black hover:text-blue-600">
-            Sign Up
           </Link>
         </SignedOut>
         <SignedIn>
