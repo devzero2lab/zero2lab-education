@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClerkProvider>
-          <Header />
+          <Header /> 
           <Toaster position="top-right" richColors />
           {children}
           <Footer />
