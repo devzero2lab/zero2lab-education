@@ -7,7 +7,7 @@ function Footer() {
       <div className="container flex flex-wrap justify-between px-4 mx-auto sm:px-8 lg:px-16">
         {/* Brand Logo */}
         <div className="flex flex-col items-center w-full mb-6 sm:w-1/2 lg:w-1/4 lg:mb-0">
-          <h2 className="text-2xl font-bold text-indigo-700">Zero2lab</h2>
+          <h2 className="text-2xl font-bold text-indigo-700">Zero2learn</h2>
         </div>
 
         {/* Products */}

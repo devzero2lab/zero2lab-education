@@ -5,14 +5,14 @@ function AboutUs() {
   return (
     <div>
       <Head>
-        <title>About Us | Zero2lab Education LMS</title>
-        <meta name="description" content="Learn more about Zero2lab LMS" />
+        <title>About Us | Zero2learn LMS</title>
+        <meta name="description" content="Learn more about Zero2learn LMS" />
       </Head>
       <div className="min-h-screen px-6 py-12 bg-gray-100">
         <main className="p-8 mx-auto space-y-12">
           <h1 className="text-4xl font-extrabold ">About Us</h1>
           <p className="text-lg text-gray-700">
-            Welcome to Zero2 LMS - Empowering your learning journey.
+            Welcome to Zero2learn LMS - Empowering your learning journey.
           </p>
 
           <section className="space-y-8">
@@ -21,7 +21,7 @@ function AboutUs() {
                 Who We Are
               </h2>
               <p className="text-lg text-gray-800">
-                Zero2 LMS is a Learning Management System designed to make
+                Zero2learn LMS is a Learning Management System designed to make
                 learning more accessible, engaging, and personalized. We provide
                 an interactive platform that helps students and professionals
                 enhance their skills through online courses. Our mission is to
@@ -39,8 +39,8 @@ function AboutUs() {
                 and modern digital learning. We aim to provide an intuitive
                 platform that empowers learners to reach their full potential.
                 Whether you are looking to advance your career, learn a new
-                skill, or deepen your knowledge in a specific subject, Zero2 LMS
-                is here to support your educational journey.
+                skill, or deepen your knowledge in a specific subject,
+                Zero2learn LMS is here to support your educational journey.
               </p>
             </div>
 

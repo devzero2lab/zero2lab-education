@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Zero2lab Education",
-  description: "Zero2lab Education LMS",
+  title: "Zero2learn",
+  description: "Zero2learn LMS",
 };
 
 export default function RootLayout({ children }) {
@@ -37,3 +37,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
