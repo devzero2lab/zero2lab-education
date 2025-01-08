@@ -12,7 +12,7 @@ module.exports = clerkMiddleware((auth, request) => {
     proxyUrl.host = 'frontend-api.clerk.dev';
     proxyUrl.protocol = 'https';
     proxyUrl.pathname = proxyUrl.pathname.replace('/__clerk', '');
-
+ 
     return NextResponse.rewrite(proxyUrl, {
       request: {
         headers: proxyHeaders,
