@@ -1,13 +1,9 @@
-const { NextResponse } = require('next/server');
-const { clerkMiddleware } = require('@clerk/nextjs/server');
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-const middleware = clerkMiddleware((auth, request) => {
+export default clerkMiddleware((auth, request) => {
   if (request.url.includes('__clerk')) {
     const proxyHeaders = new Headers(request.headers);
-    proxyHeaders.set(
-      'Clerk-Proxy-Url',
-      process.env.NEXT_PUBLIC_CLERK_PROXY_URL || 'https://www.zero2learn.com/__clerk'
-    );
+    proxyHeaders.set('Clerk-Proxy-Url', process.env.NEXT_PUBLIC_CLERK_PROXY_URL || 'https://www.zero2learn.com/__clerk');
     proxyHeaders.set('Clerk-Secret-Key', process.env.CLERK_SECRET_KEY || '');
     proxyHeaders.set('X-Forwarded-For', request.ip || request.headers.get('X-Forwarded-For') || '');
 
@@ -16,7 +12,7 @@ const middleware = clerkMiddleware((auth, request) => {
     proxyUrl.protocol = 'https';
     proxyUrl.pathname = proxyUrl.pathname.replace('/__clerk', '');
 
-    return NextResponse.rewrite(proxyUrl, { 
+    return NextResponse.rewrite(proxyUrl, {
       request: {
         headers: proxyHeaders,
       },
@@ -24,10 +20,7 @@ const middleware = clerkMiddleware((auth, request) => {
   }
 });
 
-module.exports = middleware;
-
-// Add middleware configuration if required
-module.exports.config = {
+export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
@@ -35,3 +28,5 @@ module.exports.config = {
     '/(api|trpc)(.*)',
   ],
 };
+
+
