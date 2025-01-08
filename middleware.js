@@ -8,7 +8,7 @@ export default clerkMiddleware((auth, request) => {
     proxyHeaders.set('X-Forwarded-For', request.ip || request.headers.get('X-Forwarded-For') || '');
 
     const proxyUrl = new URL(request.url);
-    proxyUrl.host = 'frontend-api.clerk.dev';
+    proxyUrl.host = 'frontend-api.clerk.dev'; 
     proxyUrl.protocol = 'https';
     proxyUrl.pathname = proxyUrl.pathname.replace('/__clerk', '');
 
