@@ -16,7 +16,7 @@ const middleware = clerkMiddleware((auth, request) => {
     proxyUrl.protocol = 'https';
     proxyUrl.pathname = proxyUrl.pathname.replace('/__clerk', '');
 
-    return NextResponse.rewrite(proxyUrl, {
+    return NextResponse.rewrite(proxyUrl, { 
       request: {
         headers: proxyHeaders,
       },
