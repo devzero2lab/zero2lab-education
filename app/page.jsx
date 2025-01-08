@@ -39,7 +39,7 @@ function Home() {
               href="/courses"
               className="inline-block bg-white text-[#2652f2] font-medium text-lg md:text-xl py-2 px-8 rounded-full shadow-lg hover:bg-gray-100"
             >
-              Get Started Now
+              Get Started Now 
             </Link>
           </div>
         </div>
