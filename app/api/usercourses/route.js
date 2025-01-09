@@ -60,10 +60,9 @@ export async function GET(request) {
     let userCourses;
     if (status) {
       // Filter courses by status (Pending or Approved)
-      userCourses = await UserCourse.find({ status }).populate(
-        "courseId",
-        "courseName"
-      );
+      userCourses = await UserCourse.find({ status })
+        .sort({ createdAt: -1 })
+        .populate("courseId", "courseName");
     } else if (userId) {
       // Filter by userId
       userCourses = await UserCourse.find({ userId }).populate("courseId");

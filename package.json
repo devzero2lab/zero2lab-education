@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.9.6",
     "@uploadthing/react": "^7.1.5",
+    "antd": "^5.23.0",
     "axios": "^1.7.9",
     "framer-motion": "^11.15.0",
     "hls.js": "^1.5.18",
