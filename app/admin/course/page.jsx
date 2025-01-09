@@ -29,14 +29,12 @@ export default function CoursePage() {
 
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">All Courses</h1>
       <Link
         href="/admin/course/addcourse"
         className="inline-block px-4 py-2 mb-6 text-white bg-blue-500 rounded"
       >
         Add Course
       </Link>
-      <p className="mb-4 text-gray-600">Welcome to the courses page!</p>
 
       {loading && <p>Loading courses...</p>}
       {error && <p className="text-red-500">{error}</p>}
