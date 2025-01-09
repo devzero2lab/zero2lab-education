@@ -24,7 +24,7 @@ function PendingPage() {
 
   return (
     <div className="p-6">
-      <h1 className="mb-4 text-2xl font-bold">Pending User Courses</h1>
+      <h1 className="mb-4 text-2xl font-bold">Pending Courses Access</h1>
       <PendingList courses={pendingCourses} />
     </div>
   );
