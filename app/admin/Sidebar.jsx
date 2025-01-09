@@ -15,8 +15,8 @@ function Sidebar() {
         {/* Add more links as needed */}
         {[
           { menu: "courses", path: "/admin/course" },
-          { menu: "users", path: "/admin/users" },
-          { menu: "settings", path: "/admin/settings" },
+          { menu: "Pending Access", path: "/admin/pending" },
+          { menu: "Approved Access", path: "/admin/approved" },
         ].map(({ menu, path }) => (
           <Link key={menu} href={path}>
             <li
