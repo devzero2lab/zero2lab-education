@@ -2,6 +2,7 @@
 import React from "react";
 import axios from "axios";
 import { Table, Image, Button } from "antd";
+import { toast } from "sonner";
 
 function ApprovedList({ courses }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -66,9 +67,9 @@ function ApprovedList({ courses }) {
       );
 
       if (response.status === 200) {
-        alert(`Access Deny to ${course.firstName} ${course.lastName}.`);
+        toast.success(`Access Deny to ${course.firstName} ${course.lastName}.`);
       } else {
-        console.error("Failed to Deny access:", response.statusText);
+        toast.error("Failed to Deny access");
       }
     } catch (error) {
       console.error("Error Deny:", error);
