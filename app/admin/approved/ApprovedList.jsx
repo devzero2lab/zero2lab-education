@@ -15,6 +15,12 @@ function ApprovedList({ courses }) {
       render: (_, record) => `${record.firstName} ${record.lastName}`,
     },
     {
+      title: "Course Name",
+      dataIndex: "courseName",
+      key: "courseName",
+      render: (_, record) => record.courseId?.courseName || "N/A",
+    },
+    {
       title: "Email",
       dataIndex: "email",
       key: "email",
