@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
-import { Table, Image } from "antd";
+import axios from "axios";
+import { Table, Image, Button } from "antd";
 
 function ApprovedList({ courses }) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   // Define the columns for the AntD Table
   const columns = [
     {
@@ -39,6 +41,15 @@ function ApprovedList({ courses }) {
         />
       ),
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Button type="primary" onClick={() => handleDenyAccess(record)}>
+          Access Deny
+        </Button>
+      ),
+    },
   ];
 
   // Map the data to match AntD Table structure
@@ -46,6 +57,23 @@ function ApprovedList({ courses }) {
     key: index,
     ...course, // Spread the course details
   }));
+
+  const handleDenyAccess = async (course) => {
+    try {
+      const response = await axios.put(
+        `${apiUrl}/api/usercourses/${course._id}`,
+        { status: "Pending" }
+      );
+
+      if (response.status === 200) {
+        alert(`Access Deny to ${course.firstName} ${course.lastName}.`);
+      } else {
+        console.error("Failed to Deny access:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error Deny:", error);
+    }
+  };
 
   return (
     <Table

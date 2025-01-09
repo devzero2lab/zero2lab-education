@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
-import { Table, Image } from "antd";
+import axios from "axios";
+import { Table, Image, Button } from "antd";
 
 function PendingList({ courses }) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   // Define the columns for the AntD Table
   const columns = [
     {
@@ -39,6 +41,15 @@ function PendingList({ courses }) {
         />
       ),
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Button type="primary" onClick={() => handleGrantAccess(record)}>
+          Grant Access
+        </Button>
+      ),
+    },
   ];
 
   // Map the data to match AntD Table structure
@@ -46,6 +57,23 @@ function PendingList({ courses }) {
     key: index,
     ...course, // Spread the course details
   }));
+
+  const handleGrantAccess = async (course) => {
+    try {
+      const response = await axios.put(
+        `${apiUrl}/api/usercourses/${course._id}`,
+        { status: "Approved" }
+      );
+
+      if (response.status === 200) {
+        alert(`Access granted to ${course.firstName} ${course.lastName}.`);
+      } else {
+        console.error("Failed to grant access:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error granting access:", error);
+    }
+  };
 
   return (
     <Table
