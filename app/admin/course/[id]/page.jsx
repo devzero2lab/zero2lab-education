@@ -29,11 +29,6 @@ function UpdateCoursePage({ params }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleContentInputChange = (e) => {
-    const { name, value } = e.target;
-    setContentItem({ ...contentItem, [name]: value });
-  };
-
   const addContent = () => {
     setFormData({
       ...formData,
@@ -78,10 +73,25 @@ function UpdateCoursePage({ params }) {
     }
   }, [courseId, apiUrl]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Submitted Data:", formData);
-    // Send formData to your backend or API here
+  const handleUpdate = async (e) => {
+    e.preventDefault(); // Prevent form submission
+
+    try {
+      const response = await axios.put(
+        `${apiUrl}/api/courses/${courseId}`,
+        formData
+      );
+
+      if (response.status === 200) {
+        alert("Course updated successfully!");
+        console.log("Updated Course:", response.data);
+      } else {
+        alert("Failed to update course. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating course:", error);
+      alert("An error occurred while updating the course.");
+    }
   };
 
   if (!course) {
@@ -91,7 +101,7 @@ function UpdateCoursePage({ params }) {
   return (
     <div className="p-6 bg-white rounded shadow-md">
       <h1 className="mb-4 text-2xl font-bold">Update Course</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleUpdate}>
         <div className="grid grid-cols-2 gap-6">
           <div>
             <label className="block mb-1 font-medium">Course Name</label>
@@ -152,13 +162,17 @@ function UpdateCoursePage({ params }) {
           </div>
           <div>
             <label className="block mb-1 font-medium">Level</label>
-            <input
-              type="text"
+            <select
               name="level"
               value={formData.level}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
-            />
+            >
+              <option value="">Select Level</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
           </div>
           <div>
             <label className="block mb-1 font-medium">Duration</label>
