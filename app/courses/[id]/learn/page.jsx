@@ -3,13 +3,22 @@ import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import VideoSection from "./VideoSection";
 import axios from "axios";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const router = useRouter();
+  const { isSignedIn, user } = useUser();
   const { type, id } = params; // Extract dynamic route parameters
   const [courseData, setCourseData] = useState(null); // Store fetched course data
   const [currentDay, setCurrentDay] = useState(1); // Track the selected day
   const [isLoading, setIsLoading] = useState(true); // Loading state
+
+  if (!isSignedIn) {
+    router.push("/sign-in"); // Redirect to the login page
+    return null; // Prevent rendering
+  }
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -30,7 +39,7 @@ export default function Page({ params }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p className="text-lg text-gray-500">Loading course data...</p>
+        <p className="text-lg text-gray-500">Loading...</p>
       </div>
     );
   }
