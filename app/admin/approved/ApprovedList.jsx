@@ -4,7 +4,7 @@ import axios from "axios";
 import { Table, Image, Button } from "antd";
 import { toast } from "sonner";
 
-function ApprovedList({ courses }) {
+function ApprovedList({ courses, fetchApprovedCourses }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   // Define the columns for the AntD Table
   const columns = [
@@ -78,6 +78,7 @@ function ApprovedList({ courses }) {
 
       if (response.status === 200) {
         toast.success(`Access Deny to ${course.firstName} ${course.lastName}.`);
+        fetchApprovedCourses();
       } else {
         toast.error("Failed to Deny access");
       }

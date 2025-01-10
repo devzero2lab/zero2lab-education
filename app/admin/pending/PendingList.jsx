@@ -4,7 +4,7 @@ import axios from "axios";
 import { Table, Image, Button } from "antd";
 import { toast } from "sonner";
 
-function PendingList({ courses }) {
+function PendingList({ courses, fetchPendingCourses }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   // Define the columns for the AntD Table
   const columns = [
@@ -76,6 +76,7 @@ function PendingList({ courses }) {
         toast.success(
           `Access granted to ${course.firstName} ${course.lastName}.`
         );
+        fetchPendingCourses();
       } else {
         toast.error("Failed to grant access");
       }
