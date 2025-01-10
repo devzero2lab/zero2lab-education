@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { UploadButton } from "@/utils/uploadthing";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function AddCoursePage() {
+  const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [formData, setFormData] = useState({
     courseName: "",
@@ -65,7 +67,7 @@ function AddCoursePage() {
       const response = await axios.post(`${apiUrl}/api/courses/`, formData);
 
       toast.success("Course added successfully!");
-
+      router.push("/admin/course");
       // Optionally, reset the form or show a success message
       setFormData({
         courseName: "",

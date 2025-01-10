@@ -1,8 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function UpdateCoursePage({ params }) {
+  const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [course, setCourse] = useState(null); // Fetch course details
   const [formData, setFormData] = useState({
@@ -84,6 +86,7 @@ function UpdateCoursePage({ params }) {
 
       if (response.status === 200) {
         alert("Course updated successfully!");
+        router.push("/admin/course");
         console.log("Updated Course:", response.data);
       } else {
         alert("Failed to update course. Please try again.");
