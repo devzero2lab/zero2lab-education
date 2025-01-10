@@ -71,5 +71,4 @@ const userCourseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const UserCourse = mongoose.model("UserCourse", userCourseSchema);
-export default UserCourse;
+export const UserCourse = mongoose.models?.UserCourse || mongoose.model("UserCourse", userCourseSchema);
