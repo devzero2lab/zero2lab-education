@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function UpdateCoursePage({ params }) {
   const router = useRouter();
@@ -85,15 +86,13 @@ function UpdateCoursePage({ params }) {
       );
 
       if (response.status === 200) {
-        alert("Course updated successfully!");
+        toast.success("Course updated successfully!");
         router.push("/admin/course");
-        console.log("Updated Course:", response.data);
       } else {
-        alert("Failed to update course. Please try again.");
+        toast.error("Failed to update course. Please try again.");
       }
     } catch (error) {
-      console.error("Error updating course:", error);
-      alert("An error occurred while updating the course.");
+      console.error("Error updating course");
     }
   };
 
@@ -214,8 +213,9 @@ function UpdateCoursePage({ params }) {
           <div className="grid grid-cols-3 gap-6 mt-4">
             {/* Loop through content to render each field in columns */}
             {formData.content.map((contentItem, index) => (
-              <React.Fragment key={index}>
-                <div>
+              <div key={index} className="p-4 mb-6 border rounded bg-gray-50">
+                {/* Day Input */}
+                <div className="mb-4">
                   <label className="block mb-1 font-medium">Day</label>
                   <input
                     type="number"
@@ -234,7 +234,8 @@ function UpdateCoursePage({ params }) {
                     className="w-full p-2 border rounded"
                   />
                 </div>
-                <div>
+                {/* Video URL Input */}
+                <div className="mb-4">
                   <label className="block mb-1 font-medium">Video URL</label>
                   <input
                     type="text"
@@ -253,7 +254,8 @@ function UpdateCoursePage({ params }) {
                     className="w-full p-2 border rounded"
                   />
                 </div>
-                <div>
+                {/* Notes Textarea */}
+                <div className="mb-4">
                   <label className="block mb-1 font-medium">Notes</label>
                   <textarea
                     name="notes"
@@ -269,13 +271,29 @@ function UpdateCoursePage({ params }) {
                       })
                     }
                     className="w-full p-2 border rounded resize-none"
-                    rows="3" // Adjust the number of rows as needed
+                    rows="3"
                   />
                 </div>
-              </React.Fragment>
+                {/* Delete Button */}
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        content: formData.content.filter(
+                          (_, idx) => idx !== index
+                        ),
+                      })
+                    }
+                    className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
-
           <button
             type="button"
             onClick={addContent}
@@ -289,7 +307,7 @@ function UpdateCoursePage({ params }) {
           type="submit"
           className="px-4 py-2 mt-6 text-white bg-green-500 rounded hover:bg-green-600"
         >
-          Submit
+          Update
         </button>
       </form>
     </div>
