@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 
-function Page() { 
+function Page() {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
   const userID = user?.id || "";
@@ -15,25 +15,25 @@ function Page() {
   const [courseCount, setCourseCount] = useState(0);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch user enrolled courses
+        const coursesResponse = await axios.get(
+          `${apiUrl}/api/usercourses?userId=${userID}`
+        );
+        // Fetch user enrolled courses count
+        const countResponse = await axios.get(
+          `${apiUrl}/api/usercourses?userId=${userID}&action=count`
+        );
+
+        setEnrolledCourses(coursesResponse.data.userCourses);
+        setCourseCount(countResponse.data.count);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     if (isLoaded && isSignedIn) {
-      const fetchData = async () => {
-        try {
-          // Fetch user enrolled courses
-          const coursesResponse = await axios.get(
-            `${apiUrl}/api/usercourses?userId=${userID}`
-          );
-          // Fetch user enrolled courses count
-          const countResponse = await axios.get(
-            `${apiUrl}/api/usercourses?userId=${userID}&action=count`
-          );
-
-          setEnrolledCourses(coursesResponse.data.userCourses);
-          setCourseCount(countResponse.data.count);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-
       fetchData();
     }
   }, [isLoaded, isSignedIn, userID, apiUrl]);

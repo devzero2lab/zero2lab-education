@@ -73,7 +73,7 @@ export async function GET(request) {
 
     return NextResponse.json({ userCourses }, { status: 200 });
   } catch (error) {
-    // Handle errors
+    console.error("Error fetching user courses:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
