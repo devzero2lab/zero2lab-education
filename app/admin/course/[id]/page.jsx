@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 import { UploadButton } from "@/utils/uploadthing";
+import Image from "next/image";
 
 function UpdateCoursePage({ params }) {
   const router = useRouter();
@@ -199,7 +200,7 @@ function UpdateCoursePage({ params }) {
             </UploadButton>
             {formData.image ? (
               <div className="relative mt-2">
-                <img
+                <Image
                   src={formData.image}
                   alt="Course Image"
                   width={200}

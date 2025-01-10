@@ -10,20 +10,20 @@ export default function CoursePage() {
   const [error, setError] = useState(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  useEffect(() => {
-    // Fetch all courses
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/api/courses/`);
-        setCourses(response.data.courses);
-      } catch (err) {
-        console.error("Error fetching courses:", err);
-        setError("Failed to fetch courses.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Fetch all courses
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/api/courses/`);
+      setCourses(response.data.courses);
+    } catch (err) {
+      console.error("Error fetching courses:", err);
+      setError("Failed to fetch courses.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCourses();
   }, []);
 
@@ -47,6 +47,7 @@ export default function CoursePage() {
               courseImage={course.image}
               courseName={course.courseName}
               coursePrice={course.price}
+              fetchCourses={fetchCourses}
             />
           ))}
         </div>
