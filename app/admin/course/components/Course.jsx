@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 function Course({
   courseID,
@@ -14,14 +15,28 @@ function Course({
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`${apiUrl}/api/courses/${courseID}`);
-      toast.success("Course deleted successfully!");
-      fetchCourses();
-    } catch (error) {
-      console.error("Error deleting course:", error);
-      toast.error("Failed to delete the course. Please try again.");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.delete(
+            `${apiUrl}/api/courses/${courseID}`
+          );
+          toast.success("Course deleted successfully!");
+          fetchCourses();
+        } catch (error) {
+          console.error("Error deleting course:", error);
+          toast.error("Failed to delete the course. Please try again.");
+        }
+      }
+    });
   };
 
   return (

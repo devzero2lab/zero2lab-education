@@ -136,7 +136,7 @@ function AddCoursePage() {
             />
           </div>
           <div>
-            <label className="block mb-1 font-medium">Image URL</label>
+            <label className="block mb-1 font-medium">Image</label>
             <UploadButton
               appearance={{
                 button: {
