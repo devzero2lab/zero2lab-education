@@ -12,7 +12,7 @@ function Home() {
       <Hero />
       {/* TechStacks */}
       <TechStackIcons /> 
-      {/* Features section */}
+      {/* Features section */} 
       <Features />
       {/* Reviews section */}
       <div className="relative z-30 flex flex-col items-center px-4 mt-16 text-center md:px-8 lg:px-16">
