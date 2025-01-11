@@ -11,7 +11,7 @@ function Home() {
       {/* hero section */}
       <Hero />
       {/* TechStacks */}
-      <TechStackIcons />
+      <TechStackIcons /> 
       {/* Features section */}
       <Features />
       {/* Reviews section */}
