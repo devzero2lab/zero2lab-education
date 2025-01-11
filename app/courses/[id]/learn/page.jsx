@@ -15,12 +15,12 @@ export default function Page({ params }) {
   const [currentDay, setCurrentDay] = useState(1); // Track the selected day
   const [isLoading, setIsLoading] = useState(true); // Loading state
 
-  if (!isSignedIn) {
-    router.push("/sign-in"); // Redirect to the login page
-    return null; // Prevent rendering
-  }
-
   useEffect(() => {
+    if (!isSignedIn) {
+      router.push("/sign-in"); // Redirect to the login page
+      return; // Stop further execution of this effect
+    }
+
     const fetchCourseData = async () => {
       try {
         const response = await axios.get(`${apiUrl}/api/courses/${id}`);
@@ -34,7 +34,11 @@ export default function Page({ params }) {
     };
 
     fetchCourseData();
-  }, [type, id]);
+  }, [isSignedIn, type, id, apiUrl, router]);
+
+  if (!isSignedIn) {
+    return null; // Prevent rendering during redirection
+  }
 
   if (isLoading) {
     return (
