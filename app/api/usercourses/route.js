@@ -1,5 +1,6 @@
 import connectMongoDB from "@/lib/db";
 import { UserCourse } from "@/models/userCourse";
+import { Course } from "@/models/course";
 import { NextResponse } from "next/server";
 
 // Create a UserCourse
@@ -7,6 +8,15 @@ export async function POST(request) {
   try {
     const userCourseData = await request.json();
     await connectMongoDB();
+
+    // Check if the course exists
+    const existingCourse = await Course.findById(userCourseData.courseId);
+    if (!existingCourse) {
+      return NextResponse.json(
+        { message: "Course does not exist." },
+        { status: 404 } // 404 for not found course
+      );
+    }
 
     // Check if the user is already enrolled in the course
     const existingEnrollment = await UserCourse.findOne({
@@ -28,6 +38,7 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error creating UserCourse:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

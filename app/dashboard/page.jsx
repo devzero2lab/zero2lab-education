@@ -85,47 +85,55 @@ function Page() {
           Enrolled Courses
         </h2>
         <div className="flex flex-col gap-6">
-          {enrolledCourses.map((courseData, index) => {
-            const { courseId, status } = courseData;
-            return (
-              <div
-                key={index}
-                className="p-6 bg-white border border-gray-300 rounded-lg shadow-lg "
-              >
-                {/* Conditionally render Link for Approved status, show message for Pending */}
-                {status === "Approved" ? (
-                  <Link
-                    href={`/courses/${courseId._id}/learn`}
-                    className="flex items-center justify-between"
-                  >
-                    <h3 className="text-xl font-semibold text-gray-800">
-                      {courseId.courseName}
-                    </h3>
-                    <span
-                      className={`px-4 py-2 rounded-full ${
-                        status === "Pending"
-                          ? "bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 text-black"
-                          : status === "Approved"
-                          ? "bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white"
-                          : "bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white"
-                      }`}
+          {enrolledCourses.length === 0 ? (
+            <div className="p-6 text-center bg-white border border-gray-300 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold text-gray-800">
+                You are not enrolled in any courses
+              </h3>
+            </div>
+          ) : (
+            enrolledCourses.map((courseData, index) => {
+              const { courseId, status } = courseData;
+              return (
+                <div
+                  key={index}
+                  className="p-6 bg-white border border-gray-300 rounded-lg shadow-lg"
+                >
+                  {/* Conditionally render Link for Approved status, show message for Pending */}
+                  {status === "Approved" ? (
+                    <Link
+                      href={`/courses/${courseId._id}/learn`}
+                      className="flex items-center justify-between"
                     >
-                      {status}
-                    </span>
-                  </Link>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold text-gray-800">
-                      {courseId.courseName}
-                    </h3>
-                    <span className="px-4 py-2 text-white bg-gray-400 rounded-full">
-                      {status}
-                    </span>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                      <h3 className="text-xl font-semibold text-gray-800">
+                        {courseId.courseName}
+                      </h3>
+                      <span
+                        className={`px-4 py-2 rounded-full ${
+                          status === "Pending"
+                            ? "bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 text-black"
+                            : status === "Approved"
+                            ? "bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white"
+                            : "bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white"
+                        }`}
+                      >
+                        {status}
+                      </span>
+                    </Link>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xl font-semibold text-gray-800">
+                        {courseId.courseName}
+                      </h3>
+                      <span className="px-4 py-2 text-white bg-gray-400 rounded-full">
+                        {status}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
     </div>
