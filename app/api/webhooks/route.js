@@ -70,17 +70,27 @@ export async function POST(req) {
 
     console.log(user);
 
-    const newUser = await createUser(user);
+    try {
+      const newUser = await createUser(user);
 
-    if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser._id,
-        },
-      });
+      if (newUser) {
+        await clerkClient.users.updateUserMetadata(id, {
+          publicMetadata: {
+            userId: newUser._id,
+          },
+        });
+
+        return NextResponse.json({
+          message: "New user created",
+          user: newUser,
+        });
+      } else {
+        return new Response("Error: User not created", { status: 500 });
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+      return new Response("Error: Failed to create user", { status: 500 });
     }
-
-    return NextResponse.json({ message: "New user created", user: newUser });
   }
 
   console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
