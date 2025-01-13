@@ -17,6 +17,7 @@ function Sidebar() {
           { menu: "courses", path: "/admin/course" },
           { menu: "Pending Access", path: "/admin/pending" },
           { menu: "Approved Access", path: "/admin/approved" },
+          { menu: "Not Enrolled users", path: "/admin/users" },
         ].map(({ menu, path }) => (
           <Link key={menu} href={path}>
             <li
