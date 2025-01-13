@@ -1,8 +1,7 @@
 import { clerkClient } from "@clerk/nextjs";
-const { Webhook } = require("svix");
-const { headers } = require("next/headers");
+import { Webhook } from "svix";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-const { WebhookEvent } = require("@clerk/nextjs/server");
 import { createUser } from "@/lib/actions/user.action";
 
 export async function POST(req) {
