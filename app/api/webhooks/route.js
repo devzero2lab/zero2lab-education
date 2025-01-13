@@ -8,34 +8,25 @@ export async function POST(req) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
 
   if (!SIGNING_SECRET) {
-    throw new Error(
-      "Error: Please add SIGNING_SECRET from Clerk Dashboard to .env or .env.local"
-    );
+    throw new Error("Please add SIGNING_SECRET from Clerk Dashboard to .env");
   }
 
-  // Create new Svix instance with secret
   const wh = new Webhook(SIGNING_SECRET);
 
-  // Get headers
   const headerPayload = headers();
   const svix_id = headerPayload.get("svix-id");
   const svix_timestamp = headerPayload.get("svix-timestamp");
   const svix_signature = headerPayload.get("svix-signature");
 
-  // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    return new Response("Error: Missing Svix headers", {
-      status: 400,
-    });
+    return new Response("Error: Missing Svix headers", { status: 400 });
   }
 
-  // Get body
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
   let evt;
 
-  // Verify payload with headers
   try {
     evt = wh.verify(body, {
       "svix-id": svix_id,
@@ -43,29 +34,20 @@ export async function POST(req) {
       "svix-signature": svix_signature,
     });
   } catch (err) {
-    console.error("Error: Could not verify webhook:", err);
-    return new Response("Error: Verification error", {
-      status: 400,
-    });
+    console.error("Error verifying webhook:", err);
+    return new Response("Error: Verification error", { status: 400 });
   }
 
-  // Do something with payload
-  // For this guide, log payload to console
-  const { id } = evt.data;
+  const { id, email_addresses, first_name, last_name } = evt.data;
   const eventType = evt.type;
 
-  // CREATE User in MongoDB
   if (eventType === "user.created") {
-    const { id, email_addresses, first_name, last_name } = evt.data;
-
     const user = {
       clerkId: id,
       email: email_addresses[0]?.email_address,
       firstName: first_name || "",
       lastName: last_name || "",
     };
-
-    console.log(user);
 
     try {
       const newUser = await createUser(user);
@@ -90,8 +72,6 @@ export async function POST(req) {
     }
   }
 
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
-  console.log("Webhook payload:", body);
-
+  console.log(`Received webhook with event type: ${eventType}`);
   return new Response("Webhook received", { status: 200 });
 }
