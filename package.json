@@ -24,6 +24,7 @@
     "react-dom": "^18",
     "sonner": "^1.7.1",
     "styled-components": "^6.1.14",
+    "svix": "^1.45.1",
     "sweetalert2": "^11.15.10",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
