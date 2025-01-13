@@ -8,6 +8,7 @@ export async function POST(req) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
 
   if (!SIGNING_SECRET) {
+    console.error("Error: SIGNING_SECRET is not defined");
     throw new Error("Please add SIGNING_SECRET from Clerk Dashboard to .env");
   }
 
@@ -19,6 +20,7 @@ export async function POST(req) {
   const svix_signature = headerPayload.get("svix-signature");
 
   if (!svix_id || !svix_timestamp || !svix_signature) {
+    console.error("Error: Missing Svix headers");
     return new Response("Error: Missing Svix headers", { status: 400 });
   }
 
@@ -53,11 +55,18 @@ export async function POST(req) {
       const newUser = await createUser(user);
 
       if (newUser) {
-        await clerkClient.users.updateUserMetadata(id, {
-          publicMetadata: {
-            userId: newUser._id,
-          },
-        });
+        if (
+          clerkClient.users &&
+          typeof clerkClient.users.updateUserMetadata === "function"
+        ) {
+          await clerkClient.users.updateUserMetadata(id, {
+            publicMetadata: {
+              userId: newUser._id,
+            },
+          });
+        } else {
+          console.error("Error: Clerk client users API is not available");
+        }
 
         return NextResponse.json({
           message: "New user created",
