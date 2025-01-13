@@ -53,7 +53,7 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
       key: "action",
       render: (_, record) => (
         <Button
-          type="primary"
+          type="danger"
           onClick={() => handleDenyAccess(record)}
           className="font-semibold text-white bg-red-500 border-red-500 hover:bg-red-600"
         >
