@@ -10,33 +10,31 @@ export default function CoursePage() {
   const [error, setError] = useState(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  useEffect(() => {
-    // Fetch all courses
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/api/courses/`);
-        setCourses(response.data.courses);
-      } catch (err) {
-        console.error("Error fetching courses:", err);
-        setError("Failed to fetch courses.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Fetch all courses
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/api/courses/`);
+      setCourses(response.data.courses);
+    } catch (err) {
+      console.error("Error fetching courses:", err);
+      setError("Failed to fetch courses.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCourses();
   }, []);
 
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">All Courses</h1>
       <Link
         href="/admin/course/addcourse"
         className="inline-block px-4 py-2 mb-6 text-white bg-blue-500 rounded"
       >
         Add Course
       </Link>
-      <p className="mb-4 text-gray-600">Welcome to the courses page!</p>
 
       {loading && <p>Loading courses...</p>}
       {error && <p className="text-red-500">{error}</p>}
@@ -49,6 +47,7 @@ export default function CoursePage() {
               courseImage={course.image}
               courseName={course.courseName}
               coursePrice={course.price}
+              fetchCourses={fetchCourses}
             />
           ))}
         </div>

@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { UploadButton } from "@/utils/uploadthing";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function AddCoursePage() {
+  const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [formData, setFormData] = useState({
     courseName: "",
@@ -65,7 +68,7 @@ function AddCoursePage() {
       const response = await axios.post(`${apiUrl}/api/courses/`, formData);
 
       toast.success("Course added successfully!");
-
+      router.push("/admin/course");
       // Optionally, reset the form or show a success message
       setFormData({
         courseName: "",
@@ -133,7 +136,7 @@ function AddCoursePage() {
             />
           </div>
           <div>
-            <label className="block mb-1 font-medium">Image URL</label>
+            <label className="block mb-1 font-medium">Image</label>
             <UploadButton
               appearance={{
                 button: {
@@ -149,10 +152,12 @@ function AddCoursePage() {
               onUploadError={handleUploadError}
             />
             {uploadedImageUrl && (
-              <img
+              <Image
                 src={uploadedImageUrl}
+                width={200}
+                height={200}
                 alt="Uploaded Course"
-                className="w-32 h-32 mt-4 rounded shadow-md"
+                className="mt-4 rounded shadow-md "
               />
             )}
           </div>

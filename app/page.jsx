@@ -11,8 +11,8 @@ function Home() {
       {/* hero section */}
       <Hero />
       {/* TechStacks */}
-      <TechStackIcons />
-      {/* Features section */}
+      <TechStackIcons /> 
+      {/* Features section */} 
       <Features />
       {/* Reviews section */}
       <div className="relative z-30 flex flex-col items-center px-4 mt-16 text-center md:px-8 lg:px-16">
@@ -39,7 +39,7 @@ function Home() {
               href="/courses"
               className="inline-block bg-white text-[#2652f2] font-medium text-lg md:text-xl py-2 px-8 rounded-full shadow-lg hover:bg-gray-100"
             >
-              Get Started Now 
+              Get Started Now
             </Link>
           </div>
         </div>

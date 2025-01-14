@@ -5,9 +5,9 @@ import Footer from "./components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from 'sonner';
 
-const geistSans = localFont({
+const geistSans = localFont({ 
   src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
+  variable: "--font-geist-sans", 
   weight: "100 900",
 });
 const geistMono = localFont({

@@ -1,5 +1,6 @@
 import connectMongoDB from "@/lib/db";
 import { UserCourse } from "@/models/userCourse";
+import { Course } from "@/models/course";
 import { NextResponse } from "next/server";
 
 // Create a UserCourse
@@ -7,6 +8,15 @@ export async function POST(request) {
   try {
     const userCourseData = await request.json();
     await connectMongoDB();
+
+    // Check if the course exists
+    const existingCourse = await Course.findById(userCourseData.courseId);
+    if (!existingCourse) {
+      return NextResponse.json(
+        { message: "Course does not exist." },
+        { status: 404 } // 404 for not found course
+      );
+    }
 
     // Check if the user is already enrolled in the course
     const existingEnrollment = await UserCourse.findOne({
@@ -28,16 +38,18 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error creating UserCourse:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-// Get all UserCourses or filter by userId
+// Get all UserCourses or filter by userId, status
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId"); // Extract "userId" query parameter
     const action = searchParams.get("action"); // Extract "action" query parameter
+    const status = searchParams.get("status"); // Extract "status" query parameter
 
     // Connect to MongoDB
     await connectMongoDB();
@@ -55,17 +67,24 @@ export async function GET(request) {
       );
     }
 
-    // Fetch user courses (default behavior)
+    // Handle fetching based on status
     let userCourses;
-    if (userId) {
+    if (status) {
+      // Filter courses by status (Pending or Approved)
+      userCourses = await UserCourse.find({ status })
+        .sort({ createdAt: -1 })
+        .populate("courseId", "courseName");
+    } else if (userId) {
+      // Filter by userId
       userCourses = await UserCourse.find({ userId }).populate("courseId");
     } else {
+      // Fetch all user courses
       userCourses = await UserCourse.find().populate("courseId", "courseName");
     }
 
     return NextResponse.json({ userCourses }, { status: 200 });
   } catch (error) {
-    // Handle errors
+    console.error("Error fetching user courses:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

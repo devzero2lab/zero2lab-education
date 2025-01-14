@@ -255,6 +255,7 @@ export default function Checkout({ params }) {
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 mt-1 text-gray-700 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   placeholder="Enter your first name"
+                  disabled
                 />
               </div>
 
@@ -269,6 +270,7 @@ export default function Checkout({ params }) {
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 mt-1 text-gray-700 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   placeholder="Enter your last name"
+                  disabled
                 />
               </div>
 
@@ -283,6 +285,7 @@ export default function Checkout({ params }) {
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 mt-1 text-gray-700 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   placeholder="Enter your email"
+                  disabled
                 />
               </div>
 
