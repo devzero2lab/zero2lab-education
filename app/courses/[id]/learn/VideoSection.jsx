@@ -5,7 +5,7 @@ export default function VideoSection({ lesson }) {
     return (
       <div className="flex items-center justify-center h-full">
         <p className="text-lg text-gray-500">Select a lesson to view.</p>
-      </div> 
+      </div>   
     );
   }
 
