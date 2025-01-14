@@ -6,7 +6,7 @@ export async function GET(request, { params }) {
   try {
     
     // Define the path to the encryption key file
-    const keyFilePath = path.join(process.cwd(), 'public', 'key/encryption.key');
+    const keyFilePath = path.join(process.cwd(), 'public', 'encryption.key');
 
     // Check if the file exists
     if (!fs.existsSync(keyFilePath)) {
