@@ -24,7 +24,7 @@ const UsersPage = () => {
     };
 
     fetchNotEnrolledUsers();
-  }, [apiUrl]);
+  }, []);
 
   // Define table columns
   const columns = [
