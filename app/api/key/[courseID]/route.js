@@ -1,31 +1,12 @@
 import path from 'path';
 import fs from 'fs';
-import { getServerSession } from "next-auth/next";
-import { authOptions } from '../../auth/[...nextauth]/route';
-import { CourseAccess } from '@/models/courseAccess';
-import { Course } from "@/models/course";
-import { User } from "@/models/user";
+
 
 export async function GET(request, { params }) {
   try {
-    // Extract courseID from the query parameters
     
-
-    // Retrieve the session
-    const session = await getServerSession(authOptions);
-
-    // Validate session and user access
-    if (!session) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-
-
     // Define the path to the encryption key file
-    const keyFilePath = path.join(process.cwd(), 'public', 'encryption.key');
+    const keyFilePath = path.join(process.cwd(), 'public', 'key/encryption.key');
 
     // Check if the file exists
     if (!fs.existsSync(keyFilePath)) {
