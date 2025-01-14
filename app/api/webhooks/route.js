@@ -40,9 +40,8 @@ export async function POST(req) {
       "svix-signature": svix_signature,
     });
 
-    // Handle multiple events that should trigger user creation/sync
-    if (["user.created", "user.updated", "session.created"].includes(evt.type)) {
-      
+    // Handle only user.created events
+    if (evt.type === "user.created") {
       const { id, email_addresses, first_name, last_name } = evt.data;
 
       // Validate required data
