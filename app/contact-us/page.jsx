@@ -5,7 +5,7 @@ function ContactUs() {
   return (
     <div>
       <Head>
-        <title>Contact Us | Zero2lab Education LMS</title>
+        <title>Contact Us | Zero2lab Education LMS</title> 
         <meta
           name="description" 
           content="Contact Zero2lab Education LMS for support and inquiries"
