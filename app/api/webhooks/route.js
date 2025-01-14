@@ -2,122 +2,94 @@ import { clerkClient } from "@clerk/nextjs";
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { createUser } from "@/lib/actions/user.action";
+import { createUser } from "@/lib/actions/user.actions";
 
 export async function POST(req) {
-  const SIGNING_SECRET = process.env.SIGNING_SECRET;
-
-  if (!SIGNING_SECRET) {
-    console.error("Error: SIGNING_SECRET is not defined");
+  // Validate environment variables
+  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  if (!WEBHOOK_SECRET) {
+    console.error("WEBHOOK_SECRET is not defined");
     return NextResponse.json(
-      { error: "Please add SIGNING_SECRET from Clerk Dashboard to .env" },
-      { status: 400 }
+      { error: "Server configuration error" },
+      { status: 500 }
     );
   }
 
-  const wh = new Webhook(SIGNING_SECRET);
-
+  // Validate headers
   const headerPayload = headers();
   const svix_id = headerPayload.get("svix-id");
   const svix_timestamp = headerPayload.get("svix-timestamp");
   const svix_signature = headerPayload.get("svix-signature");
 
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    console.error("Error: Missing Svix headers");
     return NextResponse.json(
-      { error: "Missing Svix headers" },
+      { error: "Missing required Svix headers" },
       { status: 400 }
     );
   }
 
-  const payload = await req.json();
-  const body = JSON.stringify(payload);
-
-  let evt;
-
   try {
-    evt = wh.verify(body, {
+    const payload = await req.json();
+    const body = JSON.stringify(payload);
+
+    // Verify webhook
+    const wh = new Webhook(WEBHOOK_SECRET);
+    const evt = wh.verify(body, {
       "svix-id": svix_id,
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
     });
-  } catch (err) {
-    console.error("Error verifying webhook:", err);
-    return NextResponse.json(
-      { error: "Error: Verification error" },
-      { status: 400 }
-    );
-  }
 
-  const { id, email_addresses, first_name, last_name } = evt.data;
-  const eventType = evt.type;
+    // Handle only user.created events
+    if (evt.type === "user.created") {
+      const { id, email_addresses, first_name, last_name } = evt.data;
 
-  if (eventType === "user.created") {
-    // Ensure email_addresses[0] exists and has a valid email
-    const email = email_addresses[0]?.email_address;
-    if (!email) {
-      return NextResponse.json(
-        { error: "Invalid email address" },
-        { status: 400 }
-      );
-    }
-
-    try {
-      // Check if user exists in the database
-      const existingUser = await User.findOne({
-        $or: [{ clerkId: id }, { email: email }],
-      });
-
-      if (existingUser) {
-        console.log("User already exists in the database:", existingUser);
-        return NextResponse.json({
-          message: "User already exists",
-          user: existingUser,
-        });
+      // Validate required data
+      const email = email_addresses[0]?.email_address;
+      if (!email) {
+        return NextResponse.json(
+          { error: "Invalid email address in payload" },
+          { status: 400 }
+        );
       }
 
-      // Create user in the database if not found
-      const user = {
-        clerkId: id,
-        email: email,
-        firstName: first_name || "",
-        lastName: last_name || "",
-      };
+      try {
+        const user = await createUser({
+          clerkId: id,
+          email,
+          firstName: first_name || "",
+          lastName: last_name || "",
+        });
 
-      const newUser = await createUser(user);
-
-      if (newUser) {
-        // Optionally update Clerk metadata with your database user ID
-        if (
-          clerkClient.users &&
-          typeof clerkClient.users.updateUserMetadata === "function"
-        ) {
+        // Update Clerk metadata with database ID
+        if (user?._id) {
           await clerkClient.users.updateUserMetadata(id, {
             publicMetadata: {
-              userId: newUser._id,
+              userId: user._id.toString(),
             },
           });
         }
 
         return NextResponse.json({
-          message: "New user created",
-          user: newUser,
+          message: "User processed successfully",
+          user,
         });
-      } else {
+      } catch (error) {
+        console.error("Error processing user:", error);
         return NextResponse.json(
-          { error: "Failed to create user in the database" },
+          { error: "Database operation failed" },
           { status: 500 }
         );
       }
-    } catch (error) {
-      console.error("Error processing user:", error);
-      return NextResponse.json(
-        { error: "Failed to create or find user" },
-        { status: 500 }
-      );
     }
-  }
 
-  console.log(`Received webhook with event type: ${eventType}`);
-  return NextResponse.json({ message: "Webhook received" }, { status: 200 });
+    // Return success for other event types
+    return NextResponse.json({ message: "Webhook processed" });
+  } catch (error) {
+    console.error("Webhook error:", error);
+    return NextResponse.json(
+      { error: "Webhook verification failed" },
+      { status: 400 }
+    );
+  }
 }
