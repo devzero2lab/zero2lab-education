@@ -33,7 +33,7 @@ export async function GET(request, { params }) {
         status: 404,
         headers: { 'Content-Type': 'application/json' },
       });
-    }
+    } 
 
     // Read the file from the file system
     const fileBuffer = fs.readFileSync(keyFilePath);
