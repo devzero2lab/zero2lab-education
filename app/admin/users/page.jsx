@@ -15,10 +15,15 @@ const UsersPage = () => {
     const fetchNotEnrolledUsers = async () => {
       try {
         const response = await axios.get(`${apiUrl}/api/users`, {
-          cache: "no-store",
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
         });
+        console.log("API Response:", response.data);
         setData(response.data.notEnrolledUsers);
       } catch (err) {
+        console.error("Fetch Error:", err);
         setError("Something went wrong");
       } finally {
         setLoading(false);
