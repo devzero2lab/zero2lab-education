@@ -15,7 +15,13 @@ export async function GET(req) {
       clerkId: { $nin: enrolledUserIds }, // Exclude users with clerkId in enrolledUserIds
     });
 
-    return NextResponse.json({ notEnrolledUsers }, { status: 200 });
+    // Create the response
+    const response = NextResponse.json({ notEnrolledUsers }, { status: 200 });
+
+    // Set cache-control headers to prevent caching
+    response.headers.set("Cache-Control", "no-store, max-age=0");
+
+    return response;
   } catch (error) {
     console.error("Error fetching not enrolled users:", error);
     return NextResponse.json(
