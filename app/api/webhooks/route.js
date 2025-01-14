@@ -9,7 +9,10 @@ export async function POST(req) {
 
   if (!SIGNING_SECRET) {
     console.error("Error: SIGNING_SECRET is not defined");
-    return NextResponse.json({ error: "Please add SIGNING_SECRET from Clerk Dashboard to .env" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please add SIGNING_SECRET from Clerk Dashboard to .env" },
+      { status: 400 }
+    );
   }
 
   const wh = new Webhook(SIGNING_SECRET);
@@ -21,7 +24,10 @@ export async function POST(req) {
 
   if (!svix_id || !svix_timestamp || !svix_signature) {
     console.error("Error: Missing Svix headers");
-    return NextResponse.json({ error: "Missing Svix headers" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing Svix headers" },
+      { status: 400 }
+    );
   }
 
   const payload = await req.json();
@@ -37,7 +43,10 @@ export async function POST(req) {
     });
   } catch (err) {
     console.error("Error verifying webhook:", err);
-    return NextResponse.json({ error: "Error: Verification error" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Error: Verification error" },
+      { status: 400 }
+    );
   }
 
   const { id, email_addresses, first_name, last_name } = evt.data;
@@ -47,28 +56,47 @@ export async function POST(req) {
     // Ensure email_addresses[0] exists and has a valid email
     const email = email_addresses[0]?.email_address;
     if (!email) {
-      return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid email address" },
+        { status: 400 }
+      );
     }
 
-    const user = {
-      clerkId: id,
-      email: email,
-      firstName: first_name || "",
-      lastName: last_name || "",
-    };
-
     try {
+      // Check if user exists in the database
+      const existingUser = await User.findOne({
+        $or: [{ clerkId: id }, { email: email }],
+      });
+
+      if (existingUser) {
+        console.log("User already exists in the database:", existingUser);
+        return NextResponse.json({
+          message: "User already exists",
+          user: existingUser,
+        });
+      }
+
+      // Create user in the database if not found
+      const user = {
+        clerkId: id,
+        email: email,
+        firstName: first_name || "",
+        lastName: last_name || "",
+      };
+
       const newUser = await createUser(user);
 
       if (newUser) {
-        if (clerkClient.users && typeof clerkClient.users.updateUserMetadata === "function") {
+        // Optionally update Clerk metadata with your database user ID
+        if (
+          clerkClient.users &&
+          typeof clerkClient.users.updateUserMetadata === "function"
+        ) {
           await clerkClient.users.updateUserMetadata(id, {
             publicMetadata: {
               userId: newUser._id,
             },
           });
-        } else {
-          console.error("Error: Clerk client users API is not available");
         }
 
         return NextResponse.json({
@@ -76,11 +104,17 @@ export async function POST(req) {
           user: newUser,
         });
       } else {
-        return NextResponse.json({ error: "User not created" }, { status: 500 });
+        return NextResponse.json(
+          { error: "Failed to create user in the database" },
+          { status: 500 }
+        );
       }
     } catch (error) {
-      console.error("Error creating user:", error);
-      return NextResponse.json({ error: "Failed to create user" }, { status: 500 });
+      console.error("Error processing user:", error);
+      return NextResponse.json(
+        { error: "Failed to create or find user" },
+        { status: 500 }
+      );
     }
   }
 
