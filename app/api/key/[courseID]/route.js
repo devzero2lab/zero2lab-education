@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
     if (!fs.existsSync(keyFilePath)) {
       return new Response(JSON.stringify({ error: 'File not found' }), {
         status: 404,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }, 
       });
     } 
 
