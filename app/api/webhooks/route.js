@@ -5,82 +5,91 @@ import { NextResponse } from "next/server";
 import { createUser } from "@/lib/actions/user.action";
 
 export async function POST(req) {
-  const SIGNING_SECRET = process.env.SIGNING_SECRET;
-
-  if (!SIGNING_SECRET) {
-    console.error("Error: SIGNING_SECRET is not defined");
-    throw new Error("Please add SIGNING_SECRET from Clerk Dashboard to .env");
+  // Validate environment variables
+  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  if (!WEBHOOK_SECRET) {
+    console.error("WEBHOOK_SECRET is not defined");
+    return NextResponse.json(
+      { error: "Server configuration error" },
+      { status: 500 }
+    );
   }
 
-  const wh = new Webhook(SIGNING_SECRET);
-
+  // Validate headers
   const headerPayload = headers();
   const svix_id = headerPayload.get("svix-id");
   const svix_timestamp = headerPayload.get("svix-timestamp");
   const svix_signature = headerPayload.get("svix-signature");
 
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    console.error("Error: Missing Svix headers");
-    return new Response("Error: Missing Svix headers", { status: 400 });
+    return NextResponse.json(
+      { error: "Missing required Svix headers" },
+      { status: 400 }
+    );
   }
 
-  const payload = await req.json();
-  const body = JSON.stringify(payload);
-
-  let evt;
-
   try {
-    evt = wh.verify(body, {
+    const payload = await req.json();
+    const body = JSON.stringify(payload);
+
+    // Verify webhook
+    const wh = new Webhook(WEBHOOK_SECRET);
+    const evt = wh.verify(body, {
       "svix-id": svix_id,
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
     });
-  } catch (err) {
-    console.error("Error verifying webhook:", err);
-    return new Response("Error: Verification error", { status: 400 });
-  }
 
-  const { id, email_addresses, first_name, last_name } = evt.data;
-  const eventType = evt.type;
+    // Handle only user.created events
+    if (evt.type === "user.created") {
+      const { id, email_addresses, first_name, last_name } = evt.data;
 
-  if (eventType === "user.created") {
-    const user = {
-      clerkId: id,
-      email: email_addresses[0]?.email_address,
-      firstName: first_name || "",
-      lastName: last_name || "",
-    };
+      // Validate required data
+      const email = email_addresses[0]?.email_address;
+      if (!email) {
+        return NextResponse.json(
+          { error: "Invalid email address in payload" },
+          { status: 400 }
+        );
+      }
 
-    try {
-      const newUser = await createUser(user);
+      try {
+        const user = await createUser({
+          clerkId: id,
+          email,
+          firstName: first_name || "",
+          lastName: last_name || "",
+        });
 
-      if (newUser) {
-        if (
-          clerkClient.users &&
-          typeof clerkClient.users.updateUserMetadata === "function"
-        ) {
+        // Update Clerk metadata with database ID
+        if (user?._id) {
           await clerkClient.users.updateUserMetadata(id, {
             publicMetadata: {
-              userId: newUser._id,
+              userId: user._id.toString(),
             },
           });
-        } else {
-          console.error("Error: Clerk client users API is not available");
         }
 
         return NextResponse.json({
-          message: "New user created",
-          user: newUser,
+          message: "User processed successfully",
+          user,
         });
-      } else {
-        return new Response("Error: User not created", { status: 500 });
+      } catch (error) {
+        console.error("Error processing user:", error);
+        return NextResponse.json(
+          { error: "Database operation failed" },
+          { status: 500 }
+        );
       }
-    } catch (error) {
-      console.error("Error creating user:", error);
-      return new Response("Error: Failed to create user", { status: 500 });
     }
-  }
 
-  console.log(`Received webhook with event type: ${eventType}`);
-  return new Response("Webhook received", { status: 200 });
+    // Return success for other event types
+    return NextResponse.json({ message: "Webhook processed" });
+  } catch (error) {
+    console.error("Webhook error:", error);
+    return NextResponse.json(
+      { error: "Webhook verification failed" },
+      { status: 400 }
+    );
+  }
 }
