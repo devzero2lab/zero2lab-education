@@ -9,7 +9,7 @@ export async function POST(req) {
 
   if (!SIGNING_SECRET) {
     console.error("Error: SIGNING_SECRET is not defined");
-    throw new Error("Please add SIGNING_SECRET from Clerk Dashboard to .env");
+    return NextResponse.json({ error: "Please add SIGNING_SECRET from Clerk Dashboard to .env" }, { status: 400 });
   }
 
   const wh = new Webhook(SIGNING_SECRET);
@@ -21,7 +21,7 @@ export async function POST(req) {
 
   if (!svix_id || !svix_timestamp || !svix_signature) {
     console.error("Error: Missing Svix headers");
-    return new Response("Error: Missing Svix headers", { status: 400 });
+    return NextResponse.json({ error: "Missing Svix headers" }, { status: 400 });
   }
 
   const payload = await req.json();
@@ -37,16 +37,22 @@ export async function POST(req) {
     });
   } catch (err) {
     console.error("Error verifying webhook:", err);
-    return new Response("Error: Verification error", { status: 400 });
+    return NextResponse.json({ error: "Error: Verification error" }, { status: 400 });
   }
 
   const { id, email_addresses, first_name, last_name } = evt.data;
   const eventType = evt.type;
 
   if (eventType === "user.created") {
+    // Ensure email_addresses[0] exists and has a valid email
+    const email = email_addresses[0]?.email_address;
+    if (!email) {
+      return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
+    }
+
     const user = {
       clerkId: id,
-      email: email_addresses[0]?.email_address,
+      email: email,
       firstName: first_name || "",
       lastName: last_name || "",
     };
@@ -55,10 +61,7 @@ export async function POST(req) {
       const newUser = await createUser(user);
 
       if (newUser) {
-        if (
-          clerkClient.users &&
-          typeof clerkClient.users.updateUserMetadata === "function"
-        ) {
+        if (clerkClient.users && typeof clerkClient.users.updateUserMetadata === "function") {
           await clerkClient.users.updateUserMetadata(id, {
             publicMetadata: {
               userId: newUser._id,
@@ -73,14 +76,14 @@ export async function POST(req) {
           user: newUser,
         });
       } else {
-        return new Response("Error: User not created", { status: 500 });
+        return NextResponse.json({ error: "User not created" }, { status: 500 });
       }
     } catch (error) {
       console.error("Error creating user:", error);
-      return new Response("Error: Failed to create user", { status: 500 });
+      return NextResponse.json({ error: "Failed to create user" }, { status: 500 });
     }
   }
 
   console.log(`Received webhook with event type: ${eventType}`);
-  return new Response("Webhook received", { status: 200 });
+  return NextResponse.json({ message: "Webhook received" }, { status: 200 });
 }
