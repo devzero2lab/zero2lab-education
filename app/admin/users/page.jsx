@@ -14,7 +14,9 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchNotEnrolledUsers = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/users`);
+        const response = await axios.get(`${apiUrl}/api/users`, {
+          cache: "no-store",
+        });
         setData(response.data.notEnrolledUsers);
       } catch (err) {
         setError("Something went wrong");
