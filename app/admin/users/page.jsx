@@ -17,7 +17,7 @@ const UsersPage = () => {
     try {
       setLoading(true);
       const response = await axios.get(`${apiUrl}/api/users`);
-      setData(response.data.users);
+      setData(response.data);
     } catch (err) {
       console.error("Fetch Error:", err);
       toast.error(err.response?.data?.message || "Failed to fetch users");
