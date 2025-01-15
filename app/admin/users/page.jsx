@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 
-const UsersPage = () => {
+const page = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -116,4 +116,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default page;
