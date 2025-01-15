@@ -5,12 +5,12 @@ export default function VideoSection({ lesson }) {
     return (
       <div className="flex items-center justify-center h-full">
         <p className="text-lg text-gray-500">Select a lesson to view.</p>
-      </div>
+      </div>   
     );
   }
 
   // Using the proxy URL (relative path) for the video
-  const videoUrl = `/video/uploads/ml1/output.m3u8`; // This matches the proxy rule in next.config.js
+  const videoUrl = `/video/uploads/mad1/output.m3u8`; // This matches the proxy rule in next.config.js
 
   return (
     <div className="flex-1 p-8 mt-12 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
