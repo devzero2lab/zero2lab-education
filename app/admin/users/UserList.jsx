@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { toast } from "sonner";
 import axios from "axios";
 
-function UserList({ data, loading, fetchUsers }) {
+function UserList({ data, loading, fetchNotEnrolledUsers }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const handleDelete = async (userId, email) => {
@@ -26,7 +26,7 @@ function UserList({ data, loading, fetchUsers }) {
         const response = await axios.delete(`${apiUrl}/api/users/${userId}`);
         if (response.status === 200) {
           toast.success(`User ${email} deleted successfully`);
-          fetchUsers(); // Refresh user list
+          await fetchNotEnrolledUsers();
         } else {
           toast.error("Failed to delete user");
         }

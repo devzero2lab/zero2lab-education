@@ -28,7 +28,7 @@ const UsersPage = () => {
 
   useEffect(() => {
     fetchNotEnrolledUsers();
-  }, []);
+  }, [apiUrl]);
 
   return (
     <div className="p-4">
@@ -36,7 +36,7 @@ const UsersPage = () => {
       <UserList
         data={data}
         loading={loading}
-        fetchUsers={fetchNotEnrolledUsers}
+        fetchNotEnrolledUsers={fetchNotEnrolledUsers}
       />
     </div>
   );
