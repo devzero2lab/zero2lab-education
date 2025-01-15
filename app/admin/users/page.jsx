@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import UserList from "./UserList";
@@ -9,8 +9,7 @@ const UsersPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch users with memoization to avoid unnecessary re-creation
-  const fetchNotEnrolledUsers = useCallback(async () => {
+  const fetchNotEnrolledUsers = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${apiUrl}/api/users`);
@@ -21,11 +20,11 @@ const UsersPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [apiUrl]);
+  };
 
   useEffect(() => {
     fetchNotEnrolledUsers();
-  }, [fetchNotEnrolledUsers]);
+  }, []);
 
   return (
     <div className="p-4">
