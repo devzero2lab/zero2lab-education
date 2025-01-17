@@ -79,7 +79,15 @@ function Page() {
             </div>
           ))}
         </div>
-
+  {/* Schedule Your Meetings Button */}
+        <div className="mb-4 text-2xl font-semibold text-gray-800">
+          <Link
+            href="/schedule-meetings" // Replace with your actual route
+            className="inline-block px-8 py-3 text-lg font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
+          >
+            Schedule Your Meetings
+          </Link>
+        </div>
         {/* Course Progress - Using Flexbox instead of Grid */}
         <h2 className="mb-4 text-2xl font-semibold text-gray-800">
           Enrolled Courses
@@ -127,6 +135,8 @@ function Page() {
             );
           })}
         </div>
+
+      
       </div>
     </div>
   );
