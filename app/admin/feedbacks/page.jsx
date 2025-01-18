@@ -4,7 +4,7 @@ import axios from "axios";
 import FeedbackList from "./FeedbackList";
 import { Spin } from "antd";
 
-function page() {
+function Page() {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -35,4 +35,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
