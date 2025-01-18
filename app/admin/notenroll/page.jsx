@@ -12,11 +12,7 @@ const UsersPage = () => {
   const fetchNotEnrolledUsers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${apiUrl}/api/users`, {
-        headers: {
-          "Cache-Control": "no-store",
-        },
-      });
+      const response = await axios.get(`${apiUrl}/api/users`);
       setData(response.data);
     } catch (err) {
       console.error("Fetch Error:", err);

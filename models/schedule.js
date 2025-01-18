@@ -21,11 +21,12 @@ const scheduleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  
+
   meetingLink: {
     type: String,
     default: "Not Scheduled Yet", // Default value for meetingLink
   },
 });
 
-export const Schedule = mongoose.models?.Schedule || mongoose.model("Schedule", scheduleSchema);
+export const Schedule =
+  mongoose.models?.Schedule || mongoose.model("Schedule", scheduleSchema);
