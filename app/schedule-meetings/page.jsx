@@ -120,9 +120,13 @@ export default function Checkout({ params }) {
 
   // Custom event content
   const renderEventContent = (eventInfo) => (
-    <div className="p-2 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors">
-      <strong className="block text-sm text-blue-800">{eventInfo.event.title}</strong>
-      <p className="text-xs text-gray-600">{eventInfo.event.extendedProps.description}</p>
+    <div className="p-2 transition-colors border border-blue-200 rounded-lg bg-blue-50 hover:bg-blue-100">
+      <strong className="block text-sm text-blue-800">
+        {eventInfo.event.title}
+      </strong>
+      <p className="text-xs text-gray-600">
+        {eventInfo.event.extendedProps.description}
+      </p>
       {eventInfo.event.extendedProps.meetingLink !== "Not Scheduled Yet" && (
         <a
           href={eventInfo.event.extendedProps.meetingLink}
@@ -146,23 +150,31 @@ export default function Checkout({ params }) {
   }
 
   return (
-<div className="min-h-screen bg-gray-50 p-8 gap-6 px-4 py-10 bg-gray-50 mt-6">      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="min-h-screen gap-6 p-8 px-4 py-10 mt-6 bg-gray-50">
+      {" "}
+      <div className="grid max-w-6xl grid-cols-1 gap-6 mx-auto lg:grid-cols-2">
         {/* Form Section */}
         <div className="p-6 bg-white shadow-lg rounded-xl">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">Schedule a New Meeting</h2>
+          <h2 className="mb-4 text-lg font-bold text-gray-800">
+            Schedule a New Meeting
+          </h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 readOnly
-                className="w-full px-3 py-2 mt-1 text-sm text-gray-700 border rounded-lg bg-gray-100"
+                className="w-full px-3 py-2 mt-1 text-sm text-gray-700 bg-gray-100 border rounded-lg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Title</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Title
+              </label>
               <input
                 type="text"
                 name="title"
@@ -173,7 +185,9 @@ export default function Checkout({ params }) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Description</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Description
+              </label>
               <textarea
                 name="description"
                 value={formData.description}
@@ -184,7 +198,9 @@ export default function Checkout({ params }) {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Date</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Date
+                </label>
                 <input
                   type="date"
                   name="date"
@@ -195,7 +211,9 @@ export default function Checkout({ params }) {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Time</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Time
+                </label>
                 <input
                   type="time"
                   name="time"
@@ -208,7 +226,7 @@ export default function Checkout({ params }) {
             </div>
             <button
               type="submit"
-              className="w-full py-2 px-4 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+              className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
             >
               Schedule Meeting
             </button>
@@ -217,7 +235,9 @@ export default function Checkout({ params }) {
 
         {/* Calendar Section */}
         <div className="p-6 bg-white shadow-lg rounded-xl">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">Your Meetings</h2>
+          <h2 className="mb-4 text-lg font-bold text-gray-800">
+            Your Meetings
+          </h2>
           <div className="h-[500px]">
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -229,16 +249,9 @@ export default function Checkout({ params }) {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay",
               }}
-
-
-
-
               footerToolbar={{
                 left: "prev,next today",
-               
               }}
-
-
             />
           </div>
         </div>
