@@ -57,7 +57,7 @@ export async function POST(req) {
       });
 
       // Validate required data - Updated email extraction
-      const email = email_addresses?.[0]?.emailAddress;
+      const email = email_addresses[0]?.emailAddress;
       if (!email) {
         console.error("Invalid email in payload:", email_addresses);
         return NextResponse.json(
