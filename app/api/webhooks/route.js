@@ -3,9 +3,9 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { createUser } from "@/lib/actions/user.action";
-import { validateUserPayload } from "@/lib/validators/webhookValidator";
 
 export async function POST(req) {
+  // Validate environment variables
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
   if (!WEBHOOK_SECRET) {
     console.error("WEBHOOK_SECRET is not defined");
@@ -15,18 +15,13 @@ export async function POST(req) {
     );
   }
 
+  // Validate headers
   const headerPayload = headers();
-  const svixHeaders = {
-    "svix-id": headerPayload.get("svix-id"),
-    "svix-timestamp": headerPayload.get("svix-timestamp"),
-    "svix-signature": headerPayload.get("svix-signature"),
-  };
+  const svix_id = headerPayload.get("svix-id");
+  const svix_timestamp = headerPayload.get("svix-timestamp");
+  const svix_signature = headerPayload.get("svix-signature");
 
-  if (
-    !svixHeaders["svix-id"] ||
-    !svixHeaders["svix-timestamp"] ||
-    !svixHeaders["svix-signature"]
-  ) {
+  if (!svix_id || !svix_timestamp || !svix_signature) {
     return NextResponse.json(
       { error: "Missing required Svix headers" },
       { status: 400 }
@@ -37,18 +32,23 @@ export async function POST(req) {
     const payload = await req.json();
     const body = JSON.stringify(payload);
 
-    const webhook = new Webhook(WEBHOOK_SECRET);
-    const evt = webhook.verify(body, svixHeaders);
+    // Verify webhook
+    const wh = new Webhook(WEBHOOK_SECRET);
+    const evt = wh.verify(body, {
+      "svix-id": svix_id,
+      "svix-timestamp": svix_timestamp,
+      "svix-signature": svix_signature,
+    });
 
-    // Handle only "user.created" events
+    // Handle only user.created events
     if (evt.type === "user.created") {
       const { id, email_addresses, first_name, last_name } = evt.data;
 
-      // Validate payload structure and data
-      const email = email_addresses?.[0]?.email_address;
-      if (!validateUserPayload({ id, email, first_name, last_name })) {
+      // Validate required data
+      const email = email_addresses[0]?.email_address;
+      if (!email) {
         return NextResponse.json(
-          { error: "Invalid payload structure or missing data" },
+          { error: "Invalid email address in payload" },
           { status: 400 }
         );
       }
@@ -61,6 +61,7 @@ export async function POST(req) {
           lastName: last_name || "",
         });
 
+        // Update Clerk metadata with database ID
         if (user?._id) {
           await clerkClient.users.updateUserMetadata(id, {
             publicMetadata: {
@@ -70,11 +71,11 @@ export async function POST(req) {
         }
 
         return NextResponse.json({
-          message: "User created successfully",
+          message: "User processed successfully",
           user,
         });
       } catch (error) {
-        console.error("Error saving user to database:", error);
+        console.error("Error processing user:", error);
         return NextResponse.json(
           { error: "Database operation failed" },
           { status: 500 }
@@ -82,12 +83,12 @@ export async function POST(req) {
       }
     }
 
-    // Ignore other events but return success
-    return NextResponse.json({ message: "Event ignored" });
+    // Return success for other event types
+    return NextResponse.json({ message: "Webhook processed" });
   } catch (error) {
-    console.error("Webhook verification or processing error:", error);
+    console.error("Webhook error:", error);
     return NextResponse.json(
-      { error: "Invalid or unauthorized webhook" },
+      { error: "Webhook verification failed" },
       { status: 400 }
     );
   }
