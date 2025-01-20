@@ -44,14 +44,14 @@ export async function GET(request) {
 
 // Update a schedule by ID
 export async function PUT(request) {
-  const { id, title, description, date, time, email, meetingLink } = await request.json();
+  const { id, title, description, date, time, email, meetingLink ,isCompleted} = await request.json();
   await connectMongoDB();
 
   try {
     // Find the schedule by ID and update it
     const updatedTopic = await Schedule.findByIdAndUpdate(
       id,
-      { title, description, date, time, email, meetingLink },
+      { title, description, date, time, email, meetingLink,isCompleted},
       { new: true } // Return the updated document
     );
 

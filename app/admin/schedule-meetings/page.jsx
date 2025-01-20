@@ -12,9 +12,9 @@ const TopicsPage = () => {
     time: '',
     email: '',
     meetingLink: '',
+    isCompleted: false,
   });
 
-  // Pagination state
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -22,7 +22,6 @@ const TopicsPage = () => {
     totalPages: 0,
   });
 
-  // Fetch all schedules with pagination
   const fetchAllTopics = async (page = 1, limit = 10) => {
     try {
       const response = await fetch(`/api/schedules/update?page=${page}&limit=${limit}`);
@@ -38,38 +37,32 @@ const TopicsPage = () => {
     }
   };
 
-  // Fetch schedules when the component mounts or pagination changes
   useEffect(() => {
     fetchAllTopics(pagination.page, pagination.limit);
   }, [pagination.page, pagination.limit]);
 
-  // Function to handle schedule selection for updating
   const handleSelectTopic = (schedule) => {
     setSelectedTopic(schedule);
-
-    // Convert ISO date to YYYY-MM-DD format for the date input
     const formattedDate = schedule.date ? schedule.date.split('T')[0] : '';
-
     setFormData({
       title: schedule.title,
       description: schedule.description,
-      date: formattedDate, // Use the formatted date
+      date: formattedDate,
       time: schedule.time,
       email: schedule.email,
       meetingLink: schedule.meetingLink,
+      isCompleted: schedule.isCompleted || false,
     });
   };
 
-  // Function to handle form input changes
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
-  // Function to handle form submission (update schedule)
   const handleUpdateTopic = async (e) => {
     e.preventDefault();
     if (!selectedTopic) return;
@@ -89,8 +82,8 @@ const TopicsPage = () => {
       const data = await response.json();
       if (response.ok) {
         alert('Schedule updated successfully!');
-        fetchAllTopics(pagination.page, pagination.limit); // Refresh the list of schedules
-        setSelectedTopic(null); // Clear the selected schedule
+        fetchAllTopics(pagination.page, pagination.limit);
+        setSelectedTopic(null);
         setFormData({
           title: '',
           description: '',
@@ -98,6 +91,7 @@ const TopicsPage = () => {
           time: '',
           email: '',
           meetingLink: '',
+          isCompleted: false,
         });
       } else {
         console.error('Failed to update schedule:', data.error);
@@ -107,42 +101,73 @@ const TopicsPage = () => {
     }
   };
 
-  // Handle page change
   const handlePageChange = (newPage) => {
     setPagination((prev) => ({ ...prev, page: newPage }));
   };
 
-  // Handle limit change
   const handleLimitChange = (e) => {
     setPagination((prev) => ({ ...prev, limit: parseInt(e.target.value), page: 1 }));
   };
 
+  // Filter schedules into completed and incomplete
+  const completedTopics = schedules.filter((schedule) => schedule.isCompleted);
+  const incompleteTopics = schedules.filter((schedule) => !schedule.isCompleted);
+
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-center mb-8">Topics</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">Schedules</h1>
 
-      {/* Display all schedules */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 className="text-2xl font-semibold mb-4">All Topics</h2>
-        <ul className="space-y-4">
-          {schedules.map((schedule) => (
-            <li
-              key={schedule._id}
-              className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm"
-            >
-              <div>
-                <strong className="text-lg">{schedule.title}</strong>
-                <p className="text-gray-600">{schedule.description}</p>
-              </div>
-              <button
-                onClick={() => handleSelectTopic(schedule)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+      {/* Vertical Layout for Incomplete and Completed Schedules */}
+      <div className="flex gap-8">
+        {/* Incomplete Schedules Section */}
+        <div className="flex-1 bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-4">Incomplete Schedules</h2>
+          <ul className="space-y-4">
+            {incompleteTopics.map((schedule) => (
+              <li
+                key={schedule._id}
+                className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm"
               >
-                Edit
-              </button>
-            </li>
-          ))}
-        </ul>
+                <div>
+                  <strong className="text-lg">{schedule.title}</strong>
+                  <p className="text-gray-600">{schedule.description}</p>
+                  <p className="text-gray-600">Is Completed: No</p>
+                </div>
+                <button
+                  onClick={() => handleSelectTopic(schedule)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+                >
+                  Edit
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Completed Schedules Section */}
+        <div className="flex-1 bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-4">Completed Schedules</h2>
+          <ul className="space-y-4">
+            {completedTopics.map((schedule) => (
+              <li
+                key={schedule._id}
+                className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm"
+              >
+                <div>
+                  <strong className="text-lg">{schedule.title}</strong>
+                  <p className="text-gray-600">{schedule.description}</p>
+                  <p className="text-gray-600">Is Completed: Yes</p>
+                </div>
+                <button
+                  onClick={() => handleSelectTopic(schedule)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+                >
+                  Edit
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       {/* Pagination Controls */}
@@ -248,6 +273,16 @@ const TopicsPage = () => {
                 onChange={handleInputChange}
                 className="w-full p-2 border border-gray-300 rounded-lg"
                 required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700">Is Completed:</label>
+              <input
+                type="checkbox"
+                name="isCompleted"
+                checked={formData.isCompleted}
+                onChange={handleInputChange}
+                className="p-2 border border-gray-300 rounded-lg"
               />
             </div>
             <button
