@@ -1,208 +1,170 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import enUS from "date-fns/locale/en-US";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { FaCalendarAlt, FaArrowLeft, FaArrowRight, FaCalendarDay, FaCalendarWeek, FaCalendar } from "react-icons/fa"; // Icons
+import { FaCalendarAlt, FaCalendarDay, FaCalendarWeek } from "react-icons/fa";
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { format } from 'date-fns';
 
-// Setup the localizer for React Big Calendar
-const locales = {
-  "en-US": enUS,
-};
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-});
+const localizer = momentLocalizer(require('moment')); // Localize the calendar
 
 export default function MyMeetingsCalendar() {
   const { isLoaded, isSignedIn, user } = useUser();
-
-  // Initialize state hooks
   const [formData, setFormData] = useState({
     email: "",
     userId: "",
   });
+  const [schedules, setSchedules] = useState([]);
+  const [view, setView] = useState("month"); // Default to Month view
+  const [selectedDate, setSelectedDate] = useState(new Date()); // Track selected date
 
-  const [schedules, setTopics] = useState([]); // State to store fetched schedules
-  const [currentDate, setCurrentDate] = useState(new Date()); // State to manage the current date
-  const [currentView, setCurrentView] = useState("month"); // State to manage the current view (month, week, day)
-
-  // Fetch user details once loaded
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
+      setFormData((prev) => ({
+        ...prev,
         email: user?.emailAddresses?.[0]?.emailAddress || "",
         userId: user?.id || "",
       }));
     }
   }, [isLoaded, isSignedIn, user]);
 
-  // Fetch schedules by email when the email is available
+  // Fetch schedules based on user email
   useEffect(() => {
-    const fetchTopicsByEmail = async () => {
+    const fetchSchedules = async () => {
       if (formData.email) {
         try {
           const res = await fetch(`/api/schedules?email=${formData.email}`);
-          if (!res.ok) {
-            throw new Error("Failed to fetch schedules");
-          }
+          if (!res.ok) throw new Error("Failed to fetch schedules");
           const data = await res.json();
-          console.log("Fetched schedules:", data.schedules); // Debugging
-          setTopics(data.schedules); // Update the schedules state
+          setSchedules(data.schedules);
         } catch (error) {
           console.error("Error fetching schedules:", error);
         }
       }
     };
 
-    fetchTopicsByEmail();
+    fetchSchedules();
   }, [formData.email]);
 
-  // Format schedules for React Big Calendar
-  const calendarEvents = schedules.map((schedule) => ({
-    id: schedule._id, // Use the MongoDB _id as the event ID
+  // Convert the schedule date to a Date object for react-big-calendar
+  const events = schedules.map(schedule => ({
     title: schedule.title,
-    start: new Date(`${schedule.date.split("T")[0]}T${schedule.time}`), // Combine date and time
-    end: new Date(`${schedule.date.split("T")[0]}T${schedule.time}`), // Same as start for single-day events
+    start: new Date(schedule.date),
+    end: new Date(schedule.date),
     description: schedule.description,
     meetingLink: schedule.meetingLink,
   }));
 
-  // Custom Event Component
-  const EventComponent = ({ event }) => (
-    <div className="p-2 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors">
-      <strong className="block text-sm text-blue-800">{event.title}</strong>
-      <p className="text-xs text-gray-600">{event.description}</p>
-      {event.meetingLink !== "Not Scheduled Yet" && (
-        <a
-          href={event.meetingLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block mt-1 text-xs text-blue-600 hover:text-blue-800"
-        >
-          Join Meeting
-        </a>
-      )}
-    </div>
-  );
-
-  // Handle navigation (Previous, Next, Today)
-  const handleNavigate = (newDate) => {
-    setCurrentDate(newDate);
-  };
-
-  // Handle view change (Month, Week, Day)
+  // Handle View Changes
   const handleViewChange = (newView) => {
-    setCurrentView(newView);
+    setView(newView);
   };
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
+  // Get meetings for the selected date
+  const getMeetingsForSelectedDate = () => {
+    return schedules.filter(schedule => 
+      format(new Date(schedule.date), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
+    );
+  };
 
-  if (!isSignedIn) {
-    return null; // Prevent rendering if not signed in
-  }
+  // Handle navigation (Back and Next buttons)
+  const handleNavigate = (date) => {
+    setSelectedDate(date); // Update the selected date when navigating
+  };
+
+  // Handle clicking on a date inside the calendar
+  const handleDateClick = (date) => {
+    setSelectedDate(date); // Update the selected date when a date is clicked
+  };
+
+  if (!isLoaded) return <div>Loading...</div>;
+  if (!isSignedIn) return null;
 
   return (
-    <div className="min-h-screen  p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen p-8 bg-gradient-to-r from-teal-50 to-pink-50">
+      <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl border-2 border-black shadow-2xl">
         {/* Header */}
-        <div className="mb-8 text-center">
+        <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 flex items-center justify-center">
-            <FaCalendarAlt className="mr-3 w-8 h-8 text-blue-500" />
+            <FaCalendarAlt className="mr-4 text-blue-500 text-3xl" />
             My Meetings
           </h1>
-      
+          <p className="text-gray-600 mt-2 text-lg">
+            Click on any date to view or join your scheduled meetings.
+          </p>
         </div>
 
-        {/* Calendar Section */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 w-full max-w-4xl mx-auto">
-          {/* Custom Toolbar */}
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex space-x-2">
-              <button
-                onClick={() => handleNavigate(new Date())}
-                className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all"
-              >
-                Today
-              </button>
-              <button
-                onClick={() => handleNavigate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)))}
-                className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all"
-              >
-                <FaArrowLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => handleNavigate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)))}
-                className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all"
-              >
-                <FaArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="flex space-x-2">
-              <button
-                onClick={() => handleViewChange("month")}
-                className={`px-4 py-2 text-sm font-semibold ${
-                  currentView === "month"
-                    ? "text-white bg-blue-600"
-                    : "text-blue-600 bg-blue-50"
-                } rounded-lg hover:bg-blue-100 transition-all`}
-              >
-                <FaCalendar className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => handleViewChange("week")}
-                className={`px-4 py-2 text-sm font-semibold ${
-                  currentView === "week"
-                    ? "text-white bg-blue-600"
-                    : "text-blue-600 bg-blue-50"
-                } rounded-lg hover:bg-blue-100 transition-all`}
-              >
-                <FaCalendarWeek className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => handleViewChange("day")}
-                className={`px-4 py-2 text-sm font-semibold ${
-                  currentView === "day"
-                    ? "text-white bg-blue-600"
-                    : "text-blue-600 bg-blue-50"
-                } rounded-lg hover:bg-blue-100 transition-all`}
-              >
-                <FaCalendarDay className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+        {/* View Controls */}
+        <div className="flex justify-center mb-6 space-x-6">
+          <button
+            onClick={() => handleViewChange("month")}
+            className="text-xl p-2 rounded-full text-blue-600 hover:bg-blue-50"
+          >
+            <FaCalendarAlt />
+          </button>
+          <button
+            onClick={() => handleViewChange("week")}
+            className="text-xl p-2 rounded-full text-blue-600 hover:bg-blue-50"
+          >
+            <FaCalendarWeek />
+          </button>
+          <button
+            onClick={() => handleViewChange("day")}
+            className="text-xl p-2 rounded-full text-blue-600 hover:bg-blue-50"
+          >
+            <FaCalendarDay />
+          </button>
+        </div>
 
-          {/* Calendar */}
+        {/* React Big Calendar with Black Border */}
+        <div className="overflow-hidden  rounded-lg">
           <Calendar
             localizer={localizer}
-            events={calendarEvents}
+            events={events}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: 600 }} // Adjusted height for better visibility
-            date={currentDate} // Controlled current date
-            view={currentView} // Controlled current view
-            onNavigate={handleNavigate} // Handle date navigation
-            onView={handleViewChange} // Handle view change
-            components={{
-              event: EventComponent, // Custom event component
-            }}
-            eventPropGetter={(event) => ({
-              style: {
-                backgroundColor: "#EFF6FF", // Light blue background for events
-                borderColor: "#93C5FD", // Light blue border
-                borderRadius: "8px", // Rounded corners
-                color: "#1E40AF", // Dark blue text
-              },
-            })}
+            style={{ height: 500 }}
+            views={['month', 'week', 'day']} // Specify available views
+            view={view} // Control the current view
+            onView={handleViewChange} // Update state on view change
+            onNavigate={handleNavigate} // Handle calendar navigation (back and next)
+            date={selectedDate} // Ensure the calendar is tied to selected date
+            onSelectDate={handleDateClick} // Handle clicking on a date inside the calendar
           />
+        </div>
+
+        {/* Agenda Section */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Meetings on {format(selectedDate, 'yyyy-MM-dd')}
+          </h2>
+          <ul className="mt-4 space-y-4">
+            {getMeetingsForSelectedDate().length > 0 ? (
+              getMeetingsForSelectedDate().map((schedule, index) => (
+                <li
+                  key={index}
+                  className="p-6 border rounded-lg shadow-lg bg-white hover:bg-blue-50 transition-all duration-300"
+                >
+                  <h3 className="text-lg font-bold text-blue-600">
+                    {schedule.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">{schedule.description}</p>
+                  {schedule.meetingLink !== "Not Scheduled Yet" && (
+                    <a
+                      href={schedule.meetingLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block mt-3 text-blue-500 hover:underline"
+                    >
+                      Join Meeting
+                    </a>
+                  )}
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500">No meetings scheduled for this date.</p>
+            )}
+          </ul>
         </div>
       </div>
     </div>

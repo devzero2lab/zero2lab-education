@@ -67,13 +67,13 @@ function Page() {
       title: "Enrolled Courses",
       value: courseCount,
       icon: <FaBook className="w-8 h-8 text-white" />,
-      color: "bg-gradient-to-r from-[#AE9FA6] to-[#FFFF]",
+      color: "bg-gradient-to-r from-[#AE9FA6] to-[#AE5ff6]",
     },
     {
       title: "Upcoming Tests",
       value: 0,
       icon: <FaClipboardList className="w-8 h-8 text-white" />,
-      color: "bg-gradient-to-r from-[#FBA25C] to-[#FFFF]", // Custom gradient
+      color: "bg-gradient-to-r from-[#FBA25C] to-[#FBA27c]", // Custom gradient
     },
     {
       title: "Active Students",
@@ -193,12 +193,13 @@ function Page() {
             My Meetings
           </h2>
           <button
-            onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105"
-          >
-            <FaCalendarAlt className="mr-3 w-6 h-6" />
-            Schedule Your Meetings
-          </button>
+  onClick={() => setIsModalOpen(true)}
+  className="inline-flex items-center px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 w-full sm:w-auto"
+>
+  <FaCalendarAlt className="mr-3 w-6 h-6" />
+  Schedule Meetings
+</button>
+
         </div>
         <MyMeetingsCalendar /> {/* Calendar component as it is */}
       </div>
