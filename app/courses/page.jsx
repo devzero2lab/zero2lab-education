@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CourseComponent from "./components/CourseComponent";
+import Loader from "../components/Loader";
 
 const RecordCoursesPage = () => {
-
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +16,7 @@ const RecordCoursesPage = () => {
         setLoading(true);
         const response = await axios.get(`${apiUrl}/api/courses/`);
         setCourses(response.data.courses);
+        setError(null);
       } catch (error) {
         setError(error.message || "Failed to fetch courses");
       } finally {
@@ -24,7 +25,7 @@ const RecordCoursesPage = () => {
     };
 
     fetchRCourses();
-  }, []);
+  }, [apiUrl]);
 
   return (
     <div className="px-8 py-4 mt-12">
@@ -32,16 +33,20 @@ const RecordCoursesPage = () => {
         Explore Our Courses
       </h1>
 
-    {loading && <div className="text-center">Loading...</div>}
+      {loading && (
+        <div className="flex justify-center">
+          <Loader />
+        </div>
+      )}
 
       <div className="flex flex-wrap justify-center gap-6">
-      {courses.length > 0 ? (
-        courses.map((course) => (
-          <CourseComponent key={course._id} course={course} />
-        ))
-      ) : (
-        <div>No courses available</div>
-      )}
+        {courses.length > 0 ? (
+          courses.map((course) => (
+            <CourseComponent key={course._id} course={course} />
+          ))
+        ) : (
+          <div>No courses available</div>
+        )}
       </div>
     </div>
   );

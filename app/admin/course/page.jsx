@@ -5,16 +5,18 @@ import Link from "next/link";
 import Course from "./components/Course";
 
 export default function CoursePage() {
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // Fetch all courses
   const fetchCourses = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${apiUrl}/api/courses/`);
       setCourses(response.data.courses);
+      setError(null);
     } catch (err) {
       console.error("Error fetching courses:", err);
       setError("Failed to fetch courses.");
@@ -25,7 +27,7 @@ export default function CoursePage() {
 
   useEffect(() => {
     fetchCourses();
-  }, []);
+  }, [apiUrl]);
 
   return (
     <div className="p-4">
@@ -38,7 +40,7 @@ export default function CoursePage() {
 
       {loading && <p>Loading courses...</p>}
       {error && <p className="text-red-500">{error}</p>}
-      {!loading && !error && (
+      {!loading && !error && courses.length > 0 && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
             <Course
@@ -51,6 +53,9 @@ export default function CoursePage() {
             />
           ))}
         </div>
+      )}
+      {!loading && !error && courses.length === 0 && (
+        <p>No courses available</p>
       )}
     </div>
   );

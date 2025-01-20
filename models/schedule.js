@@ -21,6 +21,10 @@ const scheduleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> e8d0a3e22948fb09f2259d565a6c0ed8fe517891
   meetingLink: {
     type: String,
     default: "Not Scheduled Yet", // Default value for meetingLink
@@ -31,4 +35,5 @@ const scheduleSchema = new mongoose.Schema({
   },
 });
 
-export const Schedule = mongoose.models?.Schedule || mongoose.model("Schedule", scheduleSchema);
+export const Schedule =
+  mongoose.models?.Schedule || mongoose.model("Schedule", scheduleSchema);
