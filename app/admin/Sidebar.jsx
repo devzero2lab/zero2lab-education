@@ -12,6 +12,7 @@ function Sidebar() {
     { menu: "Approved Access", path: "/admin/approved" },
     { menu: "Meetings", path: "/admin/schedule-meetings" },
     { menu: "Feedbacks", path: "/admin/feedbacks" },
+    { menu: "Not Enroll Users", path: "/admin/noenrolls" },
   ];
 
   return (
