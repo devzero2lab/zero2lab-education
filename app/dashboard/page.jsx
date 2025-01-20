@@ -63,7 +63,6 @@ function Page() {
   }
 
   const stats = [
-<<<<<<< HEAD
     {
       title: "Enrolled Courses",
       value: courseCount,
@@ -87,20 +86,6 @@ function Page() {
       value: 15,
       icon: <FaTasks className="w-8 h-8 text-white" />,
       color: "bg-gradient-to-r from-[#F472B6] to-[#F59E0B]", // Pink to orange gradient
-=======
-    { title: "Enrolled Courses", value: courseCount, color: "bg-pink-100" },
-    {
-      title: "",
-      value: (
-        <Link
-          href="/schedule-meetings"
-          className="inline-block px-8 py-3 text-lg font-semibold text-white transition-colors bg-blue-600 rounded-lg shadow-md hover:bg-blue-700"
-        >
-          Schedule A Meeting With Us
-        </Link>
-      ),
-      color: "bg-indigo-50",
->>>>>>> e8d0a3e22948fb09f2259d565a6c0ed8fe517891
     },
   ];
 
@@ -131,7 +116,6 @@ function Page() {
             </div>
           ))}
         </div>
-<<<<<<< HEAD
       </div>
 
       {/* Enrolled Courses Section */}
@@ -157,20 +141,6 @@ function Page() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {enrolledCourses.map((courseData, index) => {
-=======
-        <h2 className="mb-4 text-2xl font-semibold text-gray-800">
-          Enrolled Courses
-        </h2>
-        <div className="flex flex-col gap-6">
-          {enrolledCourses.length === 0 ? (
-            <div className="p-6 text-center bg-white border border-gray-300 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold text-gray-800">
-                You are not enrolled in any courses
-              </h3>
-            </div>
-          ) : (
-            enrolledCourses.map((courseData, index) => {
->>>>>>> e8d0a3e22948fb09f2259d565a6c0ed8fe517891
               const { courseId, status } = courseData;
               return (
                 <div
@@ -209,7 +179,6 @@ function Page() {
                   )}
                 </div>
               );
-<<<<<<< HEAD
             })}
           </div>
         )}
@@ -232,11 +201,6 @@ function Page() {
           </button>
         </div>
         <MyMeetingsCalendar /> {/* Calendar component as it is */}
-=======
-            })
-          )}
-        </div>
->>>>>>> e8d0a3e22948fb09f2259d565a6c0ed8fe517891
       </div>
 
       {/* Modal for Scheduling Form */}
