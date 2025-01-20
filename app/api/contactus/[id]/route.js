@@ -1,24 +1,34 @@
 import connectMongoDB from "@/lib/db";
-import { User } from "@/models/user";
+import { ContactUs } from "@/models/contactUs";
 import { NextResponse } from "next/server";
 
-//delete user
+// Delete feedback by ID
 export async function DELETE(request, { params }) {
   try {
     const { id } = params;
+
+    // Validate the ID
     if (!id) {
       return NextResponse.json(
-        { error: "User ID is required" },
+        { error: "Feedback ID is required" },
         { status: 400 }
       );
     }
+
     await connectMongoDB();
-    const deletedUser = await User.findByIdAndDelete(id);
-    if (!deletedUser) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+    const deletedFeedback = await ContactUs.findByIdAndDelete(id);
+
+    if (!deletedFeedback) {
+      return NextResponse.json(
+        { error: "Feedback not found" },
+        { status: 404 }
+      );
     }
+
+    // Return success response
     return NextResponse.json(
-      { message: "User deleted successfully" },
+      { message: "Feedback deleted successfully" },
       { status: 200 }
     );
   } catch (error) {

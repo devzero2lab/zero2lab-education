@@ -14,8 +14,12 @@ function Footer() {
         <div className="flex flex-col items-center w-full mb-6 sm:w-1/2 lg:w-1/4 lg:mb-0">
           <h3 className="mb-3 text-lg font-semibold">Products</h3>
           <ul className="space-y-2">
-            <li>Course</li>
-            <li>Webinars</li>
+            <Link href={"/courses"}>
+              <li>Course</li>
+            </Link>
+            <Link href={"/"}>
+              <li>Webinars</li>
+            </Link>
           </ul>
         </div>
 

@@ -49,7 +49,18 @@ function Page() {
 
   const stats = [
     { title: "Enrolled Courses", value: courseCount, color: "bg-pink-100" },
-    { title: "Upcoming Tests", value: 0, color: "bg-indigo-50" },
+    {
+      title: "",
+      value: (
+        <Link
+          href="/schedule-meetings"
+          className="inline-block px-8 py-3 text-lg font-semibold text-white transition-colors bg-blue-600 rounded-lg shadow-md hover:bg-blue-700"
+        >
+          Schedule A Meeting With Us
+        </Link>
+      ),
+      color: "bg-indigo-50",
+    },
   ];
 
   return (
@@ -79,8 +90,6 @@ function Page() {
             </div>
           ))}
         </div>
-
-        {/* Course Progress - Using Flexbox instead of Grid */}
         <h2 className="mb-4 text-2xl font-semibold text-gray-800">
           Enrolled Courses
         </h2>

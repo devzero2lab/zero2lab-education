@@ -93,6 +93,10 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
       dataSource={dataSource}
       bordered
       pagination={{ pageSize: 5 }}
+      locale={{
+        emptyText: "No Approved Records",
+      }}
+      loading={false}
     />
   );
 }

@@ -1,13 +1,69 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Head from "next/head";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import Loader from "../components/Loader";
+import axios from "axios";
+import { toast } from "sonner";
 
 function ContactUs() {
+  const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  if (isLoaded && !isSignedIn) {
+    router.push("/sign-in");
+  }
+
+  if (!isLoaded) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!message) {
+      toast.error("Message is required");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const contactData = {
+        name: `${user?.firstName || ""} ${user?.lastName || ""}`,
+        email: user?.emailAddresses[0]?.emailAddress || "",
+        message,
+      };
+
+      const response = await axios.post(`${apiUrl}/api/contactus`, contactData);
+
+      // Reset form and show success message
+      setMessage("");
+      setLoading(false);
+      toast.success("Feedback submitted successfully!");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast.error("Failed to submit feedback. Please try again.");
+    }
+  };
+
   return (
     <div>
       <Head>
         <title>Contact Us | Zero2lab Education LMS</title>
         <meta
-          name="description" 
+          name="description"
           content="Contact Zero2lab Education LMS for support and inquiries"
         />
       </Head>
@@ -26,7 +82,7 @@ function ContactUs() {
               <h2 className="mb-4 text-2xl font-semibold text-indigo-700">
                 Get in Touch
               </h2>
-              <form className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="flex flex-col">
                     <label htmlFor="name" className="text-gray-700">
@@ -36,7 +92,8 @@ function ContactUs() {
                       type="text"
                       id="name"
                       className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Enter your name"
+                      value={`${user?.firstName || ""} ${user?.lastName || ""}`}
+                      disabled
                     />
                   </div>
                   <div className="flex flex-col">
@@ -47,7 +104,8 @@ function ContactUs() {
                       type="email"
                       id="email"
                       className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Enter your email"
+                      value={user?.emailAddresses[0]?.emailAddress || ""}
+                      disabled
                     />
                   </div>
                 </div>
@@ -61,15 +119,17 @@ function ContactUs() {
                     rows="5"
                     className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     placeholder="Enter your message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
                   className="w-full py-3 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  disabled
+                  disabled={loading}
                 >
-                  Send Message
+                  {loading ? "Sending..." : "Send Message"}
                 </button>
               </form>
             </div>

@@ -91,6 +91,10 @@ function PendingList({ courses, fetchPendingCourses }) {
       dataSource={dataSource}
       bordered
       pagination={{ pageSize: 5 }}
+      locale={{
+        emptyText: "No Pending Records",
+      }}
+      loading={false}
     />
   );
 }
