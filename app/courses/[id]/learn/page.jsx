@@ -14,6 +14,7 @@ export default function Page({ params }) {
   const [courseData, setCourseData] = useState(null); // Store fetched course data
   const [currentDay, setCurrentDay] = useState(1); // Track the selected day
   const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -35,6 +36,7 @@ export default function Page({ params }) {
         );
 
         if (!isEnrolled) {
+          setRedirecting(true); // Prevent further rendering
           router.push("/not-enrolled"); // Redirect if the user is not enrolled
           return; // Stop further execution
         }
@@ -54,6 +56,10 @@ export default function Page({ params }) {
 
     fetchCourseData();
   }, [isSignedIn, user, id, apiUrl, router]);
+
+  if (redirecting) {
+    return null; // Prevent rendering while redirecting
+  }
 
   if (isLoading) {
     return (
