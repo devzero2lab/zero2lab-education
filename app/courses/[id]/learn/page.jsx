@@ -16,10 +16,10 @@ export default function Page({ params }) {
   const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
-    if (!isSignedIn) {
-      router.push("/sign-in"); // Redirect to the login page
-      return; // Stop further execution of this effect
-    }
+    // if (!isSignedIn) {
+    //   router.push("/sign-in"); // Redirect to the login page
+    //   return; // Stop further execution of this effect
+    // }
 
     const fetchCourseData = async () => {
       try {
@@ -36,9 +36,9 @@ export default function Page({ params }) {
     fetchCourseData();
   }, [isSignedIn, type, id, apiUrl, router]);
 
-  if (!isSignedIn) {
-    return null; // Prevent rendering during redirection
-  }
+  // if (!isSignedIn) {
+  //   return null; // Prevent rendering during redirection
+  // }
 
   if (isLoading) {
     return (
