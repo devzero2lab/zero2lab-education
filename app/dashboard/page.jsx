@@ -124,7 +124,7 @@ function Page() {
             </h3>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-1 lg:grid-cols-1">
             {enrolledCourses.map((courseData, index) => {
               const { courseId, status } = courseData;
               return (
@@ -145,7 +145,7 @@ function Page() {
                           status === "Pending"
                             ? "bg-yellow-100 text-yellow-800"
                             : status === "Approved"
-                            ? "bg-blue-100 text-blue-800"
+                            ? "bg-blue-600 text-white"
                             : "bg-red-100 text-red-800"
                         }`}
                       >
@@ -157,7 +157,7 @@ function Page() {
                       <h3 className="text-xl font-semibold text-gray-800">
                         {courseId.courseName}
                       </h3>
-                      <span className="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full">
+                      <span className="px-4 py-2 text-sm font-semibold text-red-600 bg-gray-100 rounded-full">
                         {status}
                       </span>
                     </div>
