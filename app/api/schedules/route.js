@@ -1,3 +1,5 @@
+
+
 import connectMongoDB from '@/lib/db';
 import { Schedule } from '@/models/schedule';
 import { NextResponse } from 'next/server';
@@ -8,50 +10,41 @@ export async function POST(request) {
   await connectMongoDB();
 
   try {
-    // Create a new schedule with the provided data
     const newTopic = await Schedule.create({ title, description, date, time, email });
-
-    // The meetingLink field will automatically be set to "Not Scheduled Yet" as per the schema
-    return NextResponse.json(newTopic, { status: 201 });
+    
+    // Fetch all schedules after creating a new one
+    const schedules = await Schedule.find();
+    
+    return NextResponse.json({ newTopic, schedules }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 400 });
   }
 }
 
-// Get all schedules or schedules by email
+// Fetch schedules by email
 export async function GET(request) {
-  await connectMongoDB();
-
-  // Extract the email query parameter from the request URL
   const { searchParams } = new URL(request.url);
   const email = searchParams.get('email');
+  await connectMongoDB();
 
   try {
-    let schedules;
-    if (email) {
-      // Fetch schedules for the specified email
-      schedules = await Schedule.find({ email });
-    } else {
-      // Fetch all schedules if no email is provided
-      schedules = await Schedule.find();
-    }
+    const schedules = await Schedule.find({ email });
     return NextResponse.json({ schedules }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 400 });
   }
 }
 
-
 // Update a schedule by ID
 export async function PUT(request) {
-  const { id, title, description, date, time, email, meetingLink } = await request.json();
+  const { id, title, description, date, time, email, meetingLink, isCompleted } = await request.json();
   await connectMongoDB();
 
   try {
     // Find the schedule by ID and update it
     const updatedTopic = await Schedule.findByIdAndUpdate(
       id,
-      { title, description, date, time, email, meetingLink },
+      { title, description, date, time, email, meetingLink, isCompleted },
       { new: true } // Return the updated document
     );
 

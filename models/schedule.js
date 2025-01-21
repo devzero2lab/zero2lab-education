@@ -21,10 +21,13 @@ const scheduleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   meetingLink: {
     type: String,
     default: "Not Scheduled Yet", // Default value for meetingLink
+  },
+  isCompleted: {
+    type: Boolean,
+    default: false, // Default value for the checkbox
   },
 });
 

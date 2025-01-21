@@ -1,259 +1,170 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import { FaCalendarAlt, FaCalendarDay, FaCalendarWeek } from "react-icons/fa";
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { format } from 'date-fns';
 
-export default function Checkout({ params }) {
-  const router = useRouter();
+const localizer = momentLocalizer(require('moment')); // Localize the calendar
+
+export default function MyMeetingsCalendar() {
   const { isLoaded, isSignedIn, user } = useUser();
-
-  // Initialize state hooks
   const [formData, setFormData] = useState({
     email: "",
-    whatsappNumber: "",
     userId: "",
-    courseId: params?.id || "",
-    title: "",
-    description: "",
-    date: "",
-    time: "",
   });
+  const [schedules, setSchedules] = useState([]);
+  const [view, setView] = useState("month"); // Default to Month view
+  const [selectedDate, setSelectedDate] = useState(new Date()); // Track selected date
 
-  const [schedules, setTopics] = useState([]); // State to store fetched schedules
-
-  // Fetch user details once loaded
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
+      setFormData((prev) => ({
+        ...prev,
         email: user?.emailAddresses?.[0]?.emailAddress || "",
         userId: user?.id || "",
       }));
     }
   }, [isLoaded, isSignedIn, user]);
 
-  // Fetch schedules by email when the email is available
+  // Fetch schedules based on user email
   useEffect(() => {
-    const fetchTopicsByEmail = async () => {
+    const fetchSchedules = async () => {
       if (formData.email) {
         try {
           const res = await fetch(`/api/schedules?email=${formData.email}`);
-          if (!res.ok) {
-            throw new Error("Failed to fetch schedules");
-          }
+          if (!res.ok) throw new Error("Failed to fetch schedules");
           const data = await res.json();
-          console.log("Fetched schedules:", data.schedules); // Debugging
-          setTopics(data.schedules); // Update the schedules state
+          setSchedules(data.schedules);
         } catch (error) {
           console.error("Error fetching schedules:", error);
         }
       }
     };
 
-    fetchTopicsByEmail();
+    fetchSchedules();
   }, [formData.email]);
 
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("/api/schedules", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!res.ok) {
-        throw new Error("Failed to submit form");
-      }
-      const data = await res.json();
-      console.log("Schedule created successfully:", data);
-      alert("Schedule created successfully!");
-
-      // Fetch updated schedules after submission
-      const updatedRes = await fetch(`/api/schedules?email=${formData.email}`);
-      if (!updatedRes.ok) {
-        throw new Error("Failed to fetch updated schedules");
-      }
-      const updatedData = await updatedRes.json();
-      setTopics(updatedData.schedules); // Update the schedules state
-
-      // Reset form fields after submission
-      setFormData({
-        ...formData,
-        title: "",
-        description: "",
-        date: "",
-        time: "",
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Failed to create schedule. Please try again.");
-    }
-  };
-
-  // Format schedules for FullCalendar
-  const calendarEvents = schedules.map((schedule) => ({
-    id: schedule._id, // Use the MongoDB _id as the event ID
+  // Convert the schedule date to a Date object for react-big-calendar
+  const events = schedules.map(schedule => ({
     title: schedule.title,
-    start: new Date(`${schedule.date.split("T")[0]}T${schedule.time}`), // Combine date and time
-    end: new Date(`${schedule.date.split("T")[0]}T${schedule.time}`), // Same as start for single-day events
-    extendedProps: {
-      description: schedule.description,
-      meetingLink: schedule.meetingLink,
-    },
+    start: new Date(schedule.date),
+    end: new Date(schedule.date),
+    description: schedule.description,
+    meetingLink: schedule.meetingLink,
   }));
 
-  // Custom event content
-  const renderEventContent = (eventInfo) => (
-    <div className="p-2 transition-colors border border-blue-200 rounded-lg bg-blue-50 hover:bg-blue-100">
-      <strong className="block text-sm text-blue-800">
-        {eventInfo.event.title}
-      </strong>
-      <p className="text-xs text-gray-600">
-        {eventInfo.event.extendedProps.description}
-      </p>
-      {eventInfo.event.extendedProps.meetingLink !== "Not Scheduled Yet" && (
-        <a
-          href={eventInfo.event.extendedProps.meetingLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block mt-1 text-xs text-blue-600 hover:text-blue-800"
-        >
-          Join Meeting
-        </a>
-      )}
-    </div>
-  );
+  // Handle View Changes
+  const handleViewChange = (newView) => {
+    setView(newView);
+  };
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
+  // Get meetings for the selected date
+  const getMeetingsForSelectedDate = () => {
+    return schedules.filter(schedule => 
+      format(new Date(schedule.date), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
+    );
+  };
 
-  if (!isSignedIn) {
-    router.push("/sign-in");
-    return null;
-  }
+  // Handle navigation (Back and Next buttons)
+  const handleNavigate = (date) => {
+    setSelectedDate(date); // Update the selected date when navigating
+  };
+
+  // Handle clicking on a date inside the calendar
+  const handleDateClick = (date) => {
+    setSelectedDate(date); // Update the selected date when a date is clicked
+  };
+
+  if (!isLoaded) return <div>Loading...</div>;
+  if (!isSignedIn) return null;
 
   return (
-    <div className="min-h-screen gap-6 p-8 px-4 py-10 mt-6 bg-gray-50">
-      {" "}
-      <div className="grid max-w-6xl grid-cols-1 gap-6 mx-auto lg:grid-cols-2">
-        {/* Form Section */}
-        <div className="p-6 bg-white shadow-lg rounded-xl">
-          <h2 className="mb-4 text-lg font-bold text-gray-800">
-            Schedule a New Meeting
-          </h2>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                readOnly
-                className="w-full px-3 py-2 mt-1 text-sm text-gray-700 bg-gray-100 border rounded-lg"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Title
-              </label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 mt-1 text-sm text-gray-700 border rounded-lg"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Description
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 mt-1 text-sm text-gray-700 border rounded-lg"
-                required
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Date
-                </label>
-                <input
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 mt-1 text-sm text-gray-700 border rounded-lg"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Time
-                </label>
-                <input
-                  type="time"
-                  name="time"
-                  value={formData.time}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 mt-1 text-sm text-gray-700 border rounded-lg"
-                  required
-                />
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
-            >
-              Schedule Meeting
-            </button>
-          </form>
+    <div className="min-h-screen p-8 bg-gradient-to-r from-teal-50 to-pink-50">
+      <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl border-2 border-black shadow-2xl">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 flex items-center justify-center">
+            <FaCalendarAlt className="mr-4 text-blue-500 text-3xl" />
+            My Meetings
+          </h1>
+          <p className="text-gray-600 mt-2 text-lg">
+            Click on any date to view or join your scheduled meetings.
+          </p>
         </div>
 
-        {/* Calendar Section */}
-        <div className="p-6 bg-white shadow-lg rounded-xl">
-          <h2 className="mb-4 text-lg font-bold text-gray-800">
-            Your Meetings
+        {/* View Controls */}
+        <div className="flex justify-center mb-6 space-x-6">
+          <button
+            onClick={() => handleViewChange("month")}
+            className="text-xl p-2 rounded-full text-blue-600 hover:bg-blue-50"
+          >
+            <FaCalendarAlt />
+          </button>
+          <button
+            onClick={() => handleViewChange("week")}
+            className="text-xl p-2 rounded-full text-blue-600 hover:bg-blue-50"
+          >
+            <FaCalendarWeek />
+          </button>
+          <button
+            onClick={() => handleViewChange("day")}
+            className="text-xl p-2 rounded-full text-blue-600 hover:bg-blue-50"
+          >
+            <FaCalendarDay />
+          </button>
+        </div>
+
+        {/* React Big Calendar with Black Border */}
+        <div className="overflow-hidden  rounded-lg">
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 500 }}
+            views={['month', 'week', 'day']} // Specify available views
+            view={view} // Control the current view
+            onView={handleViewChange} // Update state on view change
+            onNavigate={handleNavigate} // Handle calendar navigation (back and next)
+            date={selectedDate} // Ensure the calendar is tied to selected date
+            onSelectDate={handleDateClick} // Handle clicking on a date inside the calendar
+          />
+        </div>
+
+        {/* Agenda Section */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Meetings on {format(selectedDate, 'yyyy-MM-dd')}
           </h2>
-          <div className="h-[500px]">
-            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              initialView="dayGridMonth"
-              events={calendarEvents}
-              eventContent={renderEventContent}
-              headerToolbar={{
-                left: "",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay",
-              }}
-              footerToolbar={{
-                left: "prev,next today",
-              }}
-            />
-          </div>
+          <ul className="mt-4 space-y-4">
+            {getMeetingsForSelectedDate().length > 0 ? (
+              getMeetingsForSelectedDate().map((schedule, index) => (
+                <li
+                  key={index}
+                  className="p-6 border rounded-lg shadow-lg bg-white hover:bg-blue-50 transition-all duration-300"
+                >
+                  <h3 className="text-lg font-bold text-blue-600">
+                    {schedule.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">{schedule.description}</p>
+                  {schedule.meetingLink !== "Not Scheduled Yet" && (
+                    <a
+                      href={schedule.meetingLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block mt-3 text-blue-500 hover:underline"
+                    >
+                      Join Meeting
+                    </a>
+                  )}
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500">No meetings scheduled for this date.</p>
+            )}
+          </ul>
         </div>
       </div>
     </div>
