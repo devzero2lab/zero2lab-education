@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa"; // Icons
 import Modal from "../modal/Modal"; // Import the modal component
 import ScheduleForm from "../schedule-meetings/schedule-form/page"; // Import the schedule form component
+import Loader from "../components/Loader";
 
 function Page() {
   const router = useRouter();
@@ -28,10 +29,12 @@ function Page() {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [courseCount, setCourseCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         // Fetch user enrolled courses
         const coursesResponse = await axios.get(
           `${apiUrl}/api/usercourses?userId=${userID}`
@@ -45,6 +48,8 @@ function Page() {
         setCourseCount(countResponse.data.count);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -55,8 +60,8 @@ function Page() {
 
   if (!isLoaded) {
     return (
-      <div className="flex items-center justify-center min-h-screen text-gray-700">
-        Loading...
+      <div className="flex justify-center">
+        <Loader />
       </div>
     );
   }
@@ -117,7 +122,12 @@ function Page() {
             Enrolled Courses
           </h2>
         </div>
-        {enrolledCourses.length === 0 ? (
+
+        {loading ? (
+          <div className="p-8 text-center bg-gray-50 rounded-xl border-2 border-[#F6F2FD]">
+            <h3 className="text-xl font-semibold text-gray-800">Loading...</h3>
+          </div>
+        ) : enrolledCourses.length === 0 ? (
           <div className="p-8 text-center bg-gray-50 rounded-xl border-2 border-[#F6F2FD]">
             <h3 className="text-xl font-semibold text-gray-800">
               You are not enrolled in any courses
