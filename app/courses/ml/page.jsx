@@ -7,7 +7,7 @@ import axios from "axios";
 import MLLearningThings from "./MLLearningThings";
 import MLCertificate from "./MLCertificate";
 
-function page() {
+function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -100,4 +100,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

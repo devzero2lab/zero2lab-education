@@ -6,7 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import FlLearningThings from "./FlLearningThings";
 
-function page() {
+function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -99,4 +99,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
