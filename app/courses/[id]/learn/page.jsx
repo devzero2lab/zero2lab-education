@@ -16,18 +16,18 @@ export default function Page({ params }) {
   const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
-    // if (!isSignedIn) {
-    //   router.push("/sign-in"); // Redirect to the login page
-    //   return; // Stop further execution of this effect
-    // }
-
     const fetchCourseData = async () => {
+      if (!isSignedIn || !user) {
+        router.push("/sign-in"); // Redirect to the login page
+        return;
+      }
+
       try {
         // Fetch the courses the user is enrolled in
         const response = await axios.get(
           `${apiUrl}/api/usercourses?userId=${user.id}`
         );
-        const userCourses = response.data.userCourses;
+        const userCourses = response.data?.userCourses || [];
 
         // Check if the user is enrolled in the current course
         const isEnrolled = userCourses.some(
@@ -40,8 +40,11 @@ export default function Page({ params }) {
         }
 
         const courseResponse = await axios.get(`${apiUrl}/api/courses/${id}`);
-        setCourseData(courseResponse.data.course);
-        console.log(response.data.course);
+        if (courseResponse.data && courseResponse.data.course) {
+          setCourseData(courseResponse.data.course);
+        } else {
+          console.error("Course data not found.");
+        }
       } catch (error) {
         console.error("Error fetching course data:", error);
       } finally {
@@ -51,10 +54,6 @@ export default function Page({ params }) {
 
     fetchCourseData();
   }, [isSignedIn, user, id, apiUrl, router]);
-
-  // if (!isSignedIn) {
-  //   return null; // Prevent rendering during redirection
-  // }
 
   if (isLoading) {
     return (
@@ -72,15 +71,14 @@ export default function Page({ params }) {
     );
   }
 
-  const currentLesson = courseData.content.find(
-    (lesson) => lesson.day === currentDay
-  );
+  const currentLesson =
+    courseData.content?.find((lesson) => lesson.day === currentDay) || null;
 
   return (
     <div className="flex flex-col h-screen md:flex-row">
       {/* Sidebar */}
       <Sidebar
-        lessons={courseData.content}
+        lessons={courseData.content || []}
         currentDay={currentDay}
         setCurrentDay={setCurrentDay}
       />
