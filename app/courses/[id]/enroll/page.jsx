@@ -10,7 +10,7 @@ import { toast } from "sonner";
 export default function Checkout({ params }) {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
-
+  const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   // Initialize state hooks at the top level
@@ -100,6 +100,8 @@ export default function Checkout({ params }) {
 
     const paymentSlipUrl = slipImages[slipImages.length - 1]?.image || "";
 
+    setIsLoading(true);
+
     try {
       const response = await axios.post(`${apiUrl}/api/usercourses/`, {
         ...formData,
@@ -118,6 +120,8 @@ export default function Checkout({ params }) {
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -305,9 +309,14 @@ export default function Checkout({ params }) {
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className={`w-full px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                  isLoading
+                    ? "cursor-not-allowed opacity-70"
+                    : "hover:bg-blue-700"
+                }`}
+                disabled={isLoading}
               >
-                Submit
+                {isLoading ? "Processing..." : "Submit"}
               </button>
             </form>
           </div>
