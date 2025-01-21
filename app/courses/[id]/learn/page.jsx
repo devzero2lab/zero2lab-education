@@ -23,8 +23,24 @@ export default function Page({ params }) {
 
     const fetchCourseData = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/courses/${id}`);
-        setCourseData(response.data.course);
+        // Fetch the courses the user is enrolled in
+        const response = await axios.get(
+          `${apiUrl}/api/usercourses?userId=${user.id}`
+        );
+        const userCourses = response.data.userCourses;
+
+        // Check if the user is enrolled in the current course
+        const isEnrolled = userCourses.some(
+          (userCourse) => userCourse.courseId._id === id
+        );
+
+        if (!isEnrolled) {
+          router.push("/not-enrolled"); // Redirect if the user is not enrolled
+          return; // Stop further execution
+        }
+
+        const courseResponse = await axios.get(`${apiUrl}/api/courses/${id}`);
+        setCourseData(courseResponse.data.course);
         console.log(response.data.course);
       } catch (error) {
         console.error("Error fetching course data:", error);
@@ -34,7 +50,7 @@ export default function Page({ params }) {
     };
 
     fetchCourseData();
-  }, [isSignedIn, type, id, apiUrl, router]);
+  }, [isSignedIn, user, id, apiUrl, router]);
 
   // if (!isSignedIn) {
   //   return null; // Prevent rendering during redirection
