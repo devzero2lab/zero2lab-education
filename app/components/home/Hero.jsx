@@ -17,16 +17,50 @@ const Hero = () => {
     },
   };
 
+  const iconVariants2 = {
+    animate: {
+      rotate: 360, // Full circular rotation
+      transition: {
+        repeat: Infinity,
+        ease: "linear",
+        duration: 130, // Adjust speed
+      },
+    },
+  };
+
+  const iconVariants3 = {
+    animate: {
+      rotate: 360, // Full circular rotation
+      transition: {
+        repeat: Infinity,
+        ease: "linear",
+        duration: 110, // Adjust speed
+      },
+    },
+  };
+
+  const iconVariants4 = {
+    animate: {
+      rotate: 360, // Full circular rotation
+      transition: {
+        repeat: Infinity,
+        ease: "linear",
+        duration: 90, // Adjust speed
+      },
+    },
+  };
+
   return (
     <section className="relative overflow-clip h-[90vh] bg-gradient-to-r from-red-100 via-white to-purple-100 py-16">
       <div className="container mx-auto px-4 flex flex-col items-center text-center">
-        <div className=" z-40">
+        <div className="absolute z-40 bg-white/40 backdrop-blur-sm px-28 py-7 rounded-lg">
           <h1 className="text-6xl font-bold text-gray-800">
             Learn From <span className="text-purple-600">Experts</span>
           </h1>
           <p className="mt-4 text-gray-600">
             Take your knowledge to the next level with guided learning and practice
           </p>
+          
         </div>
 
         <div className="relative  mt-8">
@@ -75,7 +109,7 @@ const Hero = () => {
           <div className="absolute  inset-0 flex justify-center items-center">
             <motion.div
               className="absolute z-20 h-[944px] w-[944px] rounded-full border-2 border-dashed border-gray-300"
-              variants={iconVariants}
+              variants={iconVariants2}
               animate="animate"
             >
               {/* Icon 1 */}
@@ -104,7 +138,7 @@ const Hero = () => {
           <div className="absolute  inset-0 flex justify-center items-center">
             <motion.div
               className="absolute z-20 h-[744px] w-[744px] rounded-full border-2 border-dashed border-gray-300"
-              variants={iconVariants}
+              variants={iconVariants3}
               animate="animate"
             >
               {/* Icon 1 */}
@@ -134,7 +168,7 @@ const Hero = () => {
           <div className="absolute  inset-0 flex justify-center items-center">
             <motion.div
               className="absolute z-20 h-[644px] w-[644px] rounded-full border-2 border-dashed border-gray-300"
-              variants={iconVariants}
+              variants={iconVariants4}
               animate="animate"
             >
               {/* Icon 1 */}
