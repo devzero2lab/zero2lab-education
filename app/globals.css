@@ -88,3 +88,24 @@ ol {
 body {
   font-family: "Poppins", sans-serif;
 }
+
+.bg-wave {
+  background: linear-gradient(180deg, #eaf3fc 0%, #f8faff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-wave::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMjAwIDYwMCI+PHBhdGggZD0iTTAsMjUwQzM4Myw1MDAsODM3LDAsMTIwMCwwVjYwMEwwLDYwMFoiIGZpbGw9IiNlYWYzZmMiLz48cGF0aCBkPSJNMCwxMjBDMzgzLDMzMyw4MzcsMTUwLDEyMDAsMTUwVjYwMEwwLDYwMFoiIGZpbGw9IiNmOGZhZmYiIG9wYWNpdHk9Ii41Ii8+PC9zdmc+');
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.2;
+  z-index: 0;
+}
+

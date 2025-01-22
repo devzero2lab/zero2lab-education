@@ -1,63 +1,167 @@
-import React from "react";
+"use client";
 
-function Hero() {
+import Image from "next/image";
+import { motion } from "framer-motion";
+
+const Hero = () => {
+
+
+  const iconVariants = {
+    animate: {
+      rotate: 360, // Full circular rotation
+      transition: {
+        repeat: Infinity,
+        ease: "linear",
+        duration: 150, // Adjust speed
+      },
+    },
+  };
+
   return (
-    <div className="relative w-full h-[80vh] overflow-hidden">
-      {/* Background Video */}
-      <video
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source
-          src="bg2.mp4"
-          type="video/mp4"
-        />
-        Your browser does not support the video tag.
-      </video>
-
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-
-      {/* Hero Content */}
-      <div className="relative z-20 flex flex-col items-center justify-center h-full text-center text-white px-6">
-        {/* Heading */}
-        <h1 className="text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-          Explore Your <span className="text-yellow-300">Learning Path</span>
-        </h1>
-
-        <p className="text-4xl lg:text-4xl text-gray-300 mb-8 max-w-2xl">
-        Welcome to zero2lab LMS
-        </p>
-
-        {/* Subtitle */}
-        <p className="text-lg lg:text-xl text-gray-300 mb-8 max-w-2xl">
-          Take your knowledge to the next level with guided learning and practice
-        </p>
-
-        {/* Buttons */}
-        <div className="flex gap-4">
-          <button className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition">
-            Join Now
-          </button>
-          <button className="bg-orange-700  text-white px-6 py-3 rounded-lg shadow-md hover:bg-opacity-30 transition flex items-center gap-2">
-          Browse Courses
-            <span className="text-white font-bold text-lg">→</span>
-          </button>
-        </div>
-
-        {/* Trusted By Section */}
-        <div className="flex items-center gap-4 mt-6">
-          <p className="text-gray-300 text-sm">
-            Trusted by <span className="font-bold text-white">1000+ students</span> <br />
-            Rated <span className="font-bold text-yellow-400">4.5/5</span>
+    <section className="relative overflow-clip h-[90vh] bg-gradient-to-r from-red-100 via-white to-purple-100 py-16">
+      <div className="container mx-auto px-4 flex flex-col items-center text-center">
+        <div className=" z-40">
+          <h1 className="text-6xl font-bold text-gray-800">
+            Learn From <span className="text-purple-600">Experts</span>
+          </h1>
+          <p className="mt-4 text-gray-600">
+            Take your knowledge to the next level with guided learning and practice
           </p>
         </div>
+
+        <div className="relative  mt-8">
+          {/* Center Image */}
+          <div className="rounded-full overflow-hidden shadow-lg">
+            <Image
+              src="/images/homepage/hero.png"
+              alt="Smiling student"
+              width={560}
+              height={560}
+              className="object-cover"
+            />
+          </div>
+
+          {/* Rotating icons around the circle */}
+          <div className="absolute  inset-0 flex justify-center items-center">
+            <motion.div
+              className="absolute z-20 h-[544px] w-[544px] rounded-full border-2 border-dashed border-gray-300"
+              variants={iconVariants}
+              animate="animate"
+            >
+              {/* Icon 1 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
+              </div>
+
+              {/* Icon 2 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/icons/react.svg" alt="React" width={32} height={32} />
+              </div>
+
+              {/* Icon 3 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
+              </div>
+
+              {/* Icon 4 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/icons/javascript.svg" alt="JavaScript" width={32} height={32} />
+              </div>
+            </motion.div>
+          </div>
+
+
+          {/* Rotating icons around the circle */}
+          <div className="absolute  inset-0 flex justify-center items-center">
+            <motion.div
+              className="absolute z-20 h-[944px] w-[944px] rounded-full border-2 border-dashed border-gray-300"
+              variants={iconVariants}
+              animate="animate"
+            >
+              {/* Icon 1 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
+              </div>
+
+              {/* Icon 2 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/icons/react.svg" alt="React" width={32} height={32} />
+              </div>
+
+              {/* Icon 3 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
+              </div>
+
+              {/* Icon 4 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/icons/javascript.svg" alt="JavaScript" width={32} height={32} />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Rotating icons around the circle */}
+          <div className="absolute  inset-0 flex justify-center items-center">
+            <motion.div
+              className="absolute z-20 h-[744px] w-[744px] rounded-full border-2 border-dashed border-gray-300"
+              variants={iconVariants}
+              animate="animate"
+            >
+              {/* Icon 1 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
+              </div>
+
+              {/* Icon 2 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/icons/react.svg" alt="React" width={32} height={32} />
+              </div>
+
+              {/* Icon 3 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
+              </div>
+
+              {/* Icon 4 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/icons/javascript.svg" alt="JavaScript" width={32} height={32} />
+              </div>
+            </motion.div>
+          </div>
+
+
+          {/* Rotating icons around the circle */}
+          <div className="absolute  inset-0 flex justify-center items-center">
+            <motion.div
+              className="absolute z-20 h-[644px] w-[644px] rounded-full border-2 border-dashed border-gray-300"
+              variants={iconVariants}
+              animate="animate"
+            >
+              {/* Icon 1 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
+              </div>
+
+              {/* Icon 2 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/icons/react.svg" alt="React" width={32} height={32} />
+              </div>
+
+              {/* Icon 3 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
+              </div>
+
+              {/* Icon 4 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/icons/javascript.svg" alt="JavaScript" width={32} height={32} />
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
-}
+};
 
 export default Hero;
