@@ -179,24 +179,22 @@ function Page() {
         )}
       </div>
 
-      {/* Calendar Section */}
-      <div className="bg-white rounded-2xl shadow-2xl border-2 border-[#F6F2FD] p-8 mb-12">
-        {/* Header and Button in the Same Line */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="flex items-center text-3xl font-bold text-gray-800">
-            <FaChartLine className="w-8 h-8 mr-3 text-purple-500" />
-            My Meetings
-          </h2>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center w-full px-8 py-3 text-lg font-semibold text-white transition-all transform rounded-lg shadow-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:scale-105 sm:w-auto"
-          >
-            <FaCalendarAlt className="w-6 h-6 mr-3" />
-            Schedule Meetings
-          </button>
-        </div>
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-6 space-y-4 sm:space-y-0">
+  <h2 className="flex items-center text-2xl sm:text-3xl font-bold text-gray-800">
+    <FaChartLine className="w-6 h-6 sm:w-8 sm:h-8 mr-3 text-purple-500" />
+    My Meetings
+  </h2>
+  <button
+    onClick={() => setIsModalOpen(true)}
+    className="inline-flex items-center justify-center px-6 py-3 text-sm sm:text-lg font-semibold text-white transition-all transform rounded-lg shadow-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:scale-105 w-full sm:w-auto"
+  >
+    <FaCalendarAlt className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
+    Schedule Meetings
+  </button>
+</div>
+
         <MyMeetingsCalendar /> {/* Calendar component as it is */}
-      </div>
+      
 
       {/* Modal for Scheduling Form */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
