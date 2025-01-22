@@ -7,14 +7,15 @@ import Link from "next/link";
 
 function Home() {
   return (
-    <div className=" bg-[#ffffff]">
+    <div className="mt-12 bg-[#ffffff]">
       
       {/* hero section */}
       <Hero />
       {/* TechStacks */}
       {/* <TechStackIcons />  */}
       {/* Features section */} 
-      {/* <Features /> */}
+      <br/>
+      <Features />
       {/* Reviews section */}
       <div className="relative z-30 flex flex-col items-center px-4 mt-16 text-center md:px-8 lg:px-16">
         <h2 className="text-2xl font-semibold md:text-3xl lg:text-3xl">
