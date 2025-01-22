@@ -5,7 +5,7 @@ import Features from "./components/home/Features";
 import Reviews from "./components/home/Reviews";
 import Link from "next/link";
 
-function Home() {
+function Home() { 
   return (
     <div className="mt-12 bg-[#ffffff]">
       
