@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Loader = () => {
+const Loader = () => { 
   const [isLoading, setIsLoading] = useState(true);
 
   if (!isLoading) return null;
