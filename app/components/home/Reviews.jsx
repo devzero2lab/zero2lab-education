@@ -97,7 +97,7 @@ const Reviews = () => {
           x: ["0%", "-100%"],
           transition: {
             ease: "linear",
-            duration: 60, // Adjust speed here
+            duration: 260, // Adjust speed here
             repeat: Infinity,
           },
         }}

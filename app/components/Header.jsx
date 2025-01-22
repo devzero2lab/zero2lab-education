@@ -12,7 +12,7 @@ function Header() {
   };
 
   return (
-    <nav className="fixed top-0 z-40 flex items-center justify-between w-full px-4 bg-white shadow-sm h-14 md:px-16 lg:px-32">
+    <nav className="fixed top-0 z-50 flex items-center justify-between w-full px-4 bg-white shadow-sm h-14 md:px-16 lg:px-32">
       {/* Logo */}
       <Link href="/" className="text-xl font-bold text-black lg:text-2xl">
         Zero2learn

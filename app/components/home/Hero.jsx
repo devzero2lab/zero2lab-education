@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { BookOpenText } from "lucide-react";
 
 const Hero = () => {
 
@@ -51,26 +52,35 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative overflow-clip h-[60vh] bg-gradient-to-r from-red-100 via-white to-purple-100 py-16">
-      <div className="container mx-auto px-4 flex flex-col items-center text-center">
-        <div className="absolute z-40 bg-white/40 backdrop-blur-sm px-28 py-7 rounded-lg">
-          <h1 className="text-6xl font-bold text-gray-800">
-            Learn From <span className="text-purple-600">Experts</span>
+    <section className="relative overflow-clip h-[57vh] bg-gradient-to-r from-[#d2e5fe] via-white to-[#cffade] py-16">
+      <div className="container mx-auto px-4 flex flex-col items-end text-center">
+        <div className="absolute left-0 w-8/12 h-full flex flex-col items-center mt-20 top-10   z-40    px-28 py-7 rounded-lg">
+          <h1 className="text-7xl font-bold text-center">
+            Learn From <span className="text-red-600">Experts</span>
           </h1>
+
           <p className="mt-4 text-gray-600">
             Take your knowledge to the next level with guided learning and practice
           </p>
-          
+
         </div>
 
-        <div className="relative  mt-8">
+        <div className="absolute left-40 top-20 inline-flex items-center bg-gradient-to-r from-red-500 to-pink-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow">
+              <BookOpenText className="mr-2 h-5 w-5" />
+              <span className="font-bold">Welcome to zero2learn</span>
+            </div>
+
+        
+        
+
+        <div className="relative  ">
           {/* Center Image */}
           <div className="rounded-full overflow-hidden shadow-lg">
             <Image
               src="/images/homepage/hero.png"
               alt="Smiling student"
-              width={360}
-              height={360}
+              width={340}
+              height={340}
               className="object-cover"
             />
           </div>
@@ -82,18 +92,28 @@ const Hero = () => {
               variants={iconVariants}
               animate="animate"
             >
-              
+
+              {/* Icon 1 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/images/homepage/python.svg" alt="Python" width={32} height={32} />
+              </div>
+
 
               {/* Icon 2 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
-                <Image src="/icons/react.svg" alt="React" width={32} height={32} />
+                <Image src="/images/homepage/python.svg" alt="React" width={32} height={32} />
               </div>
 
-             
+              {/* Icon 3 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/images/homepage/python.svg" alt="Figma" width={32} height={32} />
+              </div>
+
+
 
               {/* Icon 4 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
-                <Image src="/icons/javascript.svg" alt="JavaScript" width={32} height={32} />
+                <Image src="/images/homepage/python.svg" alt="JavaScript" width={32} height={32} />
               </div>
             </motion.div>
           </div>
@@ -106,18 +126,28 @@ const Hero = () => {
               variants={iconVariants2}
               animate="animate"
             >
-              
+
+              {/* Icon 1 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/images/homepage/python.svg" alt="Python" width={32} height={32} />
+              </div>
+
 
               {/* Icon 2 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
-                <Image src="/icons/react.svg" alt="React" width={32} height={32} />
+                <Image src="/images/homepage/python.svg" alt="React" width={32} height={32} />
               </div>
 
-              
+              {/* Icon 3 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
+                <Image src="/images/homepage/python.svg" alt="Figma" width={32} height={32} />
+              </div>
+
+
 
               {/* Icon 4 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
-                <Image src="/icons/javascript.svg" alt="JavaScript" width={32} height={32} />
+                <Image src="/images/homepage/python.svg" alt="JavaScript" width={32} height={32} />
               </div>
             </motion.div>
           </div>
@@ -131,17 +161,20 @@ const Hero = () => {
             >
               {/* Icon 1 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
-                <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
+                <Image src="/images/homepage/python.svg" alt="Python" width={32} height={32} />
               </div>
 
-             
+              {/* Icon 2 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/images/homepage/python.svg" alt="React" width={32} height={32} />
+              </div>
 
               {/* Icon 3 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
-                <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
+                <Image src="/images/homepage/python.svg" alt="Figma" width={32} height={32} />
               </div>
 
-              
+
             </motion.div>
           </div>
 
@@ -155,17 +188,21 @@ const Hero = () => {
             >
               {/* Icon 1 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
-                <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
+                <Image src="/images/homepage/python.svg" alt="Python" width={32} height={32} />
               </div>
 
-             
+              {/* Icon 2 */}
+              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
+                <Image src="/images/homepage/python.svg" alt="React" width={32} height={32} />
+              </div>
+
 
               {/* Icon 3 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
-                <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
+                <Image src="/images/homepage/python.svg" alt="Figma" width={32} height={32} />
               </div>
 
-              
+
             </motion.div>
           </div>
         </div>
