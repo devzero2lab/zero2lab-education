@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import FDLearningThings from "./FDLearningThings";
 
-function page() {
+function Page() {
   return (
     <div className="mx-12 mt-20 lg:mx-32">
       <div className="relative z-30 h-full">
@@ -51,4 +51,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
