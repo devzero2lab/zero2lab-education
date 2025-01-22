@@ -51,7 +51,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative overflow-clip h-[90vh] bg-gradient-to-r from-red-100 via-white to-purple-100 py-16">
+    <section className="relative overflow-clip h-[60vh] bg-gradient-to-r from-red-100 via-white to-purple-100 py-16">
       <div className="container mx-auto px-4 flex flex-col items-center text-center">
         <div className="absolute z-40 bg-white/40 backdrop-blur-sm px-28 py-7 rounded-lg">
           <h1 className="text-6xl font-bold text-gray-800">
@@ -69,8 +69,8 @@ const Hero = () => {
             <Image
               src="/images/homepage/hero.png"
               alt="Smiling student"
-              width={560}
-              height={560}
+              width={360}
+              height={360}
               className="object-cover"
             />
           </div>
