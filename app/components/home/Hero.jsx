@@ -82,20 +82,14 @@ const Hero = () => {
               variants={iconVariants}
               animate="animate"
             >
-              {/* Icon 1 */}
-              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
-                <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
-              </div>
+              
 
               {/* Icon 2 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
                 <Image src="/icons/react.svg" alt="React" width={32} height={32} />
               </div>
 
-              {/* Icon 3 */}
-              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
-                <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
-              </div>
+             
 
               {/* Icon 4 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
@@ -112,20 +106,14 @@ const Hero = () => {
               variants={iconVariants2}
               animate="animate"
             >
-              {/* Icon 1 */}
-              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center top-0 left-1/2 transform -translate-x-1/2">
-                <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
-              </div>
+              
 
               {/* Icon 2 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
                 <Image src="/icons/react.svg" alt="React" width={32} height={32} />
               </div>
 
-              {/* Icon 3 */}
-              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
-                <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
-              </div>
+              
 
               {/* Icon 4 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
@@ -146,20 +134,14 @@ const Hero = () => {
                 <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
               </div>
 
-              {/* Icon 2 */}
-              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
-                <Image src="/icons/react.svg" alt="React" width={32} height={32} />
-              </div>
+             
 
               {/* Icon 3 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
                 <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
               </div>
 
-              {/* Icon 4 */}
-              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
-                <Image src="/icons/javascript.svg" alt="JavaScript" width={32} height={32} />
-              </div>
+              
             </motion.div>
           </div>
 
@@ -176,20 +158,14 @@ const Hero = () => {
                 <Image src="/icons/python.svg" alt="Python" width={32} height={32} />
               </div>
 
-              {/* Icon 2 */}
-              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center right-0 top-1/2 transform -translate-y-1/2">
-                <Image src="/icons/react.svg" alt="React" width={32} height={32} />
-              </div>
+             
 
               {/* Icon 3 */}
               <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center bottom-0 left-1/2 transform -translate-x-1/2">
                 <Image src="/icons/figma.svg" alt="Figma" width={32} height={32} />
               </div>
 
-              {/* Icon 4 */}
-              <div className="absolute w-12 h-12 rounded-full bg-white shadow-md flex justify-center items-center left-0 top-1/2 transform -translate-y-1/2">
-                <Image src="/icons/javascript.svg" alt="JavaScript" width={32} height={32} />
-              </div>
+              
             </motion.div>
           </div>
         </div>
