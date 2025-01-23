@@ -52,38 +52,80 @@ const Hero = () => {
     },
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 }
+    }
+  };
+
+  
+
   return (
     <section className="relative overflow-clip h-[60vh] md:h-[30vw]  [background:radial-gradient(125%_125%_at_50%_20%,#111212_46%,#1e0f4d_100%)] py-16">
-      <div className="container mx-auto px-4 flex flex-col items-end text-center">
-        <div className="absolute  left-0 w-full  md:w-8/12 h-full flex flex-col  items-start mt-[5vh]    z-40 px-6    md:px-28 py-7 rounded-lg">
-
-          <div className="relative -top-10 inline-flex items-center shadow-white/20 bg-white text-black px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow">
+      <motion.div 
+        className="container mx-auto px-4 flex flex-col items-end text-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div 
+          className="absolute left-0 w-full md:w-8/12 h-full flex flex-col items-start mt-[5vh] z-40 px-6 md:px-28 py-7 rounded-lg"
+          variants={containerVariants}
+        >
+          <motion.div 
+            className="relative -top-10 inline-flex items-center shadow-white/20 bg-white text-black px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+            variants={itemVariants}
+          >
             <BookOpenText className="mr-2 h-5 w-5" />
             <span className="font-bold">Welcome to zero2learn</span>
-          </div>
+          </motion.div>
 
-          <h1 className="text-4xl md:text-5xl  font-bold animate-glow"
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold animate-glow"
             style={{
               backgroundImage: 'linear-gradient(45deg, #39e991, #27d48c, #1abf77)',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               color: 'transparent',
               filter: 'drop-shadow(0 0 12px rgba(57, 233, 145, 0.4))',
-            }}>
+            }}
+            variants={itemVariants}
+          >
             Learn From <span className="text-white">Experts</span>
-          </h1>
+          </motion.h1>
 
-          <p className="mt-4 text-white">
+          <motion.p 
+            className="mt-4 text-white"
+            variants={itemVariants}
+          >
             Take your knowledge to the next level with guided learning and practice
-          </p>
+          </motion.p>
           <br />
 
-          <Link href={'/courses'} className="cursor-pointer inline-flex items-center bg-blue-300 text-black px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-shadow">
-            <BookOpenText className="mr-2 h-5 w-5" />
-            <span className="font-bold ">Browse Courses</span>
-          </Link>
-
-        </div>
+          <motion.div variants={itemVariants}>
+            <Link 
+              href={'/courses'} 
+              className="cursor-pointer inline-flex items-center bg-blue-300 text-black px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <BookOpenText className="mr-2 h-5 w-5" />
+              <span className="font-bold">Browse Courses</span>
+            </Link>
+          </motion.div>
+        </motion.div>
 
 
 
@@ -228,7 +270,7 @@ const Hero = () => {
             </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
