@@ -45,10 +45,10 @@ function Features() {
   return (
     <section className="relative z-30 flex flex-col items-center w-full pb-16 bg-gradient-to-b from-white to-gray-50">
       <div className="text-center mb-7">
-        <h2 className="mb-4 text-5xl font-bold text-gray-900 font-inter">
+        <h2 className="mb-4 text-3xl font-bold text-gray-900 font-inter">
           Most Popular Courses
         </h2>
-        <p className="text-xl text-gray-600">
+        <p className="text-sm text-gray-600">
           Master new skills with our best-selling courses
         </p>
       </div>

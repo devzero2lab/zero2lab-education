@@ -17,11 +17,11 @@ function Home() {
       <br/>
       <Features />
       {/* Reviews section */}
-      <div className="relative z-30 flex flex-col items-center px-4 mt-16 text-center md:px-8 lg:px-16">
+      <div className="relative z-30 flex flex-col items-center px-4 mt-5 text-center md:px-8 lg:px-16">
         <h2 className="text-2xl font-semibold md:text-3xl lg:text-3xl">
           See for yourself what others think
         </h2>
-        <p className="text-sm text-[#626262] md:text-base lg:text-lg mt-2">
+        <p className="text-sm text-[#626262] md:text-base lg:text-sm mt-2">
           Master coding and design to achieve your goals with expert guidance
         </p>
         <Reviews />

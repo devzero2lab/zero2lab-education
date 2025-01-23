@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { BookOpenText } from "lucide-react";
+import Link from "next/link";
 
 const Hero = () => {
 
@@ -52,10 +53,16 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative overflow-clip h-[30vw]  [background:radial-gradient(125%_125%_at_50%_20%,#111212_46%,#1e0f4d_100%)] py-16">
+    <section className="relative overflow-clip h-[60vh] md:h-[30vw]  [background:radial-gradient(125%_125%_at_50%_20%,#111212_46%,#1e0f4d_100%)] py-16">
       <div className="container mx-auto px-4 flex flex-col items-end text-center">
-        <div className="absolute  left-0 w-8/12 h-full flex flex-col items-start mt-[12vh]    z-40    px-28 py-7 rounded-lg">
-          <h1 className="text-4xl md:text-7xl font-bold animate-glow"
+        <div className="absolute  left-0 w-full  md:w-8/12 h-full flex flex-col  items-start mt-[5vh]    z-40 px-6    md:px-28 py-7 rounded-lg">
+
+          <div className="relative -top-10 inline-flex items-center shadow-white/20 bg-white text-black px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow">
+            <BookOpenText className="mr-2 h-5 w-5" />
+            <span className="font-bold">Welcome to zero2learn</span>
+          </div>
+
+          <h1 className="text-4xl md:text-5xl  font-bold animate-glow"
             style={{
               backgroundImage: 'linear-gradient(45deg, #39e991, #27d48c, #1abf77)',
               WebkitBackgroundClip: 'text',
@@ -71,30 +78,27 @@ const Hero = () => {
           </p>
           <br />
 
-          <div className="shadow-white/30 inline-flex items-center bg-blue-300 text-black px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-shadow">
+          <Link href={'/courses'} className="cursor-pointer inline-flex items-center bg-blue-300 text-black px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-shadow">
             <BookOpenText className="mr-2 h-5 w-5" />
-            <span className="font-bold ">browsers course</span>
-          </div>
+            <span className="font-bold ">Browse Courses</span>
+          </Link>
 
         </div>
 
 
-        
 
 
 
 
-        <div className="absolute left-28 top-28 inline-flex items-center shadow-white/20 bg-white text-black px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow">
-          <BookOpenText className="mr-2 h-5 w-5" />
-          <span className="font-bold">Welcome to zero2learn</span>
-        </div>
+
+
 
 
 
 
         <div className="relative   ">
           {/* Center Image */}
-          <div className="rounded-full overflow-hidden shadow-2xl shadow-white/50 bg-white ">
+          <div className="rounded-full invisible md:visible overflow-hidden shadow-2xl shadow-white/50 bg-white ">
             <Image
               src="/images/homepage/hero.png"
               alt="Smiling student"
