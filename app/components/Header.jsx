@@ -46,13 +46,13 @@ function Header() {
       {/* Mobile Menu Button */}
       <div className="md:hidden">
         <button onClick={toggleMenu} className="focus:outline-none">
-          <Menu size={28} className="text-black" />
+          <Menu size={28} className="text-black " />
         </button>
       </div>
 
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 z-50 flex flex-col items-center justify-center space-y-6 bg-white transition-transform duration-300 md:hidden ${
+        className={`fixed  inset-0 h-screen w-[70vw] z-50 flex flex-col items-center justify-center space-y-6 bg-white transition-transform duration-300 md:hidden ${
           isMenuOpen
             ? "translate-x-0 opacity-100"
             : "-translate-x-full opacity-0"
@@ -81,7 +81,7 @@ function Header() {
           <UserButton />
           <Link
             href="/dashboard"
-            className="bg-[#5e6ef6] text-black px-4 py-2 rounded-lg font-bold"
+            className="bg-[#5e6ef6] text-white px-4 py-2 rounded-lg font-bold"
           >
             Dashboard
           </Link>
