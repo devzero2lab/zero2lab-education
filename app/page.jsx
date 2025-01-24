@@ -2,7 +2,7 @@ import React from "react";
 import Hero from "./components/home/Hero";
 import TechStackIcons from "./components/home/TechStack";
 import Features from "./components/home/Features";
-import Reviews from "./components/home/Reviews";
+import Reviews from "./components/home/Reviews"; 
 import Link from "next/link";
 
 function Home() { 
