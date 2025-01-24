@@ -13,7 +13,6 @@ export default function Checkout({ params }) {
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  // Initialize state hooks at the top level
   const [course, setCourse] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
@@ -26,7 +25,6 @@ export default function Checkout({ params }) {
   const [slipImages, setSlipImages] = useState([]);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
-  // Fetch user details once loaded
   useEffect(() => {
     if (isLoaded && isSignedIn) {
       setFormData((prevFormData) => ({
@@ -39,7 +37,6 @@ export default function Checkout({ params }) {
     }
   }, [isLoaded, isSignedIn, user]);
 
-  // Fetch course name based on course ID
   useEffect(() => {
     const fetchCourseName = async () => {
       try {
@@ -57,12 +54,11 @@ export default function Checkout({ params }) {
     }
   }, [formData.courseId, apiUrl]);
 
-  // Handle file upload completion
   const handleUploadComplete = (res) => {
     if (res && res.length > 0) {
       const uploadedFileUrl = res[0]?.url;
       setSlipImages((prev) => [...prev, { image: uploadedFileUrl }]);
-      setUploadedImageUrl(uploadedFileUrl); // Store the uploaded image URL for display
+      setUploadedImageUrl(uploadedFileUrl);
     } else {
       alert("Upload Completed! No files returned.");
     }
@@ -79,7 +75,6 @@ export default function Checkout({ params }) {
 
   const handlePayment = async (e) => {
     e.preventDefault();
-
     const whatsappNumberRegex = /^\d{10}$/;
 
     if (
@@ -99,7 +94,6 @@ export default function Checkout({ params }) {
     }
 
     const paymentSlipUrl = slipImages[slipImages.length - 1]?.image || "";
-
     setIsLoading(true);
 
     try {
@@ -125,201 +119,208 @@ export default function Checkout({ params }) {
     }
   };
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
-
+  if (!isLoaded) return <div>Loading...</div>;
   if (!isSignedIn) {
     router.push("/sign-in");
     return null;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-8 px-6 py-12 bg-gray-50">
-      <main className="w-full max-w-4xl">
-        <section className="p-6 mt-12 shadow-xl bg-gradient-to-r from-blue-100 to-blue-200 rounded-2xl">
-          <h2 className="text-4xl font-extrabold tracking-wide text-center text-gray-800">
-            Checkout For {course.courseName || "Loading..."}
-          </h2>
-          <div className="p-6 mt-8 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl">
-            <h3 className="pb-2 mb-4 text-2xl font-semibold text-blue-600 border-b-4 border-blue-300">
-              Bank Details
-            </h3>
-            <ul className="space-y-3 text-lg text-gray-700">
-              <li className="flex items-center">
-                <span className="w-48 font-bold text-gray-800">
-                  Account Name:
-                </span>
-                <span className="text-gray-600">T.D Jayadeera</span>
-              </li>
-              <li className="flex items-center">
-                <span className="w-48 font-bold text-gray-800">
-                  Account Number:
-                </span>
-                <span className="text-gray-600">89714441</span>
-              </li>
-              <li className="flex items-center">
-                <span className="w-48 font-bold text-gray-800">Bank Name:</span>
-                <span className="text-gray-600">BOC - Dikwella</span>
-              </li>
-            </ul>
-            <div className="p-5 mt-6 transition-shadow duration-300 rounded-lg shadow-md bg-gradient-to-r from-green-100 to-green-200 hover:shadow-lg">
-              <h4 className="mb-4 text-xl font-bold text-green-800">
-                Course Details
-              </h4>
-              <p className="mb-2 text-gray-800">
-                <span className="font-bold">Course Name:</span>{" "}
-                {course.courseName}
-              </p>
-              <p className="mb-2 text-gray-800">
-                <span className="font-bold">Price:</span> Rs.{course.price}
-              </p>
-              <p className="mb-2 text-gray-800">
-                <span className="font-bold">Duration:</span> {course.duration}
-              </p>
-              <p className="text-gray-800">
-                <span className="font-bold">Level:</span> {course.level}
-              </p>
+    <div className="min-h-screen bg-gradient-to-br mt-10 from-gray-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-6xl mx-auto space-y-12">
+        {/* Course Header Section */}
+        <section className="bg-white rounded-2xl shadow-xl p-8 transform transition-all hover:shadow-2xl">
+          <h1 className="text-4xl font-bold text-gray-900 text-center mb-6">
+            Enroll in{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              {course.courseName || "Your Course"}
+            </span>
+          </h1>
+          
+          {/* Payment Details Card */}
+          <div className=" rounded-xl p-6 ">
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Bank Details */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                  Bank Transfer Details
+                </h2>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <span className="font-medium text-gray-700">Account Name:</span>
+                    <span className="text-gray-600">T.D Jayadeera</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <span className="font-medium text-gray-700">Account Number:</span>
+                    <span className="text-gray-600">89714441</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <span className="font-medium text-gray-700">Bank Name:</span>
+                    <span className="text-gray-600">BOC - Dikwella</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Course Details */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Course Overview
+                </h2>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <span className="font-medium text-gray-700">Price:</span>
+                    <span className="text-blue-600 font-semibold">Rs.{course.price}</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <span className="font-medium text-gray-700">Duration:</span>
+                    <span className="text-gray-600">{course.duration}</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <span className="font-medium text-gray-700">Level:</span>
+                    <span className="text-gray-600">{course.level}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
-        <section className="p-6 mt-8 bg-white shadow-lg rounded-2xl">
-          <h3 className="mb-6 text-2xl font-semibold text-gray-800">
-            Payment Details
-          </h3>
-          <div className="flex flex-col lg:flex-row lg:space-x-8">
-            {/* Full Payment Section */}
-            {/* Full Payment Section */}
-            <div className="w-full lg:w-1/2">
-              <h4 className="mb-4 text-xl font-semibold text-gray-800">
-                Upload Slip
-              </h4>
-              <div className="flex items-center justify-center mb-4">
-                <Image
-                  src="/images/payment/payment.jpg"
-                  alt="PayHere"
-                  width={200}
-                  height={200}
-                  className="rounded-lg shadow-md"
-                />
-              </div>
-              <div className="mb-4 text-gray-600">
-                Upload Bank Payment Slip Or Screenshot Here
-              </div>
-              <div className="p-4 text-white border rounded-lg shadow-lg">
-                <UploadButton
-                  className="w-full py-4 font-medium text-white transition-all duration-300 rounded-xl sm:w-auto"
-                  appearance={{
-                    button: {
-                      padding: "1rem 1rem",
-                      fontSize: "1rem",
-                      fontWeight: "600",
-                      background: "linear-gradient(to right, #4F46E5, #3B82F6)",
-                      color: "#FFFFFF",
-                    },
-                  }}
-                  endpoint="imageUploader"
-                  onClientUploadComplete={(res) =>
-                    handleUploadComplete(res, "full")
-                  }
-                  onUploadError={handleUploadError}
-                />
-              </div>
-              {/* Display Uploaded Image */}
-              {uploadedImageUrl && (
-                <div className="my-4">
-                  <h5 className="text-xl font-semibold text-gray-800">
-                    Uploaded Image Preview:
-                  </h5>
-                  <img
-                    src={uploadedImageUrl}
-                    alt="Uploaded Payment Slip"
-                    className="h-auto max-w-full mt-2 rounded-lg shadow-lg"
-                  />
-                </div>
-              )}
+
+        {/* Payment Section */}
+        <section className="grid lg:grid-cols-2 gap-8">
+          {/* Upload Section */}
+          <div className="bg-white rounded-2xl shadow-xl p-6">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              Upload Payment Slip
+            </h3>
+            
+            <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center mb-6">
+              <Image
+                src="/images/payment/payment.jpg"
+                alt="Payment Instructions"
+                width={300}
+                height={200}
+                className="rounded-lg mx-auto mb-6 shadow-md"
+              />
+              <UploadButton
+                className="w-full"
+                appearance={{
+                  button: "w-full py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300",
+                  allowedContent: "text-gray-500 text-sm"
+                }}
+                endpoint="imageUploader"
+                onClientUploadComplete={handleUploadComplete}
+                onUploadError={handleUploadError}
+              />
+              <p className="mt-4 text-sm text-gray-500">
+                Supported formats: PNG, JPG, JPEG (Max 4MB)
+              </p>
             </div>
 
-            {/* User Details Form */}
-            <form
-              onSubmit={handlePayment}
-              className="w-full space-y-4 lg:w-1/2"
-            >
-              <h4 className="mb-4 text-xl font-semibold text-gray-800">
-                User Details
-              </h4>
+            {uploadedImageUrl && (
+              <div className="mt-6">
+                <h4 className="text-lg font-medium text-gray-800 mb-3">Uploaded Slip Preview:</h4>
+                <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
+                  <img
+                    src={uploadedImageUrl}
+                    alt="Payment Slip Preview"
+                    className="w-full h-64 object-contain bg-gray-50"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* User Details Form */}
+          <form onSubmit={handlePayment} className="bg-white rounded-2xl shadow-xl p-6">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Student Information
+            </h3>
+
+            <div className="space-y-5">
               <div>
-                <label className="block text-lg font-medium text-gray-700">
-                  First Name
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
                 <input
                   type="text"
                   name="firstName"
                   value={formData.firstName}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 mt-1 text-gray-700 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  placeholder="Enter your first name"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
                   disabled
                 />
               </div>
 
               <div>
-                <label className="block text-lg font-medium text-gray-700">
-                  Last Name
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
                 <input
                   type="text"
                   name="lastName"
                   value={formData.lastName}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 mt-1 text-gray-700 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  placeholder="Enter your last name"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
                   disabled
                 />
               </div>
 
               <div>
-                <label className="block text-lg font-medium text-gray-700">
-                  Email
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 mt-1 text-gray-700 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  placeholder="Enter your email"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
                   disabled
                 />
               </div>
 
               <div>
-                <label className="block text-lg font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   WhatsApp Number
+                  <span className="text-red-500 ml-1">*</span>
                 </label>
                 <input
                   type="tel"
                   name="whatsappNumber"
                   value={formData.whatsappNumber}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 mt-1 text-gray-700 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  placeholder="Enter your WhatsApp number"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter 10-digit WhatsApp number"
                 />
+                <p className="mt-2 text-sm text-gray-500">Include country code if not Sri Lanka</p>
               </div>
 
               <button
                 type="submit"
-                className={`w-full px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                  isLoading
-                    ? "cursor-not-allowed opacity-70"
-                    : "hover:bg-blue-700"
-                }`}
                 disabled={isLoading}
+                className={`w-full py-4 px-6 text-lg font-semibold text-white rounded-lg transition-all ${
+                  isLoading 
+                    ? "bg-gray-400 cursor-not-allowed" 
+                    : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
+                }`}
               >
-                {isLoading ? "Processing..." : "Submit"}
+                {isLoading ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                    </svg>
+                    Processing Enrollment...
+                  </span>
+                ) : (
+                  "Complete Enrollment"
+                )}
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
         </section>
       </main>
     </div>
