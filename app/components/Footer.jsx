@@ -44,6 +44,12 @@ function Footer() {
           </ul>
         </div>
       </div>
+      {/* Copyright Section */}
+      <div className="pt-4 mt-6 text-center border-gray-200">
+        <p className="text-sm text-gray-600">
+          © {new Date().getFullYear()} Zero2learn. All rights reserved.
+        </p>
+      </div>
     </footer>
   );
 }
