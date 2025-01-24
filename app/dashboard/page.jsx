@@ -227,7 +227,7 @@ function Page() {
           </button>
         </div>
 
-        <div className="p-6">
+        <div>
           <MyMeetingsCalendar />
         </div>
       </section>
