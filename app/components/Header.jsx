@@ -36,7 +36,7 @@ function Header() {
           <UserButton />
           <Link
             href="/dashboard"
-            className="bg-[#5e6ef6] text-black px-4 py-2 rounded-lg font-bold"
+            className="bg-[#5e6ef6] text-white px-4 py-2 rounded-lg font-bold"
           >
             Dashboard
           </Link>

@@ -95,15 +95,15 @@ function Features() {
         </motion.p>
       </motion.div>
 
-      <motion.div 
+      <div
         className="grid max-w-7xl grid-cols-1 gap-8 px-5 mx-auto sm:grid-cols-2 lg:grid-cols-3"
-        variants={containerVariants}
+        
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "0px 0px -100px 0px" }}
       >
         {courses.map((course) => (
-          <motion.div
+          <div
             key={course.id}
             variants={itemVariants}
             whileHover="hover"
@@ -111,11 +111,10 @@ function Features() {
           >
             <Link href="/courses" className="block" aria-label={`Course: ${course.title}`}>
               {/* Course Image */}
-              <motion.div 
+              <div
                 className="overflow-hidden rounded-xl"
-                variants={cardHoverVariants}
               >
-                <motion.div
+                <div
                   className="overflow-hidden rounded-xl"
                   whileHover="hover"
                 >
@@ -126,17 +125,17 @@ function Features() {
                     src={course.image}
                     alt={course.title}
                   />
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
 
               
             </Link>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
 
       {/* Call to Action */}
-      <motion.div 
+      <div
         className="mt-12"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -148,7 +147,7 @@ function Features() {
         >
           View All Courses
         </Link>
-      </motion.div>
+      </div>
     </section>
   );
 }

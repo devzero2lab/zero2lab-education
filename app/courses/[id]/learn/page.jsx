@@ -79,6 +79,7 @@ export default function Page({ params }) {
 
   const currentLesson =
     courseData.content?.find((lesson) => lesson.day === currentDay) || null;
+  console.log(currentLesson)
 
   return (
     <div className="flex flex-col h-screen md:flex-row">
@@ -89,7 +90,7 @@ export default function Page({ params }) {
         setCurrentDay={setCurrentDay}
       />
       {/* Video Section */}
-      <VideoSection lesson={currentLesson} />
+      <VideoSection currentLesson={currentLesson} />
     </div>
   );
 }
