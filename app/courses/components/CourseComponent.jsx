@@ -21,7 +21,7 @@ function CourseComponent({ course }) {
         <BookOpen size={20} />
       </div>
       <div className="flex items-center justify-between mt-4 text-sm">
-        <span className="font-medium bg-[#1dd506] text-white px-3 py-1 rounded-full">
+        <span className="font-medium bg-[#0614d5] text-white px-3 py-1 rounded-full">
           {course.level}
         </span>
         <div className="flex items-center gap-1">

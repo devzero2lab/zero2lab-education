@@ -6,6 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import MLLearningThings from "./MLLearningThings";
 import MLCertificate from "./MLCertificate";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -40,31 +41,34 @@ function Page() {
   }, [isLoaded, isSignedIn, user, courseId, apiUrl]);
 
   return (
-    <div className="mx-12 mt-20 lg:mx-32">
+    <div className="mx-5 md:mx-12 mt-20 lg:mx-32">
       <div className="relative z-30 h-full">
-        {/* hero section */}
+        {/* Hero Section */}
         <section className="grid grid-cols-1 mt-10 lg:grid-cols-2 lg:gap-20">
-          <div className="relative w-full h-full">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="relative flex-1"
+          >
             <Image
-              src={"/images/courses/ml/cimage.jpeg"}
-              alt="course-image"
-              width={500}
+              src="/images/courses/ml/cimage.jpeg"
+              alt="Machine Learning Course"
+              width={600}
               height={400}
-              className="object-contain w-full h-full"
+              className="rounded-2xl shadow-xl"
+              priority
             />
-          </div>
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-300 rounded-full blur-xl opacity-30" />
+          </motion.div>
+
           <div className="flex flex-col mt-5 max-w-full lg:max-w-[700px]">
-            <p className="text-2xl font-bold md:text-4xl xl:text-5xl">
-              Machine Learning Course
+            <h1 className="text-2xl font-bold md:text-4xl xl:text-5xl">
+              Machine Learning Professional Certification
+            </h1>
+            <p className="my-4 text-lg font-medium text-gray-600 xl:text-xl">
+              Master Python-based ML fundamentals and advanced techniques
             </p>
-            <p className="my-2 font-semibold text-1xl opacity-90 xl:text-lg">
-              Professional Certification
-            </p>
-            <p className="font-semibold text-1xl xl:text-lg opacity-90">
-              Learn the essentials of machine learning with Python.This course
-              covers core concepts like supervised and unsupervised learning,
-              decision trees, and regression models to kickstart your AI career.
-            </p>
+            
             {loading ? (
               <div className="flex items-center justify-center px-5 py-3 my-4 text-lg font-bold text-white bg-gray-500 rounded-lg md:w-60">
                 Loading...
@@ -72,30 +76,65 @@ function Page() {
             ) : isEnrolled ? (
               <Link
                 href="/dashboard"
-                className="flex items-center justify-center px-5 py-3 my-4 text-lg font-bold text-white bg-green-600 rounded-lg md:w-60"
+                className="flex items-center justify-center px-5 py-3 my-4 text-lg font-bold text-white transition-transform bg-green-600 rounded-lg md:w-60 hover:scale-105"
               >
-                Go to the Dashboard
+                Continue Learning
               </Link>
             ) : (
-              <Link
-                href={`/courses/${courseId}/enroll`}
-                className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg my-4 md:w-60"
-              >
-                Enroll Now
-              </Link>
+              <div className="flex flex-col my-4 md:flex-row gap-4">
+                <Link 
+                  href="#curriculum"
+                  className="flex items-center justify-center bg-[#8933c2] text-white font-bold text-lg px-5 py-3 rounded-lg md:w-60 hover:bg-[#6b2596] transition-colors"
+                >
+                  View Curriculum
+                </Link>
+                <Link
+                  href={`/courses/${courseId}/enroll`}
+                  className="flex items-center justify-center bg-[#5e53ff] text-white font-bold text-lg px-5 py-3 rounded-lg md:w-60 hover:bg-[#483dff] transition-colors"
+                >
+                  Enroll Now
+                </Link>
+              </div>
             )}
           </div>
         </section>
-        <div className="my-5"></div>
-        {/* learning things */}
-        <MLLearningThings />
-        {/* certificate section */}
-        <MLCertificate />
+
+        {/* Course Introduction Video */}
+        <section className="pt-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-2 text-center">
+              <h2 className="text-3xl font-bold md:text-4xl">
+                Course Introduction
+              </h2>
+              <p className="mt-4 text-gray-600 md:text-lg">
+                Watch this overview to see what you'll achieve in this course
+              </p>
+            </div>
+            
+            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/A3ltFssuAKg"
+                title="Machine Learning Course Introduction"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Course Components */}
+        <div className="my-1">
+          <MLLearningThings />
+        </div>
+
+        {/* Gradient Background Elements */}
+        <div className="absolute top-0 left-0 w-[200px] sm:w-1/3 h-[200px] bg-blue-200 rounded-full blur-[50px] -z-10" />
+        <div className="absolute bottom-0 right-0 w-[200px] sm:w-1/3 h-[200px] bg-green-200 rounded-full blur-[50px] -z-10" />
       </div>
-      {/* Blue gradient on the left */}
-      <div className="absolute top-0 left-0 w-[200px] sm:w-1/3 h-[200px] bg-blue-200 rounded-full blur-[50px]"></div>
-      {/* Green gradient on the right */}
-      <div className="absolute bottom-0 right-0 w-[200px] sm:w-1/3 h-[200px] bg-green-200 rounded-full blur-[50px]"></div>
     </div>
   );
 }
