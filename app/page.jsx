@@ -8,7 +8,7 @@ import Link from "next/link";
 function Home() { 
   return (
     <div className="mt-12 bg-[#ffffff]"> 
-      
+       
       {/* hero section */}
       <Hero />
       {/* TechStacks */}
