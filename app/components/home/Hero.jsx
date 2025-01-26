@@ -75,7 +75,7 @@ const Hero = () => {
   
 
   return (
-    <section className="relative overflow-clip h-[60vh] md:h-[30vw]  [background:radial-gradient(125%_125%_at_50%_20%,#111212_46%,#1e0f4d_100%)] py-16">
+    <section className="relative overflow-clip h-[60vh] md:h-[33vw]  [background:radial-gradient(125%_125%_at_50%_20%,#111212_46%,#1e0f4d_100%)] py-16">
       <motion.div 
         className="container mx-auto px-4 flex flex-col items-end text-center"
         variants={containerVariants}
