@@ -107,7 +107,7 @@ function Page() {
                 Course Introduction
               </h2>
               <p className="mt-4 text-gray-600 md:text-lg">
-                Watch this overview to see what you'll achieve in this course
+                Watch this overview to see what you&apos;ll achieve in this course
               </p>
             </div>
             
