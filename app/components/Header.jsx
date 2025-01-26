@@ -33,13 +33,14 @@ function Header() {
         </SignedOut>
         {/* sign in links */}
         <SignedIn>
-          <UserButton />
-          <Link
+        <Link
             href="/dashboard"
             className="bg-[#5e6ef6] text-white px-4 py-2 rounded-lg font-bold"
           >
             Dashboard
           </Link>
+          <UserButton />
+          
         </SignedIn>
       </div>
 
@@ -52,11 +53,10 @@ function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed  inset-0 h-screen w-[70vw] z-50 flex flex-col items-center justify-center space-y-6 bg-white transition-transform duration-300 md:hidden ${
-          isMenuOpen
+        className={`fixed  inset-0 h-screen w-[70vw] z-50 flex flex-col items-center justify-center space-y-6 bg-white transition-transform duration-300 md:hidden ${isMenuOpen
             ? "translate-x-0 opacity-100"
             : "-translate-x-full opacity-0"
-        }`}
+          }`}
       >
         <Link
           href="/"
@@ -78,13 +78,14 @@ function Header() {
           </Link>
         </SignedOut>
         <SignedIn>
-          <UserButton />
           <Link
             href="/dashboard"
             className="bg-[#5e6ef6] text-white px-4 py-2 rounded-lg font-bold"
           >
             Dashboard
           </Link>
+          <UserButton />
+
         </SignedIn>
 
         <button

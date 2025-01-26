@@ -80,14 +80,14 @@ function Features() {
   };
 
   return (
-    <section className="relative z-30 flex flex-col items-center w-full pb-16 bg-gradient-to-b from-white to-gray-50">
+    <section className="relative z-30 flex flex-col items-center w-full pb-5 bg-gradient-to-b from-white to-gray-50">
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="text-center mb-7"
+        className="max-w-7xl flex items-center justify-between w-full px-5"
       >
-        <motion.h2 variants={itemVariants} className="mb-4 text-3xl font-bold text-gray-900 font-inter">
+        <motion.h2 variants={itemVariants} className="mb-6 text-3xl font-bold text-gray-900 font-inter">
           Most Popular Courses
         </motion.h2>
         <motion.p variants={itemVariants} className="text-sm text-gray-600">
@@ -136,7 +136,7 @@ function Features() {
 
       {/* Call to Action */}
       <div
-        className="mt-12"
+        className="mt-9"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}

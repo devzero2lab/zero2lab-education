@@ -87,7 +87,7 @@ const Hero = () => {
           variants={containerVariants}
         >
           <motion.div 
-            className="relative -top-10 inline-flex items-center shadow-white/20 bg-white text-black px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+            className="relative -top-10 inline-flex items-center   text-white  rounded-full shadow-lg hover:shadow-xl transition-shadow"
             variants={itemVariants}
           >
             <BookOpenText className="mr-2 h-5 w-5" />
@@ -140,7 +140,7 @@ const Hero = () => {
 
         <div className="relative   ">
           {/* Center Image */}
-          <div className="rounded-full invisible md:visible overflow-hidden shadow-2xl shadow-white/50 bg-white ">
+          <div className="rounded-full invisible md:visible overflow-hidden shadow-2xl shadow-white/50 bg-black ">
             <Image
               src="/images/homepage/hero.png"
               alt="Smiling student"

@@ -89,11 +89,11 @@ function Page() {
   return (
     <div className="w-full pt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8  min-h-screen">
       {/* Welcome Header */}
-      <div className="mb-12 text-center space-y-4">
-        <h1 className="text-4xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      <div className="mb-6 flex justify-between items-center">
+        <h1 className="text-2xl md:text-2xl font-bold bg-gray-400 bg-clip-text text-transparent">
           Welcome Back, {user?.firstName}!
         </h1>
-        <p className="text-gray-600 text-lg">Continue your learning journey</p>
+        
       </div>
 
       {/* Stats Cards */}
