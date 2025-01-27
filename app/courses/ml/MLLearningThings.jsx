@@ -394,10 +394,7 @@ function MLLearningThings() {
                       </div>
                       <div>
                         <h3 className="text-xl font-semibold">{week.title}</h3>
-                        <p className="text-gray-500 mt-1">
-                          {week.days.length} Days • 🕒{' '}
-                          {week.days.reduce((sum, day) => sum + parseFloat(day.duration), 0)}h
-                        </p>
+                        
                       </div>
                     </div>
                     <motion.div
@@ -430,9 +427,7 @@ function MLLearningThings() {
                                 </span>
                                 
                               </div>
-                              <span className="text-sm text-gray-500">
-                                🕒 {day.duration}
-                              </span>
+                              
                             </div>
 
                             <ul className="space-y-2  pl-4">
