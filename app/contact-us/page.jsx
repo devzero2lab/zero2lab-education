@@ -77,7 +77,7 @@ function ContactUs() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We're here to help and answer any questions you might have. Our team usually responds within 24 hours.
+              We&apos;re here to help and answer any questions you might have. Our team usually responds within 24 hours.
             </p>
           </div>
 
