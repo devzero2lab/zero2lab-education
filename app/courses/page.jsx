@@ -29,7 +29,7 @@ const RecordCoursesPage = () => {
 
   return (
     <div className="px-8 py-4 mt-12">
-      <h1 className="mt-6 mb-8 text-2xl font-semibold text-center">
+      <h1 className="mt-3 mb-5 text-2xl font-semibold text-center">
         Explore Our Courses
       </h1>
 
