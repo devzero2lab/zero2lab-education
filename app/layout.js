@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from 'sonner';
 import Link from "next/link"; 
-
+ 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
