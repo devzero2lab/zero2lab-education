@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Footer from "./components/Footer"; 
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from 'sonner';
 import Link from "next/link"; 
