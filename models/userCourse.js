@@ -35,7 +35,6 @@ const userCourseSchema = new mongoose.Schema(
     },
     lastName: {
       type: String,
-      required: true,
     },
     email: {
       type: String,

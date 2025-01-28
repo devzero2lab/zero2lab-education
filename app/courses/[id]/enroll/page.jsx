@@ -12,6 +12,7 @@ export default function Checkout({ params }) {
   const { isLoaded, isSignedIn, user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [loading, setLoading] = useState(true);
 
   const [course, setCourse] = useState("");
   const [formData, setFormData] = useState({
@@ -39,12 +40,15 @@ export default function Checkout({ params }) {
 
   useEffect(() => {
     const fetchCourseName = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `${apiUrl}/api/courses/${formData.courseId}`
         );
+        setLoading(false);
         setCourse(response.data.course);
       } catch (error) {
+        setLoading(false);
         setCourse("Unknown Course");
       }
     };
@@ -79,7 +83,6 @@ export default function Checkout({ params }) {
 
     if (
       !formData.firstName.trim() ||
-      !formData.lastName.trim() ||
       !formData.email.trim() ||
       !formData.whatsappNumber.trim() ||
       slipImages.length === 0
@@ -136,7 +139,7 @@ export default function Checkout({ params }) {
               {course.courseName || "Your Course"}
             </span>
           </h1>
-          
+
           {/* Payment Details Card */}
           <div className=" rounded-xl p-6 ">
             <div className="grid md:grid-cols-2 gap-8">
@@ -172,20 +175,54 @@ export default function Checkout({ params }) {
                   </svg>
                   Course Overview
                 </h2>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                    <span className="font-medium text-gray-700">Price:</span>
-                    <span className="text-blue-600 font-semibold">Rs.{course.price}</span>
+
+                {loading ? (
+                  <div className=" text-center">
+                    <div class="grid min-h-[140px] w-full place-items-center overflow-x-scroll rounded-lg p-6 lg:overflow-visible">
+                      <svg class="w-16 h-16 animate-spin text-gray-900/50" viewBox="0 0 64 64" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                        <path
+                          d="M32 3C35.8083 3 39.5794 3.75011 43.0978 5.20749C46.6163 6.66488 49.8132 8.80101 52.5061 11.4939C55.199 14.1868 57.3351 17.3837 58.7925 20.9022C60.2499 24.4206 61 28.1917 61 32C61 35.8083 60.2499 39.5794 58.7925 43.0978C57.3351 46.6163 55.199 49.8132 52.5061 52.5061C49.8132 55.199 46.6163 57.3351 43.0978 58.7925C39.5794 60.2499 35.8083 61 32 61C28.1917 61 24.4206 60.2499 20.9022 58.7925C17.3837 57.3351 14.1868 55.199 11.4939 52.5061C8.801 49.8132 6.66487 46.6163 5.20749 43.0978C3.7501 39.5794 3 35.8083 3 32C3 28.1917 3.75011 24.4206 5.2075 20.9022C6.66489 17.3837 8.80101 14.1868 11.4939 11.4939C14.1868 8.80099 17.3838 6.66487 20.9022 5.20749C24.4206 3.7501 28.1917 3 32 3L32 3Z"
+                          stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                          d="M32 3C36.5778 3 41.0906 4.08374 45.1692 6.16256C49.2477 8.24138 52.7762 11.2562 55.466 14.9605C58.1558 18.6647 59.9304 22.9531 60.6448 27.4748C61.3591 31.9965 60.9928 36.6232 59.5759 40.9762"
+                          stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900">
+                        </path>
+                      </svg>
+                    </div>
+                    loading...
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                    <span className="font-medium text-gray-700">Duration:</span>
-                    <span className="text-gray-600">{course.duration}</span>
+                ) : (
+                  <div className="space-y-3">
+
+                    <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                      <span className="font-medium text-gray-700">Price:</span>
+                      <div>
+                        {course.discountPrice ? (
+                          <>
+                            <span className="text-2xl font-bold  text-green-600">
+                              Rs.{course.discountPrice}
+                            </span>
+                            <span className="text-2x line-through  ml-2 text-gray-500">
+                              Rs.{course.price}
+                            </span></>
+                        ) : (
+                          <span className="text-blue-600 font-semibold">Rs.{course.price}</span>
+                        )
+                        }
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                      <span className="font-medium text-gray-700">Duration:</span>
+                      <span className="text-gray-600">{course.duration}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                      <span className="font-medium text-gray-700">Level:</span>
+                      <span className="text-gray-600">{course.level}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                    <span className="font-medium text-gray-700">Level:</span>
-                    <span className="text-gray-600">{course.level}</span>
-                  </div>
-                </div>
+                )}
+
               </div>
             </div>
           </div>
@@ -201,7 +238,7 @@ export default function Checkout({ params }) {
               </svg>
               Upload Payment Slip
             </h3>
-            
+
             <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center mb-6">
               <Image
                 src="/images/payment/payment.jpg"
@@ -301,17 +338,16 @@ export default function Checkout({ params }) {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full py-4 px-6 text-lg font-semibold text-white rounded-lg transition-all ${
-                  isLoading 
-                    ? "bg-gray-400 cursor-not-allowed" 
-                    : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
-                }`}
+                className={`w-full py-4 px-6 text-lg font-semibold text-white rounded-lg transition-all ${isLoading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
+                  }`}
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
                     <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
                     Processing Enrollment...
                   </span>

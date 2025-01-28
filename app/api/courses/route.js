@@ -21,7 +21,7 @@ export async function POST(request) {
 export async function GET() {
   try {
     await connectMongoDB();
-    const courses = await Course.find();
+    const courses = await Course.find().select('courseName uniqueName type description image level duration price instructor date time discountPrice ');
     return NextResponse.json({ courses }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

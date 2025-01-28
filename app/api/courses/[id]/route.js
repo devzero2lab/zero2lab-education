@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
   try {
     const { id } = params;
     await connectMongoDB();
-    const course = await Course.findById(id);
+    const course = await Course.findById(id).select('courseName price duration level discountPrice');
     if (!course) {
       return NextResponse.json({ error: "Course not found" }, { status: 404 });
     }
