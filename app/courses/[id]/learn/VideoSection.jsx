@@ -35,6 +35,7 @@ function parseTextWithLinks(text) {
           >
             {urls[index]}
           </a>
+          <br /> {/* Add a line break after the link */}
         </React.Fragment>
       );
     }
