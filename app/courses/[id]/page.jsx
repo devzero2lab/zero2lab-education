@@ -10,9 +10,6 @@ function ComingSoonPage() {
         </p>
       </div>
 
-      <footer className="absolute bottom-4 text-sm text-gray-500">
-        © {new Date().getFullYear()} zero2learn. All rights reserved.
-      </footer>
     </div>
   );
 }
