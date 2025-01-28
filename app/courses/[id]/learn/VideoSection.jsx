@@ -8,6 +8,39 @@ import {
   FaLock,
 } from "react-icons/fa";
 
+
+function parseTextWithLinks(text) {
+  // Regular expression to detect URLs
+  const urlRegex = /https?:\/\/[^\s]+/g;
+
+  // Split text into parts with URLs and non-URLs
+  const parts = text.split(urlRegex);
+
+  // Match all URLs
+  const urls = text.match(urlRegex);
+
+  // Combine parts and URLs into React elements
+  const elements = [];
+  parts.forEach((part, index) => {
+    elements.push(part);
+    if (urls && urls[index]) {
+      elements.push(
+        <a
+          key={index}
+          href={urls[index]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline"
+        >
+          {urls[index]}
+        </a>
+      );
+    }
+  });
+
+  return elements;
+}
+
 export default function VideoSection({ currentLesson }) {
 
 
@@ -45,7 +78,8 @@ export default function VideoSection({ currentLesson }) {
       </Modal>
       {/* Lesson Details */}
       <h1 className="mt-4 text-lg font-bold md:text-2xl">Day {currentLesson.day}</h1>
-      <p className="mt-2 text-sm text-gray-700 md:text-base">{currentLesson.notes}</p>
+      <p className="mt-2 text-sm text-gray-700 md:text-base">{parseTextWithLinks(currentLesson.notes)}</p>
+      
     </div>
   );
 }
