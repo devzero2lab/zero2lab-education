@@ -41,7 +41,7 @@ export default function Page({ params }) {
           return; // Stop further execution
         }
 
-        const courseResponse = await axios.get(`${apiUrl}/api/courses/${id}`);
+        const courseResponse = await axios.get(`${apiUrl}/api/recordings/${id}`);
         if (courseResponse.data && courseResponse.data.course) {
           setCourseData(courseResponse.data.course);
         } else {
