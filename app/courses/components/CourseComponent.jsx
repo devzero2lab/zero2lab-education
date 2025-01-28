@@ -51,7 +51,7 @@ function CourseComponent({ course }) {
                 Rs.{course.discountPrice}
               </span>
               <span className="text-xs line-through text-gray-500">
-                Rs.{course.price}sd
+                Rs.{course.price}
               </span>
             </>
           ) : (
