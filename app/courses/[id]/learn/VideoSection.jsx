@@ -22,18 +22,20 @@ function parseTextWithLinks(text) {
   // Combine parts and URLs into React elements
   const elements = [];
   parts.forEach((part, index) => {
-    elements.push(part);
+    elements.push(<span key={`text-${index}`}>{part}</span>);
     if (urls && urls[index]) {
       elements.push(
-        <a
-          key={index}
-          href={urls[index]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 underline"
-        >
-          {urls[index]}
-        </a>
+        <React.Fragment key={`link-${index}`}>
+          <br /> {/* Add a line break before the link */}
+          <a
+            href={urls[index]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline"
+          >
+            {urls[index]}
+          </a>
+        </React.Fragment>
       );
     }
   });
