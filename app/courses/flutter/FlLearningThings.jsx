@@ -62,18 +62,7 @@ function MLLearningThings() {
         </ul>
       </div>
 
-      {/* Button */}
-      <div className="mt-8 ">
-        <Link
-          href="https://drive.google.com/file/d/10KmM_guPoTf2FUiHFyXgPByhScjTSV-F/view?usp=sharing"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <button className="px-6 py-3 font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-500">
-            Download Course Content
-          </button>
-        </Link>
-      </div>
+      
     </div>
   );
 }
