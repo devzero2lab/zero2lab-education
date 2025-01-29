@@ -7,7 +7,7 @@ import Link from "next/link";
 
 
 function Home() { 
-  return ( 
+  return (  
     <div className="mt-12 bg-[#ffffff]"> 
        
       {/* hero section */}
