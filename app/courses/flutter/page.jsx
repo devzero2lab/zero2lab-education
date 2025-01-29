@@ -45,7 +45,7 @@ function Page() {
         <section className="grid grid-cols-1 mt-10 lg:grid-cols-2 lg:gap-20">
           <div className="relative w-full h-full">
             <Image
-              src={"/images/courses/ml/cimage.jpeg"}
+              src={"/images/homepage/fwd.png"}
               alt="course-image"
               width={500}
               height={400}
