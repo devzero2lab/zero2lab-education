@@ -39,14 +39,17 @@ function PendingList({ courses, fetchPendingCourses }) {
       title: "Payment Slip",
       dataIndex: "paymentSlip",
       key: "paymentSlip",
-      render: (paymentSlip) => (
-        <Image
-          width={50}
-          src={paymentSlip}
-          alt="Payment Slip"
-          preview={{ src: paymentSlip }} // Enable modal preview
-        />
-      ),
+      render: (paymentSlip) =>
+        paymentSlip.startsWith("http") ? (
+          <Image
+            width={50}
+            src={paymentSlip}
+            alt="Payment Slip"
+            preview={{ src: paymentSlip }} // Enable modal preview
+          />
+        ) : (
+          <span className="font-semibold text-gray-600">{paymentSlip}</span>
+        ),
     },
     {
       title: "Action",
