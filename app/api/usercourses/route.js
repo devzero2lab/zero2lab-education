@@ -56,13 +56,21 @@ export async function GET(request) {
 
     if (action === "count") {
       // Return the count of enrolled courses with "Approved" status
-      const enrolledCoursesCount = await UserCourse.countDocuments({
+      const approvedCoursesCount = await UserCourse.countDocuments({
         userId,
         status: "Approved",
       });
 
+      const completedCoursesCount = await UserCourse.countDocuments({
+        userId,
+        status: "Completed",
+      });
+
       return NextResponse.json(
-        { count: enrolledCoursesCount },
+        {
+          approvedCount: approvedCoursesCount,
+          completedCount: completedCoursesCount,
+        },
         { status: 200 }
       );
     }
