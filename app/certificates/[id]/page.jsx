@@ -11,12 +11,13 @@ function CertificatePage({ params }) {
     const [loading, setLoading] = useState(true);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [certificate, setCertificate] = useState(null);
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     useEffect(() => {
         // Fetch certificate details
         const fetchCertificate = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/Certificate/${params.id}`);
+                const response = await fetch(`${apiUrl}/api/Certificate/${params.id}`);
                 const data = await response.json();
                 if (data.length > 0) {
                     setCertificate(data[0]); // Assuming only one certificate is returned
