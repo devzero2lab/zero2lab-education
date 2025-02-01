@@ -123,7 +123,7 @@ function CertificatePage({ params }) {
                 <div className="relative z-10 h-full flex flex-col items-center justify-center">
                     <div className="absolute top-[20px] left-[30px] p-2 bg-white rounded-lg shadow-sm">
                         <QRCodeCanvas
-                            value={`https://yourwebsite.com/certificate/${params.id}`}
+                            value={`https://www.zero2learn.com/certificates/${params.id}`}
                             size={80}
                         />
                     </div>
