@@ -63,7 +63,7 @@ function NotEnrolls() {
             lastName: user.lastName,
           }))}
           columns={columns}
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 5 }}
           locale={{
             emptyText: "No Enrolled Users",
           }}

@@ -16,7 +16,7 @@ function Sidebar() {
   ];
 
   return (
-    <div className="w-64 h-screen p-4 text-white bg-gray-800">
+    <div className="w-64 p-4 text-white bg-gray-800">
       <ul className="space-y-4">
         {menuItems.map(({ menu, path }) => (
           <Link key={menu} href={path}>
