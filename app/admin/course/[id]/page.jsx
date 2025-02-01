@@ -38,7 +38,10 @@ function UpdateCoursePage({ params }) {
   const addContent = () => {
     setFormData({
       ...formData,
-      content: [...formData.content, { ...contentItem }],
+      content: [
+        ...formData.content,
+        { ...contentItem, day: Number(contentItem.day) },
+      ],
     });
     setContentItem({ day: "", videoUrl: "", notes: "" });
   };
@@ -287,7 +290,7 @@ function UpdateCoursePage({ params }) {
                         ...formData,
                         content: formData.content.map((item, idx) =>
                           idx === index
-                            ? { ...item, day: e.target.value }
+                            ? { ...item, day: Number(e.target.value) }
                             : item
                         ),
                       })
