@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { FaDownload } from "react-icons/fa";
+import { FaDownload, FaLink } from "react-icons/fa";
 import { QRCodeCanvas } from "qrcode.react";
 import Loader from "@/app/components/Loader";
 
@@ -11,6 +11,7 @@ function CertificatePage({ params }) {
   const [loading, setLoading] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [certificate, setCertificate] = useState(null);
+  const [copyButtonText, setCopyButtonText] = useState("Copy URL");
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {
@@ -58,6 +59,20 @@ function CertificatePage({ params }) {
     }
   };
 
+  const copyToClipboard = () => {
+    const certificateUrl = `https://www.zero2learn.com/certificates/${params.id}`;
+    navigator.clipboard
+      .writeText(certificateUrl)
+      .then(() => {
+        setCopyButtonText("Copied!");
+        setTimeout(() => setCopyButtonText("Copy URL"), 2000); // Reset button text after 2 seconds
+      })
+      .catch(() => {
+        setCopyButtonText("Failed to Copy");
+        setTimeout(() => setCopyButtonText("Copy URL"), 2000); // Reset button text after 2 seconds
+      });
+  };
+
   if (loading) {
     return (
       <div className="absolute inset-0 flex items-center justify-center min-h-screen bg-white">
@@ -102,6 +117,17 @@ function CertificatePage({ params }) {
         >
           <FaDownload className="text-lg" />
           {isDownloading ? "Generating..." : "Download Certificate"}
+        </button>
+      </div>
+
+      {/* Copy URL Button */}
+      <div className="mb-8">
+        <button
+          onClick={copyToClipboard}
+          className="flex items-center gap-2 px-6 py-3 text-white transition-all transform bg-green-600 rounded-lg shadow-lg hover:bg-green-700 hover:scale-105"
+        >
+          <FaLink className="text-lg" />
+          {copyButtonText}
         </button>
       </div>
 
