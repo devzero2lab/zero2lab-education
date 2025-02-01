@@ -84,7 +84,7 @@ function Page() {
       title: "Completed Courses",
       value: completedCount,
       icon: <FaBook className="w-8 h-8 text-white" />,
-      color: "bg-gradient-to-r from-blue-600 to-indigo-600",
+      color: "bg-gradient-to-r from-pink-500 to-orange-400",
     },
   ];
 
