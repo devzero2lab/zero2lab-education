@@ -238,10 +238,12 @@ function Page() {
           {allCertificates.length > 0 ? (
             <ul className="space-y-4">
               {allCertificates.map((certificate) => (
-                <li key={certificate._id} className="border p-4 rounded-lg shadow">
-                  <h3 className="text-lg font-medium">{certificate.courseId.courseName}</h3>
-                  <p className="text-gray-500">Status: {certificate.status}</p>
-                </li>
+                <Link href={`/certificates/${certificate._id}`} key={certificate._id} >
+                  <li className="border p-4 rounded-lg shadow">
+                    <h3 className="text-lg font-medium">{certificate.courseId.courseName}</h3>
+                    <p className="text-gray-500">Status: {certificate.status}</p>
+                  </li>
+                </Link>
               ))}
             </ul>
           ) : (

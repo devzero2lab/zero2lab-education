@@ -1,12 +1,23 @@
 "use client";
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaLock, FaDownload } from 'react-icons/fa';
 import { QRCodeCanvas } from 'qrcode.react';
+import Loader from '@/app/components/Loader';
 
 function CertificatePage({ params }) {
     const [html2pdf, setHtml2pdf] = React.useState(null);
     const [isDownloading, setIsDownloading] = React.useState(false);
+    const [loading, setLoading] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState(false);
+
+    useEffect(() => {
+        if (imageLoaded) {
+            // Add a small delay for better UX
+            const timer = setTimeout(() => setLoading(false), 500);
+            return () => clearTimeout(timer);
+        }
+    }, [imageLoaded]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -66,8 +77,17 @@ function CertificatePage({ params }) {
         </div>
     );
 
+    if (loading) {
+        return (
+            <div className="absolute inset-0 flex justify-center items-center min-h-screen bg-white">
+                <Loader />
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen mt-10 bg-gradient-to-br from-gray-50 to-blue-50 py-12 flex flex-col items-center">
+            
             <div className="mb-8 flex gap-4">
                 <button
                     onClick={downloadCertificate}
@@ -81,7 +101,7 @@ function CertificatePage({ params }) {
                 </button>
             </div>
 
-          
+
 
             {/* Certificate Container */}
             <div
@@ -92,13 +112,15 @@ function CertificatePage({ params }) {
                 onContextMenu={handleContextMenu}
             >
                 <div className="absolute inset-0">
-                    <Image
-                        src="/images/certificates/certificate_zero2learn.png"
+                <Image
+                        src="https://v8gv75m9qo.ufs.sh/f/NWfsvG3BrCsZLPRUjT6r5DiCXwI2tyPosaQd6Ebeh0YSqnHZ"
                         alt="Certificate Background"
                         layout="fill"
                         className="object-cover select-none"
                         priority
                         draggable={false}
+                        onLoad={() => setImageLoaded(true)}
+                        onError={() => setImageLoaded(true)} // Fallback in case of error
                     />
                 </div>
 
@@ -124,7 +146,7 @@ function CertificatePage({ params }) {
 
 
                     {/* Recipient Name */}
-                    <ProtectedText className="absolute top-[300px] text-3xl font-bold text-black">
+                    <ProtectedText className="absolute top-[220px] text-4xl font-bold text-black">
                         Machine Learning Course
                     </ProtectedText>
 
@@ -137,11 +159,17 @@ function CertificatePage({ params }) {
                     </ProtectedText>
 
                     <ProtectedText
-                        className="absolute right-[280px] top-[580px] text-[18px] font-playfair text-black"
+                        className="absolute right-[290px] top-[583px] text-[15px] font-playfair text-black"
                         style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}
                     >
                         2021/20/23
                     </ProtectedText>
+
+
+                    {/* Security Watermark
+                    <div className="absolute inset-0 pointer-events-none opacity-10">
+                        <div className="absolute inset-0 bg-[url('/images/watermark.png')] bg-repeat" />
+                    </div> */}
 
 
                 </div>
