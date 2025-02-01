@@ -9,7 +9,7 @@ export async function GET(request, { params }) {
     await connectMongoDB();
 
     // Find all completed courses for the given userId
-    const userCourses = await UserCourse.find({ userId: id, status: "Completed" })
+    const userCourses = await UserCourse.find({_id:id, status: "Completed" })
       .populate("courseId", "courseName") // Populate courseId and select courseName
       .select("courseId status firstName lastName");
 

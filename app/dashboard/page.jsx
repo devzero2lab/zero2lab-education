@@ -85,17 +85,11 @@ function Page() {
 
   const stats = [
     {
-      title: "Enrolled Courses",
+      title: "In Progress Courses",
       value: courseCount,
       icon: <FaBook className="w-8 h-8 text-white" />,
       color: "bg-gradient-to-r from-blue-600 to-indigo-600",
-    },
-    {
-      title: "Certificates",
-      value: 0,
-      icon: <FaTasks className="w-8 h-8 text-white" />,
-      color: "bg-gradient-to-r from-pink-500 to-orange-400",
-    },
+    }
   ];
 
   return (
