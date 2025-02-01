@@ -248,7 +248,7 @@ function Page() {
                   href={`/certificates/${certificate._id}`}
                   key={certificate._id}
                 >
-                  <li className="p-4 mt-5 border rounded-lg shadow">
+                  <li className="p-4 mb-3 border rounded-lg shadow">
                     <h3 className="text-lg font-medium">
                       {certificate.courseId.courseName}
                     </h3>
