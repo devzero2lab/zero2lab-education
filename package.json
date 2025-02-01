@@ -23,12 +23,15 @@
     "fs": "^0.0.1-security",
     "googleapis": "^144.0.0",
     "hls.js": "^1.5.18",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.2",
     "lucide-react": "^0.469.0",
     "mongoose": "^8.9.2",
     "net": "^1.0.2",
     "next": "14.2.20",
     "node-fetch": "^3.3.2",
     "plyr": "^3.7.8",
+    "qrcode.react": "^4.2.0",
     "react": "^18",
     "react-big-calendar": "^1.17.1",
     "react-calendar": "^5.1.0",
@@ -41,6 +44,7 @@
     "sweetalert2": "^11.15.10",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
+    "tesseract.js": "^6.0.0",
     "uploadthing": "^7.4.4"
   },
   "devDependencies": {

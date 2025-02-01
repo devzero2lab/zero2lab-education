@@ -17,6 +17,7 @@ import {
   FaStar,
   FaPlus,
   FaLock,
+  FaCertificate,
 } from "react-icons/fa";
 import Modal from "../modal/Modal";
 import ScheduleForm from "../schedule-meetings/schedule-form/page";
@@ -32,6 +33,7 @@ function Page() {
   const [courseCount, setCourseCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [allCertificates, setCertificates] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,9 +45,16 @@ function Page() {
         const countResponse = await axios.get(
           `${apiUrl}/api/usercourses?userId=${userID}&action=count`
         );
+        const Certificates = await axios.get(
+          `${apiUrl}/api/Certificates/${userID}`
+        );
+
+
 
         setEnrolledCourses(coursesResponse.data.userCourses);
         setCourseCount(countResponse.data.count);
+        setCertificates(Certificates.data);
+
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -53,8 +62,11 @@ function Page() {
       }
     };
 
+
+
     if (isLoaded && isSignedIn) {
       fetchData();
+
     }
   }, [isLoaded, isSignedIn, userID, apiUrl]);
 
@@ -93,8 +105,10 @@ function Page() {
         <h1 className="text-2xl md:text-2xl font-bold bg-gray-400 bg-clip-text text-transparent">
           Welcome Back, {user?.firstName}!
         </h1>
-        
+
       </div>
+
+      {console.log(allCertificates)}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
@@ -164,7 +178,7 @@ function Page() {
                     key={index}
                     className="group p-5 rounded-xl transition-all duration-200 hover:bg-gray-50 border border-gray-200"
                   >
-                    {status === "Approved" ? (
+                    {status === "Approved" || status === "Completed" ? (
                       <Link
                         href={`/courses/${courseId._id}/learn`}
                         className="flex items-center justify-between"
@@ -181,7 +195,7 @@ function Page() {
                               {status}
                             </span>
                             <span className="text-sm text-gray-500">
-                              
+
 
                             </span>
                           </div>
@@ -207,6 +221,31 @@ function Page() {
                 );
               })}
             </div>
+          )}
+        </div>
+      </section>
+
+
+      <section className="bg-white rounded-2xl shadow-sm border border-gray-200 mb-12">
+        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <h2 className="text-2xl font-semibold flex items-center">
+            <FaCertificate className="mr-3 text-purple-600" />
+            Certificates
+          </h2>
+        </div>
+
+        <div className="p-6">
+          {allCertificates.length > 0 ? (
+            <ul className="space-y-4">
+              {allCertificates.map((certificate) => (
+                <li key={certificate._id} className="border p-4 rounded-lg shadow">
+                  <h3 className="text-lg font-medium">{certificate.courseId.courseName}</h3>
+                  <p className="text-gray-500">Status: {certificate.status}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No completed certificates available.</p>
           )}
         </div>
       </section>

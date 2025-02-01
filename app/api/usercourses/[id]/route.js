@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
   try {
     const { id } = params;
     await connectMongoDB();
-    const userCourse = await UserCourse.findById(id).populate("courseId");
+    const userCourse = await UserCourse.findById(id).populate("courseId").select('courseName');
     if (!userCourse) {
       return NextResponse.json(
         { error: "UserCourse not found" },
