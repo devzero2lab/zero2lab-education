@@ -137,7 +137,7 @@ function CertificatePage({ params }) {
       >
         <div className="absolute inset-0">
           <Image
-            src="https://v8gv75m9qo.ufs.sh/f/NWfsvG3BrCsZLPRUjT6r5DiCXwI2tyPosaQd6Ebeh0YSqnHZ"
+            src="https://v8gv75m9qo.ufs.sh/f/NWfsvG3BrCsZhUExsC2LZVgOQ3HxDl8z9njdkT7ARYcXyFmB"
             alt="Certificate Background"
             layout="fill"
             className="object-cover"
