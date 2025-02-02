@@ -18,6 +18,7 @@ function AddCoursePage() {
     level: "",
     duration: "",
     price: 0,
+    discountPrice: 0,
     instructor: "",
     content: [], // Initially empty
   });
@@ -79,6 +80,7 @@ function AddCoursePage() {
         level: "",
         duration: "",
         price: 0,
+        discountPrice: 0,
         instructor: "",
       });
       setUploadedImageUrl(""); // Reset the uploaded image preview
@@ -191,6 +193,16 @@ function AddCoursePage() {
               type="number"
               name="price"
               value={formData.price}
+              onChange={handleInputChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Discount Price</label>
+            <input
+              type="number"
+              name="discountPrice"
+              value={formData.discountPrice}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
             />

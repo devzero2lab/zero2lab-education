@@ -85,6 +85,7 @@ function PendingList({ courses, fetchPendingCourses }) {
       }
     } catch (error) {
       console.error("Error granting access:", error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 

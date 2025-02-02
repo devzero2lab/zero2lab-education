@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { Spin } from "antd";
 import Course from "./components/Course";
 
 export default function CoursePage() {
@@ -38,24 +39,14 @@ export default function CoursePage() {
         Add Course
       </Link>
 
-      {loading && <p>Loading courses...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      {!loading && !error && courses.length > 0 && (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
-            <Course
-              key={course._id}
-              courseID={course._id}
-              courseImage={course.image}
-              courseName={course.courseName}
-              coursePrice={course.price}
-              fetchCourses={fetchCourses}
-            />
-          ))}
+      {loading ? (
+        <div className="flex justify-center">
+          <Spin size="large" />
         </div>
-      )}
-      {!loading && !error && courses.length === 0 && (
-        <p>No courses available</p>
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <Course courses={courses} fetchCourses={fetchCourses} />
       )}
     </div>
   );
