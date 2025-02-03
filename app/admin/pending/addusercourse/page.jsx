@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 function AddUserCourse() {
-    const router = useRouter();
+  const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [courses, setCourses] = useState([]);
   const [formData, setFormData] = useState({
@@ -42,8 +42,12 @@ function AddUserCourse() {
       toast.success("user course created");
       router.push("/admin/pending");
     } catch (error) {
-      console.error("Error adding user course:", error);
-      toast.error("failed to add user course");
+      if (error.response && error.response.status === 400) {
+        toast.error("use is already enrolled in this course");
+      } else {
+        console.error("Error adding user course:", error);
+        toast.error("failed to add user course");
+      }
     }
   };
 

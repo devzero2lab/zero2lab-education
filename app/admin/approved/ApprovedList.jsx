@@ -103,7 +103,7 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
     // Show confirmation dialog before performing the update
     const result = await Swal.fire({
       title: "Are you sure?",
-      text: `Do you want to mark ${course.firstName} ${course.lastName}as a completed?`,
+      text: `Do you want to mark ${course.firstName} ${course.lastName} as a completed?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Complete",

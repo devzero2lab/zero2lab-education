@@ -30,7 +30,10 @@ function CourseCompleted() {
     <div className="p-6">
       <h1 className="mb-4 text-2xl font-bold">Course Completed Users List</h1>
       <Spin spinning={loading}>
-        <CompletedList courses={completedCourses} />
+        <CompletedList
+          courses={completedCourses}
+          fetchCompletedCourses={fetchCompletedCourses}
+        />
       </Spin>
     </div>
   );
