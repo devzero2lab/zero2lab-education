@@ -95,6 +95,7 @@ function PendingList({ courses, fetchPendingCourses }) {
       dataSource={dataSource}
       bordered
       pagination={{ pageSize: 5 }}
+      footer={() => <div>{`Total ${courses.length} Users`}</div>}
       locale={{
         emptyText: "No Pending Records",
       }}

@@ -136,6 +136,7 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
       dataSource={dataSource}
       bordered
       pagination={{ pageSize: 5 }}
+      footer={() => <div>{`Total ${courses.length} Users`}</div>}
       locale={{
         emptyText: "No Approved Records",
       }}
