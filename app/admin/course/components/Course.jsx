@@ -67,7 +67,7 @@ function Course({ courses, fetchCourses }) {
       render: (_, record) => (
         <div className="flex gap-2">
           <button
-            className="px-4 py-2 mt-4 text-white bg-red-500 rounded  hover:bg-red-600"
+            className="px-4 py-2 mt-4 text-white bg-red-500 rounded hover:bg-red-600"
             onClick={() => handleDelete(record._id)}
           >
             Delete
@@ -83,6 +83,7 @@ function Course({ courses, fetchCourses }) {
       dataSource={courses.map((course) => ({ ...course, key: course._id }))}
       bordered
       pagination={{ pageSize: 5 }}
+      footer={() => <div>{`Total ${courses.length} Courses`}</div>}
       locale={{ emptyText: "No courses available" }}
     />
   );
