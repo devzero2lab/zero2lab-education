@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Table, Image, Button } from "antd";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 function ApprovedList({ courses, fetchApprovedCourses }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -54,13 +55,22 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Button
-          type="danger"
-          onClick={() => handleDenyAccess(record)}
-          className="font-semibold text-white bg-red-500 border-red-500 hover:bg-red-600"
-        >
-          Access Deny
-        </Button>
+        <div className="flex space-x-2">
+          <Button
+            type="danger"
+            onClick={() => handleDenyAccess(record)}
+            className="font-semibold text-white bg-red-500 border-red-500 hover:bg-red-600"
+          >
+            Deny
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => handleComplete(record)}
+            className="font-semibold text-white "
+          >
+            Complete
+          </Button>
+        </div>
       ),
     },
   ];
@@ -86,6 +96,37 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
       }
     } catch (error) {
       console.error("Error Deny:", error);
+    }
+  };
+
+  const handleComplete = async (course) => {
+    // Show confirmation dialog before performing the update
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Do you want to mark ${course.firstName} ${course.lastName}as a completed?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Complete",
+      cancelButtonText: "Cancel",
+    });
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.put(
+          `${apiUrl}/api/usercourses/${course._id}`,
+          { status: "Completed" }
+        );
+
+        if (response.status === 200) {
+          toast.success(
+            `Course completed for ${course.firstName} ${course.lastName}.`
+          );
+          fetchApprovedCourses();
+        } else {
+          toast.error("Failed to mark as completed");
+        }
+      } catch (error) {
+        console.error("Error Completing:", error);
+      }
     }
   };
 
