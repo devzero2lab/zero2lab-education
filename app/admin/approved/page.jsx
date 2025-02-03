@@ -13,7 +13,7 @@ function ApprovedPage() {
     setLoading(true);
     try {
       const response = await axios.get(`${apiUrl}/api/usercourses`, {
-        params: { status: ["Approved", "Completed"] },
+        params: { status: "Approved" },
       });
       setApprovedCourses(response.data.userCourses || []);
     } catch (error) {
