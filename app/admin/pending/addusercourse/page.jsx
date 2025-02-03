@@ -46,7 +46,7 @@ function AddUserCourse() {
 
   return (
     <div className="max-w-lg p-6 mx-auto bg-white rounded-lg shadow-lg">
-      <h2 className="mb-4 text-xl font-semibold">Add User Course</h2>
+      <h2 className="mb-4 text-xl font-semibold">Add New User Course</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
