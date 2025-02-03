@@ -1,9 +1,7 @@
 import React from "react";
-import axios from "axios";
-import { Table, Image, Button } from "antd";
-import { toast } from "sonner";
+import { Table, Image } from "antd";
 
-function ApprovedList({ courses, fetchApprovedCourses }) {
+function CompletedList({ courses }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   // Define the columns for the AntD Table
   const columns = [
@@ -50,19 +48,6 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
           <span className="font-semibold text-gray-600">{paymentSlip}</span>
         ),
     },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Button
-          type="danger"
-          onClick={() => handleDenyAccess(record)}
-          className="font-semibold text-white bg-red-500 border-red-500 hover:bg-red-600"
-        >
-          Access Deny
-        </Button>
-      ),
-    },
   ];
 
   // Map the data to match AntD Table structure
@@ -71,24 +56,6 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
     ...course, // Spread the course details
   }));
 
-  const handleDenyAccess = async (course) => {
-    try {
-      const response = await axios.put(
-        `${apiUrl}/api/usercourses/${course._id}`,
-        { status: "Pending" }
-      );
-
-      if (response.status === 200) {
-        toast.success(`Access Deny to ${course.firstName} ${course.lastName}.`);
-        fetchApprovedCourses();
-      } else {
-        toast.error("Failed to Deny access");
-      }
-    } catch (error) {
-      console.error("Error Deny:", error);
-    }
-  };
-
   return (
     <Table
       columns={columns}
@@ -96,11 +63,11 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
       bordered
       pagination={{ pageSize: 5 }}
       locale={{
-        emptyText: "No Approved Records",
+        emptyText: "No Completed Records",
       }}
       loading={false}
     />
   );
 }
 
-export default ApprovedList;
+export default CompletedList;

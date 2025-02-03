@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function AddUserCourse() {
+    const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [courses, setCourses] = useState([]);
   const [formData, setFormData] = useState({
@@ -38,6 +40,7 @@ function AddUserCourse() {
     try {
       const response = await axios.post(`${apiUrl}/api/usercourses`, formData);
       toast.success("user course created");
+      router.push("/admin/pending");
     } catch (error) {
       console.error("Error adding user course:", error);
       toast.error("failed to add user course");
