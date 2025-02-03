@@ -10,6 +10,7 @@ function Sidebar() {
     { menu: "courses", path: "/admin/course" },
     { menu: "Pending Access", path: "/admin/pending" },
     { menu: "Approved Access", path: "/admin/approved" },
+    { menu: "Course Completed Users", path: "/admin/completed" },
     { menu: "Meetings", path: "/admin/schedule-meetings" },
     { menu: "Feedbacks", path: "/admin/feedbacks" },
     { menu: "Not Enroll Users", path: "/admin/noenrolls" },
