@@ -51,7 +51,9 @@ function UpdateCoursePage({ params }) {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/admin/course/${courseId}`);
+        const response = await axios.get(
+          `${apiUrl}/api/admin/course/${courseId}`
+        );
         const courseData = response.data.course;
         console.log(courseData);
 
@@ -282,7 +284,7 @@ function UpdateCoursePage({ params }) {
                 <div className="mb-4">
                   <label className="block mb-1 font-medium">Day</label>
                   <input
-                    type="number"
+                    type="text"
                     name="day"
                     value={contentItem.day}
                     onChange={(e) =>
