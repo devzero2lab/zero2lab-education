@@ -51,7 +51,7 @@ function UpdateCoursePage({ params }) {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/admin/${courseId}`);
+        const response = await axios.get(`${apiUrl}/api/admin/course/${courseId}`);
         const courseData = response.data.course;
         console.log(courseData);
 
