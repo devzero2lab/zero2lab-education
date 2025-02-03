@@ -284,7 +284,7 @@ function UpdateCoursePage({ params }) {
                 <div className="mb-4">
                   <label className="block mb-1 font-medium">Day</label>
                   <input
-                    type="text"
+                    type="number"
                     name="day"
                     value={contentItem.day}
                     onChange={(e) =>
