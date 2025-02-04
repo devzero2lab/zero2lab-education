@@ -64,6 +64,7 @@ function NotEnrolls() {
           }))}
           columns={columns}
           pagination={{ pageSize: 5 }}
+          footer={() => <div>{`Total ${data.length} Users`}</div>}
           locale={{
             emptyText: "No Enrolled Users",
           }}

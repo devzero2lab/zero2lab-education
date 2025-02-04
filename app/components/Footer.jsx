@@ -15,7 +15,7 @@ function Footer() {
           <h3 className="mb-3 text-lg font-semibold">Products</h3>
           <ul className="space-y-2">
             <Link href={"/courses"}>
-              <li>Course</li>
+              <li>Courses</li>
             </Link>
             <Link href={"/"}>
               <li>Webinars</li>

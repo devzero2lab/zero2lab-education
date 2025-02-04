@@ -79,6 +79,7 @@ function FeedbackList({ feedbacks, fetchFeedbacks }) {
       columns={columns}
       rowKey={(record) => record._id}
       pagination={{ pageSize: 5 }}
+      footer={() => <div>{`Total ${feedbacks.length} messages`}</div>}
       locale={{
         emptyText: "No Feedbacks",
       }}
