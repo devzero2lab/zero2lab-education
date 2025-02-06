@@ -32,12 +32,13 @@ function ApprovedPage() {
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    // If search query is empty, fetch all records again
-    if (query === "") {
-      fetchApprovedCourses(); // Fetch all approved records if search is cleared
-    } else {
-      fetchApprovedCourses(query); // Fetch filtered results based on search
-    }
+    fetchApprovedCourses(query); // Fetch courses based on search query
+  };
+
+  // Handle clearing search input
+  const handleClearSearch = () => {
+    setSearchQuery(""); // Reset search query state
+    fetchApprovedCourses(); // Re-fetch courses without search
   };
 
   return (
@@ -48,6 +49,7 @@ function ApprovedPage() {
         placeholder="Search by Name, Email, or WhatsApp Number"
         value={searchQuery}
         onChange={handleSearch}
+        onClear={handleClearSearch}
         className="w-full mb-4"
       />
       <Spin spinning={loading}>
