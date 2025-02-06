@@ -32,7 +32,12 @@ function ApprovedPage() {
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    fetchApprovedCourses(query);
+    // If search query is empty, fetch all records again
+    if (query === "") {
+      fetchApprovedCourses(); // Fetch all approved records if search is cleared
+    } else {
+      fetchApprovedCourses(query); // Fetch filtered results based on search
+    }
   };
 
   return (

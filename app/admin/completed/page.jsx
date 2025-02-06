@@ -32,7 +32,12 @@ function CourseCompleted() {
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    fetchCompletedCourses(query);
+    // If search query is empty, fetch all records again
+    if (query === "") {
+      fetchCompletedCourses(); // Fetch all approved records if search is cleared
+    } else {
+      fetchCompletedCourses(query); // Fetch filtered results based on search
+    }
   };
 
   return (
