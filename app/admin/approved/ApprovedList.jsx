@@ -3,6 +3,7 @@ import axios from "axios";
 import { Table, Image, Button } from "antd";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 function ApprovedList({ courses, fetchApprovedCourses }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -24,6 +25,9 @@ function ApprovedList({ courses, fetchApprovedCourses }) {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      render: (text, record) => (
+        <Link href={`/admin/approved/${record._id}`}>{text}</Link>
+      ),
     },
     {
       title: "WhatsApp Number",
