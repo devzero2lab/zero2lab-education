@@ -32,14 +32,8 @@ export default function RootLayout({ children }) {
           <Header />
           <Toaster position="top-right" richColors />
           {children}
-
-          
-
-
           <Footer />
         </ClerkProvider>
-
-
       </body>
     </html>
   );
