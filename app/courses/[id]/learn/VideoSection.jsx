@@ -1,3 +1,4 @@
+import React from "react";
 import HLSPlayer from "./HLSPlayer";
 
 function parseTextWithLinks(text) {
