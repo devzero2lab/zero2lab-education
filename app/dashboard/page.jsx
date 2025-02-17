@@ -4,18 +4,9 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-import MyMeetingsCalendar from "../schedule-meetings/page";
-import {
-  FaBook,
-  FaCalendarAlt,
-  FaGraduationCap,
-  FaPlus,
-  FaLock,
-  FaCertificate,
-} from "react-icons/fa";
-import Modal from "../modal/Modal";
-import ScheduleForm from "../schedule-meetings/schedule-form/page";
+import { FaBook, FaGraduationCap, FaLock } from "react-icons/fa";
 import Loader from "../components/Loader";
+import Certificates from "./components/Certificates";
 
 function Page() {
   const router = useRouter();
@@ -26,9 +17,7 @@ function Page() {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [approvedCount, setApprovedCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [allCertificates, setCertificates] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,14 +29,10 @@ function Page() {
         const countResponse = await axios.get(
           `${apiUrl}/api/usercourses?userId=${userID}&action=count`
         );
-        const Certificates = await axios.get(
-          `${apiUrl}/api/Certificates/${userID}`
-        );
 
         setEnrolledCourses(coursesResponse.data.userCourses);
         setApprovedCount(countResponse.data.approvedCount);
         setCompletedCount(countResponse.data.completedCount);
-        setCertificates(Certificates.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -96,8 +81,6 @@ function Page() {
           Welcome Back, {user?.firstName}!
         </h1>
       </div>
-
-      {console.log(allCertificates)}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 gap-6 mb-12 md:grid-cols-2">
@@ -204,66 +187,8 @@ function Page() {
         </div>
       </section>
 
-      <section className="mb-12 bg-white border border-gray-200 shadow-sm rounded-2xl">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h2 className="flex items-center text-2xl font-semibold">
-            <FaCertificate className="mr-3 text-purple-600" />
-            Certificates
-          </h2>
-        </div>
-
-        <div className="p-6">
-          {allCertificates.length > 0 ? (
-            <ul className="space-y-4">
-              {allCertificates.map((certificate) => (
-                <Link
-                  href={`/certificates/${certificate._id}`}
-                  key={certificate._id}
-                >
-                  <li className="p-4 mb-3 border rounded-lg shadow">
-                    <h3 className="text-lg font-medium">
-                      {certificate.courseId.courseName}
-                    </h3>
-                    <p className="text-gray-500">
-                      Status: {certificate.status}
-                    </p>
-                  </li>
-                </Link>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">
-              No completed certificates available.
-            </p>
-          )}
-        </div>
-      </section>
-
-      {/* Meetings Section */}
-      <section className="bg-white border border-gray-200 shadow-sm rounded-2xl">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h2 className="flex items-center text-2xl font-semibold">
-            <FaCalendarAlt className="mr-3 text-blue-600" />
-            My Meetings
-          </h2>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
-          >
-            <FaPlus className="mr-2" />
-            Schedule Meeting
-          </button>
-        </div>
-
-        <div>
-          <MyMeetingsCalendar />
-        </div>
-      </section>
-
-      {/* Schedule Meeting Modal */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ScheduleForm onClose={() => setIsModalOpen(false)} />
-      </Modal>
+      {/* user certificates */}
+      <Certificates />
     </div>
   );
 }
