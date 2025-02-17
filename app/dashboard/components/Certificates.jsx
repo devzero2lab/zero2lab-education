@@ -1,44 +1,8 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useUser } from "@clerk/nextjs";
+import React from "react";
 import { FaCertificate } from "react-icons/fa";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-function Certificates() {
-  const { isLoaded, isSignedIn, user } = useUser();
-  const router = useRouter();
-  const userID = user?.id || "";
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const [loading, setLoading] = useState(true);
-  const [allCertificates, setCertificates] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const Certificates = await axios.get(
-          `${apiUrl}/api/Certificates/${userID}`
-        );
-        setCertificates(Certificates.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isLoaded && isSignedIn) {
-      fetchData();
-    }
-  }, [isLoaded, isSignedIn, userID, apiUrl]);
-
-  if (!isSignedIn) {
-    router.push("/sign-in");
-    return null;
-  }
-
+function Certificates({ certificates, loading }) {
   return (
     <div>
       <section className="mb-12 bg-white border border-gray-200 shadow-sm rounded-2xl">
@@ -51,9 +15,9 @@ function Certificates() {
         <div className="p-6">
           {loading ? (
             <p className="text-center text-gray-500">Loading...</p>
-          ) : allCertificates.length > 0 ? (
+          ) : certificates.length > 0 ? (
             <ul className="space-y-4">
-              {allCertificates.map((certificate) => (
+              {certificates.map((certificate) => (
                 <Link
                   href={`/certificates/${certificate._id}`}
                   key={certificate._id}
@@ -63,7 +27,7 @@ function Certificates() {
                       {certificate.courseId.courseName}
                     </h3>
                     <p className="text-gray-500">
-                      Status: {certificate.status}
+                      Course Status : {certificate.status}
                     </p>
                   </li>
                 </Link>
