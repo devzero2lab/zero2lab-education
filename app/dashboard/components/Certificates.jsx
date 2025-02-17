@@ -14,7 +14,7 @@ function Certificates({ certificates, loading }) {
         </div>
         <div className="p-6">
           {loading ? (
-            <p className="text-center text-gray-500">Loading...</p>
+            <p className="text-center">Loading...</p>
           ) : certificates.length > 0 ? (
             <ul className="space-y-4">
               {certificates.map((certificate) => (
