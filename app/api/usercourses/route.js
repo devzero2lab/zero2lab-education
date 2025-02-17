@@ -43,13 +43,12 @@ export async function POST(request) {
   }
 }
 
-// Get all UserCourses or filter by userId, status
+// Get all UserCourses or filter by userId
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId"); // Extract "userId" query parameter
     const action = searchParams.get("action"); // Extract "action" query parameter
-    const status = searchParams.get("status"); // Extract "status" query parameter
 
     // Connect to MongoDB
     await connectMongoDB();
@@ -75,20 +74,13 @@ export async function GET(request) {
       );
     }
 
-    // Handle fetching based on status
-    let userCourses;
-    if (status) {
-      // Filter courses by status (Pending or Approved)
-      userCourses = await UserCourse.find({ status })
-        .sort({ createdAt: -1 })
-        .populate("courseId", "courseName");
-    } else if (userId) {
-      // Filter by userId
-      userCourses = await UserCourse.find({ userId }).populate("courseId");
-    } else {
-      // Fetch all user courses
-      userCourses = await UserCourse.find().populate("courseId", "courseName");
+    // If no userId is provided, return an empty response
+    if (!userId) {
+      return NextResponse.json({ userCourses: [] }, { status: 200 });
     }
+
+    // Fetch user courses filtered by userId
+    const userCourses = await UserCourse.find({ userId }).populate("courseId");
 
     return NextResponse.json({ userCourses }, { status: 200 });
   } catch (error) {

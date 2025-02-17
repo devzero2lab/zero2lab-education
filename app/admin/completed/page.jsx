@@ -12,7 +12,7 @@ function CourseCompleted() {
   const fetchCompletedCourses = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${apiUrl}/api/usercourses`, {
+      const response = await axios.get(`${apiUrl}/api/admin/usercourses`, {
         params: { status: "Completed" },
       });
       setCompletedCourses(response.data.userCourses || []);

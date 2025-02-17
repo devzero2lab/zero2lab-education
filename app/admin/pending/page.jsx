@@ -13,7 +13,7 @@ function PendingPage() {
   const fetchPendingCourses = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${apiUrl}/api/usercourses`, {
+      const response = await axios.get(`${apiUrl}/api/admin/usercourses`, {
         params: { status: "Pending" },
       });
       setPendingCourses(response.data.userCourses || []);
