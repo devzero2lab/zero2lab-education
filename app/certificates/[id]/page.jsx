@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { FaDownload, FaLink } from "react-icons/fa";
 import { QRCodeCanvas } from "qrcode.react";
 import Loader from "@/app/components/Loader";
+import axios from "axios";
 
 function CertificatePage({ params }) {
   const [html2pdf, setHtml2pdf] = useState(null);
@@ -18,10 +19,11 @@ function CertificatePage({ params }) {
     // Fetch certificate details
     const fetchCertificate = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/Certificate/${params.id}`);
-        const data = await response.json();
-        if (data.length > 0) {
-          setCertificate(data[0]); // Assuming only one certificate is returned
+        const response = await axios.get(
+          `${apiUrl}/api/certificates/${params.id}`
+        );
+        if (response.data.certificate) {
+          setCertificate(response.data.certificate);
         }
       } catch (error) {
         console.error("Error fetching certificate:", error);

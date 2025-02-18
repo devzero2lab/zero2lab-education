@@ -31,13 +31,13 @@ function Page() {
           `${apiUrl}/api/usercourses?userId=${userID}&action=count`
         );
         const certificatesResponse = await axios.get(
-          `${apiUrl}/api/Certificates/${userID}`
+          `${apiUrl}/api/certificates?userID=${userID}`
         );
 
         setEnrolledCourses(coursesResponse.data.userCourses);
         setApprovedCount(countResponse.data.approvedCount);
         setCompletedCount(countResponse.data.completedCount);
-        setCertificates(certificatesResponse.data);
+        setCertificates(certificatesResponse.data.completedCourses);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -52,7 +52,7 @@ function Page() {
 
   if (!isLoaded) {
     return (
-      <div className="flex justify-center">
+      <div className="">
         <Loader />
       </div>
     );
@@ -92,7 +92,7 @@ function Page() {
         {stats.map((stat, index) => (
           <div
             key={index}
-            className={`${stat.color} rounded-2xl p-6 shadow-lg relative overflow-hidden transition-transform hover:scale-[1.02]`}
+            className={`${stat.color} rounded-2xl p-6 shadow-lg relative overflow-hidden`}
           >
             <div className="absolute -right-4 -bottom-4 opacity-20">
               {React.cloneElement(stat.icon, { className: "w-24 h-24" })}
