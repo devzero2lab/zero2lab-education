@@ -17,7 +17,7 @@ function Certificates() {
       try {
         setLoading(true);
         const certificatesResponse = await axios.get(
-          `${apiUrl}/api/certificates?userID=${userID}`
+          `${apiUrl}/api/usercertificate?userID=${userID}`
         );
         setCertificates(certificatesResponse.data.completedCourses);
       } catch (error) {

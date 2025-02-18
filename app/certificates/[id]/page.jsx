@@ -20,7 +20,7 @@ function CertificatePage({ params }) {
     const fetchCertificate = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}/api/certificates/${params.id}`
+          `${apiUrl}/api/usercertificate/${params.id}`
         );
         if (response.data.certificate) {
           setCertificate(response.data.certificate);

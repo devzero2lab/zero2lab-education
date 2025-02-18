@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { FaBook, FaGraduationCap, FaLock } from "react-icons/fa";
 import Loader from "../components/Loader";
-import Certificates from "./components/Certificates";
+import Certificates from "../certificates/page";
 
 function Page() {
   const router = useRouter();
