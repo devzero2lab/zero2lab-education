@@ -10,7 +10,7 @@ function Page() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [loading, setLoading] = useState(true);
-  const courseId = "6791f29f5fb1e883f39ec522"; // Example course ID for Full Stack Web Dev
+  const courseId = "6791f29f5fb1e883f39ec522";
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {

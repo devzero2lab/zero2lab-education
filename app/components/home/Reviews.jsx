@@ -86,8 +86,8 @@ const Reviews = () => {
     <div className="relative w-full overflow-hidden bg-white py-9">
       {/* Gradient overlays for the edges */}
       <div className="absolute inset-0 z-10 pointer-events-none">
-        <div className="absolute top-0 left-0 w-28 h-full bg-gradient-to-r from-white to-transparent"></div>
-        <div className="absolute top-0 right-0 w-28 h-full bg-gradient-to-l from-white to-transparent"></div>
+        <div className="absolute top-0 left-0 h-full w-28 bg-gradient-to-r from-white to-transparent"></div>
+        <div className="absolute top-0 right-0 h-full w-28 bg-gradient-to-l from-white to-transparent"></div>
       </div>
 
       {/* Scrolling Slider */}
@@ -97,7 +97,7 @@ const Reviews = () => {
           x: ["0%", "-100%"],
           transition: {
             ease: "linear",
-            duration: 260, // Adjust speed here
+            duration: 80, // Adjust speed here
             repeat: Infinity,
           },
         }}
