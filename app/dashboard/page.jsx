@@ -193,7 +193,7 @@ function Page() {
       </section>
 
       {/* user certificates */}
-      <Certificates certificates={certificates} loading={loading} />
+      {/* <Certificates certificates={certificates} loading={loading} /> */}
     </div>
   );
 }
