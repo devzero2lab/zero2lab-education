@@ -17,7 +17,6 @@ function Page() {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [approvedCount, setApprovedCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
-  const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,14 +29,10 @@ function Page() {
         const countResponse = await axios.get(
           `${apiUrl}/api/usercourses?userId=${userID}&action=count`
         );
-        // const certificatesResponse = await axios.get(
-        //   `${apiUrl}/api/certificates?userID=${userID}`
-        // );
 
         setEnrolledCourses(coursesResponse.data.userCourses);
         setApprovedCount(countResponse.data.approvedCount);
         setCompletedCount(countResponse.data.completedCount);
-        // setCertificates(certificatesResponse.data.completedCourses);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -193,7 +188,7 @@ function Page() {
       </section>
 
       {/* user certificates */}
-      {/* <Certificates certificates={certificates} loading={loading} /> */}
+      <Certificates />
     </div>
   );
 }
