@@ -1,11 +1,43 @@
-import React from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useState } from "react";
 import { Calendar, Clock } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import axios from "axios";
+import { toast } from "sonner";
 
 function BookingForm() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const { user } = useUser();
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!date || !time || !description) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.post(`${apiUrl}/api/meetings/`, {
+        email: user?.emailAddresses[0]?.emailAddress,
+        description,
+        date,
+        time,
+      });
+      toast.success("Meeting booked successfully!");
+      setDescription("");
+      setDate("");
+      setTime("");
+    } catch (error) {
+      toast.error("Error booking meeting. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="w-full bg-white rounded-lg shadow-lg">
       <div className="p-6 border-b border-gray-100">
@@ -14,7 +46,7 @@ function BookingForm() {
           Schedule your 30 minute consultation
         </p>
       </div>
-      <form className="p-6 space-y-6">
+      <form className="p-6 space-y-6" onSubmit={handleSubmit}>
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700">
             Email Address
@@ -35,34 +67,41 @@ function BookingForm() {
             className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             placeholder="Please describe the purpose of the meeting..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700">
-            Select Date and Time
+            Select Date
           </label>
-          <div className="relative">
-            <DatePicker
-              showTimeSelect
-              dateFormat="MMMM d, yyyy h:mm aa"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-              placeholderText="Click to select date and time"
-              timeIntervals={30}
-            />
-            <Calendar
-              className="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2"
-              size={20}
-            />
-          </div>
+          <input
+            type="date"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label className="block mb-1 text-sm font-medium text-gray-700">
+            Select Time
+          </label>
+          <input
+            type="time"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+          />
         </div>
         <button
           type="submit"
           className="flex items-center justify-center w-full gap-2 px-4 py-3 text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700"
-          disabled
+          disabled={loading}
         >
           <Clock size={20} />
-          Book 30 Minute Meeting
+          {loading ? "Booking..." : "Book 30 Minute Meeting"}
         </button>
       </form>
     </div>
