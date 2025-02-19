@@ -100,9 +100,6 @@ function Features() {
         >
           Popular Courses
         </motion.h2>
-        <motion.p variants={itemVariants} className="text-sm text-gray-600">
-          Master new skills with our best selling courses
-        </motion.p>
       </motion.div>
 
       <div

@@ -23,27 +23,20 @@ function PromoBanner() {
             </p>
           </div>
           <div className="py-16 text-white rounded-lg bg-[#5c19e7]">
-            <h2 className="mb-2 text-3xl font-bold">
-              One on One Help Sessions
-            </h2>
+            <h2 className="mb-2 text-3xl font-bold">Help Sessions</h2>
             <p className="font-semibold text-md">
               If you have any issues, you can schedule a meeting with us for
               support
             </p>
           </div>
           <div className="py-16 text-white rounded-lg bg-[#5c19e7]">
-            <h2 className="mb-2 text-3xl font-bold">
-              {" "}
-              Friendly & Clear Explanations
-            </h2>
+            <h2 className="mb-2 text-3xl font-bold"> Clear Explanations</h2>
             <p className="font-semibold text-md">
               We explain all concepts in an easy to understand and friendly way
             </p>
           </div>
           <div className="py-16 text-white rounded-lg  bg-[#5c19e7]">
-            <h2 className="mb-2 text-3xl font-bold">
-              Access to Live Session Recordings
-            </h2>
+            <h2 className="mb-2 text-3xl font-bold">Access Recordings</h2>
             <p className="font-semibold text-md">
               If you miss a live session, you can always watch the recordings
               later
