@@ -18,6 +18,7 @@ function CertificatePage({ params }) {
   useEffect(() => {
     // Fetch certificate details
     const fetchCertificate = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `${apiUrl}/api/usercertificate/${params.id}`
@@ -77,7 +78,7 @@ function CertificatePage({ params }) {
 
   if (loading) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center min-h-screen bg-white">
+      <div>
         <Loader />
       </div>
     );
