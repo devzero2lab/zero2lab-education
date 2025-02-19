@@ -7,6 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import { FaBook, FaGraduationCap, FaLock } from "react-icons/fa";
 import Loader from "../components/Loader";
 import Certificates from "../certificates/Certificates";
+import BookMeeting from "./components/BookMeeting";
 
 function Page() {
   const router = useRouter();
@@ -194,6 +195,9 @@ function Page() {
 
       {/* user certificates */}
       <Certificates certificates={certificates} loading={loading} />
+
+      {/* meeting section */}
+      <BookMeeting />
     </div>
   );
 }

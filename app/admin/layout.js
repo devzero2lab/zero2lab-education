@@ -3,6 +3,7 @@ import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import Loader from "../components/Loader";
 
 export default function AdminLayout({ children }) {
   const { isLoaded, isSignedIn } = useAuth();
@@ -21,7 +22,11 @@ export default function AdminLayout({ children }) {
   }, [isLoaded, isSignedIn, user, router]);
 
   if (loading) {
-    return <div className="mt-14">Loading...</div>; // Show a loading screen
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   return (

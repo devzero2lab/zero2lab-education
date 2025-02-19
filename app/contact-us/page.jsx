@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import Loader from "../components/Loader";
 import axios from "axios";
 import { toast } from "sonner";
-import { FiMail, FiPhone, FiSend, FiUser, FiMessageSquare } from "react-icons/fi";
+import {
+  FiMail,
+  FiPhone,
+  FiSend,
+  FiUser,
+  FiMessageSquare,
+} from "react-icons/fi";
 
 function ContactUs() {
   const router = useRouter();
@@ -41,9 +47,10 @@ function ContactUs() {
 
     try {
       const contactData = {
-        name: `${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "User",
+        name:
+          `${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "User",
         email: user?.emailAddresses[0]?.emailAddress || "",
-        message: message.trim()
+        message: message.trim(),
       };
 
       await axios.post(`${apiUrl}/api/contactus`, contactData);
@@ -66,25 +73,26 @@ function ContactUs() {
           content="Contact Zero2lab Education LMS for support and inquiries"
         />
       </Head>
-      
+
       <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
-        <main className="max-w-4xl mx-auto px-4 py-12">
+        <main className="max-w-4xl px-4 py-12 mx-auto">
           {/* Page Header */}
-          <div className="text-center mb-6">
-            <h1 className="text-4xl mt-10 md:text-5xl font-bold text-gray-900 mb-4">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+          <div className="mb-6 text-center">
+            <h1 className="mt-10 mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
                 Get in Touch
               </span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We&apos;re here to help and answer any questions you might have. Our team usually responds within 24 hours.
+            <p className="max-w-2xl mx-auto text-xl text-gray-600">
+              We&apos;re here to help and answer any questions you might have.
+              Our team usually responds within 24 hours.
             </p>
           </div>
 
           {/* Content Grid */}
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid gap-12 md:grid-cols-2">
             {/* Contact Form Section */}
-            <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="p-8 bg-white shadow-xl rounded-2xl">
               <div className="flex items-center gap-3 mb-8">
                 <div className="p-3 bg-indigo-100 rounded-lg">
                   <FiMessageSquare className="w-6 h-6 text-indigo-600" />
@@ -104,9 +112,13 @@ function ContactUs() {
                     </label>
                     <input
                       type="text"
-                      value={`${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "User"}
+                      value={
+                        `${user?.firstName || ""} ${
+                          user?.lastName || ""
+                        }`.trim() || "User"
+                      }
                       disabled
-                      className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                     />
                   </div>
 
@@ -120,7 +132,7 @@ function ContactUs() {
                       type="email"
                       value={user?.emailAddresses[0]?.emailAddress || ""}
                       disabled
-                      className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                     />
                   </div>
 
@@ -135,7 +147,7 @@ function ContactUs() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Write your message here..."
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                       disabled={loading}
                     />
                   </div>
@@ -149,23 +161,23 @@ function ContactUs() {
                 >
                   {loading ? (
                     <>
-                      <svg 
-                        className="animate-spin h-5 w-5 text-white" 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        fill="none" 
+                      <svg
+                        className="w-5 h-5 text-white animate-spin"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
                         viewBox="0 0 24 24"
                       >
-                        <circle 
-                          className="opacity-25" 
-                          cx="12" 
-                          cy="12" 
-                          r="10" 
-                          stroke="currentColor" 
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
                           strokeWidth="4"
                         ></circle>
-                        <path 
-                          className="opacity-75" 
-                          fill="currentColor" 
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
@@ -184,7 +196,7 @@ function ContactUs() {
             {/* Contact Information Section */}
             <div className="space-y-8">
               {/* Contact Details Card */}
-              <div className="bg-white rounded-2xl shadow-xl p-8">
+              <div className="p-8 bg-white shadow-xl rounded-2xl">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-3 bg-indigo-100 rounded-lg">
                     <FiPhone className="w-6 h-6 text-indigo-600" />
@@ -201,10 +213,12 @@ function ContactUs() {
                       <FiMail className="w-6 h-6 text-indigo-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
+                      <h3 className="mb-1 font-semibold text-gray-800">
+                        Email
+                      </h3>
                       <a
                         href="mailto:info.zero2lab@gmail.com"
-                        className="text-indigo-600 hover:text-indigo-800 transition-colors"
+                        className="text-indigo-600 transition-colors hover:text-indigo-800"
                       >
                         info.zero2lab@gmail.com
                       </a>
@@ -217,10 +231,12 @@ function ContactUs() {
                       <FiPhone className="w-6 h-6 text-indigo-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-800 mb-1">Phone</h3>
-                      <a 
+                      <h3 className="mb-1 font-semibold text-gray-800">
+                        Phone
+                      </h3>
+                      <a
                         href="tel:0765752518"
-                        className="text-gray-700 hover:text-indigo-600 transition-colors"
+                        className="text-gray-700 transition-colors hover:text-indigo-600"
                       >
                         0765752518
                       </a>
@@ -230,8 +246,8 @@ function ContactUs() {
               </div>
 
               {/* Why Contact Us Card */}
-              <div className="bg-indigo-50 rounded-2xl p-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <div className="p-8 bg-indigo-50 rounded-2xl">
+                <h3 className="mb-4 text-lg font-semibold text-gray-900">
                   Why contact us?
                 </h3>
                 <ul className="space-y-3 text-gray-600">
