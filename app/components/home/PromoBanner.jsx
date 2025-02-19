@@ -13,7 +13,7 @@ function PromoBanner() {
           challenges into stepping stones for your success
         </p>
         <p className="mb-8 text-xl">
-          Join us and go from newbie to pro in months
+          Join us and go from newbie to pro in months.why you join with us ?
         </p>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
           <div className="py-16 text-white rounded-lg  bg-[#5c19e7]">
