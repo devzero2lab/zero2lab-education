@@ -13,7 +13,11 @@ function Features() {
         "Master HTML, CSS, JavaScript, React, Node.js, MongoDB and more! Build real projects and deploy your portfolio.",
       duration: "24h 40m",
       image: "/images/homepage/course1.png",
-      instructors: ["/images/avatars/avatar1.jpg", "/images/avatars/avatar2.jpg", "/images/avatars/avatar3.jpg"],
+      instructors: [
+        "/images/avatars/avatar1.jpg",
+        "/images/avatars/avatar2.jpg",
+        "/images/avatars/avatar3.jpg",
+      ],
       rating: 4.9,
       reviews: 2385,
       badge: "Bestseller",
@@ -25,7 +29,10 @@ function Features() {
         "Learn Python, NumPy, Pandas, and machine learning algorithms to excel in data science and AI.",
       duration: "30h 15m",
       image: "/images/homepage/fwd.png",
-      instructors: ["/images/avatars/avatar4.jpg", "/images/avatars/avatar5.jpg"],
+      instructors: [
+        "/images/avatars/avatar4.jpg",
+        "/images/avatars/avatar5.jpg",
+      ],
       rating: 4.8,
       reviews: 1850,
       badge: "Top Rated",
@@ -51,9 +58,9 @@ function Features() {
       opacity: 1,
       transition: {
         delayChildren: 0.3,
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -61,43 +68,45 @@ function Features() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 100, damping: 20 }
-    }
+      transition: { type: "spring", stiffness: 100, damping: 20 },
+    },
   };
 
   const cardHoverVariants = {
     hover: {
       y: -5,
-      transition: { type: "spring", stiffness: 300 }
-    }
+      transition: { type: "spring", stiffness: 300 },
+    },
   };
 
   const imageHoverVariants = {
     hover: {
       scale: 1.05,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   return (
     <section className="relative z-30 flex flex-col items-center w-full pb-5 bg-gradient-to-b from-white to-gray-50">
-      <motion.div 
+      <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-7xl flex items-center justify-between w-full px-5"
+        className="flex items-center justify-between w-full px-5 max-w-7xl"
       >
-        <motion.h2 variants={itemVariants} className="mb-6 text-3xl font-bold text-gray-900 font-inter">
-          Most Popular Courses
+        <motion.h2
+          variants={itemVariants}
+          className="mb-6 text-3xl font-bold text-gray-900 font-inter"
+        >
+          Popular Courses
         </motion.h2>
         <motion.p variants={itemVariants} className="text-sm text-gray-600">
-          Master new skills with our best-selling courses
+          Master new skills with our best selling courses
         </motion.p>
       </motion.div>
 
       <div
-        className="grid max-w-7xl grid-cols-1 gap-8 px-5 mx-auto sm:grid-cols-2 lg:grid-cols-3"
-        
+        className="grid grid-cols-1 gap-8 px-5 mx-auto max-w-7xl sm:grid-cols-2 lg:grid-cols-3"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "0px 0px -100px 0px" }}
@@ -107,17 +116,16 @@ function Features() {
             key={course.id}
             variants={itemVariants}
             whileHover="hover"
-            className="group relative bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-out"
+            className="relative transition-all duration-300 ease-out bg-white shadow-lg group rounded-xl hover:shadow-2xl"
           >
-            <Link href="/courses" className="block" aria-label={`Course: ${course.title}`}>
+            <Link
+              href="/courses"
+              className="block"
+              aria-label={`Course: ${course.title}`}
+            >
               {/* Course Image */}
-              <div
-                className="overflow-hidden rounded-xl"
-              >
-                <div
-                  className="overflow-hidden rounded-xl"
-                  whileHover="hover"
-                >
+              <div className="overflow-hidden rounded-xl">
+                <div className="overflow-hidden rounded-xl" whileHover="hover">
                   <Image
                     width={600}
                     height={440}
@@ -127,8 +135,6 @@ function Features() {
                   />
                 </div>
               </div>
-
-              
             </Link>
           </div>
         ))}
@@ -143,7 +149,7 @@ function Features() {
       >
         <Link
           href="/courses"
-          className="px-8 py-3 text-lg font-semibold text-white transition-all transform bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg hover:scale-105 hover:shadow-xl"
+          className="px-8 py-3 text-lg font-semibold text-white transition-all transform rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:scale-105 hover:shadow-xl"
         >
           View All Courses
         </Link>

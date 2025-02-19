@@ -47,7 +47,7 @@ function Page() {
 
   if (!isLoaded) {
     return (
-      <div className="">
+      <div>
         <Loader />
       </div>
     );

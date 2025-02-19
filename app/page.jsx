@@ -21,15 +21,12 @@ function Home() {
           <h2 className="text-2xl font-semibold md:text-3xl">
             See for yourself what others think
           </h2>
-          <p className="text-sm text-[#626262] md:text-base lg:text-sm mt-2">
-            Master coding and design to achieve your goals with expert guidance
-          </p>
         </div>
         <Reviews />
       </div>
 
       <Link
-        href="https://wa.me/message/F5NEXMTYXSFYL1" // Replace with your WhatsApp number
+        href="https://wa.me/message/F5NEXMTYXSFYL1"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-8 right-8 z-50 flex items-center space-x-3 bg-[#128C7E] px-6 py-3 rounded-full shadow-lg hover:bg-[#1b6159] transition-all duration-300 group animate-bounce-slow"
