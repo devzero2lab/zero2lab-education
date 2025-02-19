@@ -4,6 +4,7 @@ import TechStackIcons from "./components/home/TechStack";
 import Features from "./components/home/Features";
 import Reviews from "./components/home/Reviews";
 import Link from "next/link";
+import PromoBanner from "./components/home/PromoBanner";
 
 function Home() {
   return (
@@ -12,6 +13,10 @@ function Home() {
       <Hero />
       {/* TechStacks */}
       {/* <TechStackIcons />  */}
+
+      {/* PromoBanner */}
+      <PromoBanner />
+
       {/* Features section */}
       <br />
       <Features />
