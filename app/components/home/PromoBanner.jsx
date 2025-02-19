@@ -6,11 +6,11 @@ function PromoBanner() {
       <div className="mx-auto text-center max-w-7xl">
         <h1 className="mb-4 text-4xl font-bold">
           Still Struggling with Coding?{" "}
-          <span className="text-[#0085fe]">You're Not Alone!</span>
+          <span className="text-[#0085fe]">You&apos;re Not Alone!</span>
         </h1>
         <p className="p-2 mb-4 text-2xl bg-yellow-300 rounded-lg">
-          Every developer has been where you are. Let's turn those challenges
-          into stepping stones for your success
+          Every developer has been where you are. Let&apos;s turn those
+          challenges into stepping stones for your success
         </p>
         <p className="mb-8 text-xl">
           Join us and go from newbie to pro in months
