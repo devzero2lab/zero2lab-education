@@ -45,7 +45,7 @@ function NoticeSection() {
             <div>
               <h3 className="mb-1 font-medium text-gray-800">Monthly Limit</h3>
               <p className="text-gray-600">
-                Students are allowed to book two meeting per month to ensure
+                Students are allowed to book one meeting per month to ensure
                 fair access for everyone.
               </p>
             </div>
