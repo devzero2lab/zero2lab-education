@@ -20,17 +20,17 @@ function Header() {
 
       {/* Desktop Links */}
       <div className="items-center hidden space-x-4 md:flex lg:space-x-6">
-        <Link href="/" className="text-black hover:text-blue-600">
+        <Link href="/" className="text-black ">
           Home
         </Link>
-        <Link href="/courses" className="text-black hover:text-blue-600">
+        <Link href="/courses" className="text-black">
           Courses
         </Link>
-        <Link href="/blogs" className="text-black hover:text-blue-600">
+        <Link href="/blogs" className="text-black">
           Blogs
         </Link>
         <SignedOut>
-          <Link href="/sign-in" className="text-black hover:text-blue-600">
+          <Link href="/sign-in" className="text-black">
             Sign In
           </Link>
         </SignedOut>
@@ -61,29 +61,21 @@ function Header() {
             : "-translate-x-full opacity-0"
         }`}
       >
-        <Link
-          href="/"
-          className="text-xl text-black hover:text-blue-600"
-          onClick={toggleMenu}
-        >
+        <Link href="/" className="text-xl text-black" onClick={toggleMenu}>
           Home
         </Link>
         <Link
           href="/courses"
-          className="text-xl text-black hover:text-blue-600"
+          className="text-xl text-black"
           onClick={toggleMenu}
         >
           Courses
         </Link>
-        <Link
-          href="/blogs"
-          className="text-xl text-black hover:text-blue-600"
-          onClick={toggleMenu}
-        >
+        <Link href="/blogs" className="text-xl text-black" onClick={toggleMenu}>
           Blogs
         </Link>
         <SignedOut>
-          <Link href="/sign-in" className="text-black hover:text-blue-600">
+          <Link href="/sign-in" className="text-black">
             Sign In
           </Link>
         </SignedOut>

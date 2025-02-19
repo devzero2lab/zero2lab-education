@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -8,6 +9,38 @@ function Footer() {
         {/* Brand Logo */}
         <div className="flex flex-col items-center w-full mb-6 sm:w-1/2 lg:w-1/4 lg:mb-0">
           <h2 className="text-2xl font-bold text-indigo-700">Zero2learn</h2>
+          <p className="mt-2 text-lg text-center text-gray-600">
+            Empowering learners with quality education
+          </p>
+          <div className="flex items-center gap-4 mt-4">
+            <Link href="https://www.facebook.com/share/15KN94AeuV/">
+              <Image
+                src="/images/footer/fb.jpg"
+                alt="Facebook"
+                width={39}
+                height={39}
+                className="rounded-md"
+              />
+            </Link>
+            <Link href="https://www.linkedin.com/company/zero2-lab">
+              <Image
+                src="/images/footer/linkedin.jpg"
+                alt="LinkedIn"
+                width={30}
+                height={30}
+                className="rounded-md"
+              />
+            </Link>
+            <Link href="https://www.tiktok.com/@zero2lab?_t=ZS-8u354SClNpN&_r=1">
+              <Image
+                src="/images/footer/tiktok.jpg"
+                alt="TikTok"
+                width={30}
+                height={30}
+                className="rounded-md"
+              />
+            </Link>
+          </div>
         </div>
 
         {/* Products */}
