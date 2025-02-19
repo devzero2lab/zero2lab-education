@@ -1,37 +1,8 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FaCertificate } from "react-icons/fa";
-import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import axios from "axios";
 
-function Certificates() {
-  const { isLoaded, isSignedIn, user } = useUser();
-  const userID = user?.id || "";
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const [certificates, setCertificates] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const certificatesResponse = await axios.get(
-          `${apiUrl}/api/usercertificate?userID=${userID}`
-        );
-        setCertificates(certificatesResponse.data.completedCourses);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isLoaded && isSignedIn) {
-      fetchData();
-    }
-  }, [isLoaded, isSignedIn, userID, apiUrl]);
-
+function Certificates({ certificates, loading }) {
   return (
     <div>
       <section className="mb-12 bg-white border border-gray-200 shadow-sm rounded-2xl">

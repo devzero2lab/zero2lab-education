@@ -14,25 +14,30 @@ function Page() {
   const userID = user?.id || "";
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [approvedCount, setApprovedCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const coursesResponse = await axios.get(
-          `${apiUrl}/api/usercourses?userId=${userID}`
-        );
         const countResponse = await axios.get(
           `${apiUrl}/api/usercourses?userId=${userID}&action=count`
         );
+        const coursesResponse = await axios.get(
+          `${apiUrl}/api/usercourses?userId=${userID}`
+        );
+        const certificatesResponse = await axios.get(
+          `${apiUrl}/api/usercertificate?userID=${userID}`
+        );
 
-        setEnrolledCourses(coursesResponse.data.userCourses);
         setApprovedCount(countResponse.data.approvedCount);
         setCompletedCount(countResponse.data.completedCount);
+        setEnrolledCourses(coursesResponse.data.userCourses);
+        setCertificates(certificatesResponse.data.completedCourses);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -188,7 +193,7 @@ function Page() {
       </section>
 
       {/* user certificates */}
-      <Certificates />
+      <Certificates certificates={certificates} loading={loading} />
     </div>
   );
 }
