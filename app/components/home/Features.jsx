@@ -87,7 +87,7 @@ function Features() {
   };
 
   return (
-    <section className="relative z-30 flex flex-col items-center w-full pb-5 bg-gradient-to-b from-white to-gray-50">
+    <section className="relative z-30 flex flex-col items-center w-full pb-5">
       <motion.div
         variants={containerVariants}
         initial="hidden"

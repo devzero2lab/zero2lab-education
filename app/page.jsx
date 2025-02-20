@@ -5,10 +5,11 @@ import Reviews from "./components/home/Reviews";
 import Link from "next/link";
 import PromoBanner from "./components/home/PromoBanner";
 import CourseStats from "./components/home/CourseStats";
+import FAQSection from "./components/home/FAQSection";
 
 function Home() {
   return (
-    <div className="mt-12 bg-[#ffffff]">
+    <div className="mt-12">
       {/* hero section */}
       <Hero />
 
@@ -31,6 +32,9 @@ function Home() {
         </div>
         <Reviews />
       </div>
+
+      {/* FAQSection */}
+      <FAQSection />
 
       <Link
         href="https://wa.me/message/F5NEXMTYXSFYL1"
