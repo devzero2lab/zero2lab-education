@@ -23,7 +23,7 @@ function CourseStats() {
               className="p-8 text-center transition-all duration-300 transform bg-[#5c19e7] group rounded-xl"
             >
               <div className="relative inline-block mb-6">
-                <div className="relative z-10 text-6xl font-bold text-white">
+                <div className="relative z-10 text-4xl font-bold text-white">
                   {stat.value}
                   {stat.plus && <span className="text-white">+</span>}
                 </div>
