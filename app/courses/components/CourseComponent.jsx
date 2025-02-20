@@ -17,14 +17,14 @@ function CourseComponent({ course }) {
       className="group p-4 transition-all duration-300 bg-white border rounded-lg shadow-lg hover:shadow-2xl flex flex-col w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)] relative"
     >
       {/* Discount Ribbon */}
-      {course.discountPrice && (
-        <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-sm font-bold rounded-tr-lg rounded-bl-lg z-10">
+      {course.discountPrice > 0 && (
+        <div className="absolute top-0 right-0 z-10 px-3 py-1 text-sm font-bold text-white bg-red-500 rounded-tr-lg rounded-bl-lg">
           {calculateDiscountPercentage()}% OFF
         </div>
       )}
 
       {/* Image Container */}
-      <div className="relative w-full mb-2 h-56 overflow-hidden rounded-md">
+      <div className="relative w-full h-56 mb-2 overflow-hidden rounded-md">
         <Image
           fill
           src={course.image}
@@ -50,7 +50,7 @@ function CourseComponent({ course }) {
               <span className="text-lg font-bold text-green-600">
                 Rs.{course.discountPrice}
               </span>
-              <span className="text-xs line-through text-gray-500">
+              <span className="text-xs text-gray-500 line-through">
                 Rs.{course.price}
               </span>
             </>
@@ -73,8 +73,8 @@ function CourseComponent({ course }) {
         </div>
       </div>
 
-      {course.discountPrice && (
-        <div className="mt-3 p-2 bg-yellow-100 rounded-md flex items-center gap-2 text-sm text-yellow-800">
+      {course.discountPrice > 0 && (
+        <div className="flex items-center gap-2 p-2 mt-3 text-sm text-yellow-800 bg-yellow-100 rounded-md">
           <AlertCircle size={16} />
           <span>Limited time offer! Save {calculateDiscountPercentage()}%</span>
         </div>

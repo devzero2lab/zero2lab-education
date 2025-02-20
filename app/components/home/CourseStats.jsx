@@ -75,8 +75,8 @@ const stats = [
     description: "Students joined our courses",
   },
   {
-    value: 4,
-    plus: false,
+    value: 3,
+    plus: true,
     title: "Courses Completed",
     description: "Successfully finished by students",
   },

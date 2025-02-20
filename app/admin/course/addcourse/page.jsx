@@ -12,7 +12,7 @@ function AddCoursePage() {
   const [formData, setFormData] = useState({
     courseName: "",
     uniqueName: "",
-    type: "Live", // Default to "Live"
+    type: "Live",
     description: "",
     image: "",
     level: "",
@@ -20,7 +20,7 @@ function AddCoursePage() {
     price: 0,
     discountPrice: 0,
     instructor: "",
-    content: [], // Initially empty
+    content: [],
   });
 
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");

@@ -46,10 +46,6 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    discountPrice:{
-      type: Number,
-      required: true,
-    },
     level: {
       type: String,
       required: true,
@@ -60,6 +56,10 @@ const courseSchema = new mongoose.Schema(
       required: true,
     },
     price: {
+      type: Number,
+      required: true,
+    },
+    discountPrice: {
       type: Number,
       required: true,
     },
@@ -98,4 +98,5 @@ const courseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Course = mongoose.models?.Course || mongoose.model("Course", courseSchema);
+export const Course =
+  mongoose.models?.Course || mongoose.model("Course", courseSchema);
