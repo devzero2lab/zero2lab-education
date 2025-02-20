@@ -25,11 +25,6 @@ function UpdateCoursePage({ params }) {
     content: [],
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const courseId = params?.id || "";
 
   useEffect(() => {
@@ -39,7 +34,6 @@ function UpdateCoursePage({ params }) {
           `${apiUrl}/api/admin/course/${courseId}`
         );
         const courseData = response.data.course;
-        console.log(courseData);
 
         setFormData({
           courseName: courseData.courseName,
@@ -49,14 +43,16 @@ function UpdateCoursePage({ params }) {
           image: courseData.image,
           level: courseData.level,
           duration: courseData.duration,
-          price: courseData.price,
-          discountPrice: courseData.discountPrice,
+          price: courseData.price || 0,
+          discountPrice: courseData.discountPrice || 0,
           instructor: courseData.instructor,
+          content: courseData.content || [],
         });
 
         setCourse(courseData);
       } catch (error) {
         console.error("Error fetching course details:", error);
+        toast.error("Failed to load course details");
       }
     };
 
@@ -64,6 +60,14 @@ function UpdateCoursePage({ params }) {
       fetchCourseDetails();
     }
   }, [courseId, apiUrl]);
+
+  const handleInputChange = (e) => {
+    const { name, value, type } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "number" ? Number(value) : value,
+    }));
+  };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -85,27 +89,48 @@ function UpdateCoursePage({ params }) {
     }
   };
 
-  const handleDeleteImage = () => {
-    setFormData({ ...formData, image: "" });
-    toast.success("Image removed successfully.");
+  const handleAddContent = () => {
+    setFormData((prev) => ({
+      ...prev,
+      content: [...prev.content, { day: 0, videoUrl: "", notes: "" }],
+    }));
   };
 
-  // Handle the image upload
+  const handleRemoveContent = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      content: prev.content.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleContentChange = (index, e) => {
+    const { name, value, type } = e.target;
+    const parsedValue = type === "number" ? parseInt(value, 10) : value;
+
+    setFormData((prev) => {
+      const updatedContent = [...prev.content];
+      updatedContent[index] = {
+        ...updatedContent[index],
+        [name]: parsedValue,
+      };
+      return { ...prev, content: updatedContent };
+    });
+  };
+
   const handleImageUpload = (files) => {
-    // Check if files array is valid and has an image
-    if (files && files.length > 0 && files[0].url) {
-      // Check if an image is already set
+    if (files?.[0]?.url) {
       if (formData.image) {
-        toast.error(
-          "You can only upload one image at a time. Please delete the existing image before uploading a new one."
-        );
+        toast.error("Remove existing image before uploading new one");
         return;
       }
-      setFormData({ ...formData, image: files[0].url });
-      toast.success("Image uploaded successfully.");
-    } else {
-      toast.error("Failed to upload image. Please try again.");
+      setFormData((prev) => ({ ...prev, image: files[0].url }));
+      toast.success("Image uploaded successfully");
     }
+  };
+
+  const handleDeleteImage = () => {
+    setFormData((prev) => ({ ...prev, image: "" }));
+    toast.success("Image removed successfully");
   };
 
   if (!course) {
@@ -242,6 +267,7 @@ function UpdateCoursePage({ params }) {
             <input
               type="number"
               name="price"
+              min="0"
               value={formData.price}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
@@ -253,6 +279,7 @@ function UpdateCoursePage({ params }) {
             <input
               type="number"
               name="discountPrice"
+              min="0"
               value={formData.discountPrice}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
@@ -269,6 +296,57 @@ function UpdateCoursePage({ params }) {
               className="w-full p-2 border rounded"
             />
           </div>
+        </div>
+
+        <div className="mt-6">
+          <h2 className="text-xl font-bold">Course Content</h2>
+          {formData.content.map((contentItem, index) => (
+            <div key={index} className="p-4 mt-4 border rounded">
+              <div className="grid grid-cols-3 gap-4">
+                <input
+                  type="number"
+                  name="day"
+                  placeholder="Day"
+                  min="1"
+                  value={contentItem.day}
+                  onChange={(e) => handleContentChange(index, e)}
+                  className="w-full p-2 border rounded"
+                  required
+                />
+                <input
+                  type="text"
+                  name="videoUrl"
+                  placeholder="Video URL"
+                  value={contentItem.videoUrl}
+                  onChange={(e) => handleContentChange(index, e)}
+                  className="w-full p-2 border rounded"
+                  required
+                />
+                <input
+                  type="text"
+                  name="notes"
+                  placeholder="Notes (optional)"
+                  value={contentItem.notes}
+                  onChange={(e) => handleContentChange(index, e)}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => handleRemoveContent(index)}
+                className="mt-2 text-red-500"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={handleAddContent}
+            className="px-4 py-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600"
+          >
+            Add Content
+          </button>
         </div>
 
         <button
