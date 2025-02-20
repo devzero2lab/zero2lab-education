@@ -13,7 +13,10 @@ function Footer() {
             Empowering learners with quality education
           </p>
           <div className="flex items-center gap-4 mt-4">
-            <Link href="https://www.facebook.com/share/15KN94AeuV/">
+            <Link
+              href="https://www.facebook.com/share/15KN94AeuV/"
+              target="_blank"
+            >
               <Image
                 src="/images/footer/fb.jpg"
                 alt="Facebook"
@@ -22,7 +25,10 @@ function Footer() {
                 className="rounded-md"
               />
             </Link>
-            <Link href="https://www.linkedin.com/company/zero2-lab">
+            <Link
+              href="https://www.linkedin.com/company/zero2-lab"
+              target="_blank"
+            >
               <Image
                 src="/images/footer/linkedin.jpg"
                 alt="LinkedIn"
@@ -31,7 +37,10 @@ function Footer() {
                 className="rounded-md"
               />
             </Link>
-            <Link href="https://www.tiktok.com/@zero2lab?_t=ZS-8u354SClNpN&_r=1">
+            <Link
+              href="https://www.tiktok.com/@zero2lab?_t=ZS-8u354SClNpN&_r=1"
+              target="_blank"
+            >
               <Image
                 src="/images/footer/tiktok.jpg"
                 alt="TikTok"
@@ -78,7 +87,7 @@ function Footer() {
         </div>
       </div>
       {/* Copyright Section */}
-      <div className="pt-4 mt-6 text-center border-gray-200">
+      <div className="pt-4 mt-6 text-center border-t border-gray-400">
         <p className="text-sm text-gray-600">
           © {new Date().getFullYear()} Zero2learn. All rights reserved.
         </p>

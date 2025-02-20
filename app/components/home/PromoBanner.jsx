@@ -5,7 +5,7 @@ function PromoBanner() {
     <div className="px-6 py-12 ">
       <div className="mx-auto text-center max-w-7xl">
         <h1 className="mb-4 text-4xl font-bold">
-          Still Struggling with Coding?{" "}
+          Still Struggling With Coding?{" "}
           <span className="text-[#0085fe]">You&apos;re Not Alone!</span>
         </h1>
         <p className="p-2 mb-4 text-2xl bg-yellow-300 rounded-lg">
@@ -13,7 +13,7 @@ function PromoBanner() {
           challenges into stepping stones for your success
         </p>
         <p className="mb-8 text-xl">
-          Join us and go from newbie to pro in months.why you join with us ?
+          Join us and go from newbie to pro in months.Why you join with us ?
         </p>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
           <div className="py-16 text-white rounded-lg  bg-[#5c19e7]">

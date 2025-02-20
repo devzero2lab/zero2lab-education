@@ -1,18 +1,16 @@
 import React from "react";
 import Hero from "./components/home/Hero";
-import TechStackIcons from "./components/home/TechStack";
 import Features from "./components/home/Features";
 import Reviews from "./components/home/Reviews";
 import Link from "next/link";
 import PromoBanner from "./components/home/PromoBanner";
+import CourseStats from "./components/home/CourseStats";
 
 function Home() {
   return (
     <div className="mt-12 bg-[#ffffff]">
       {/* hero section */}
       <Hero />
-      {/* TechStacks */}
-      {/* <TechStackIcons />  */}
 
       {/* PromoBanner */}
       <PromoBanner />
@@ -20,6 +18,10 @@ function Home() {
       {/* Features section */}
       <br />
       <Features />
+
+      {/* CourseStats */}
+      <CourseStats />
+
       {/* Reviews section */}
       <div className="relative z-30 flex flex-col items-center w-full px-6 mt-5 text-center md:px-8 lg:px-16">
         <div className="flex items-center justify-between w-full px-5 text-start max-w-7xl lg:px-0">
