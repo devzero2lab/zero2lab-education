@@ -1,5 +1,6 @@
 import connectMongoDB from "@/lib/db";
 import { UserCourse } from "@/models/userCourse";
+import { Course } from "@/models/course";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
