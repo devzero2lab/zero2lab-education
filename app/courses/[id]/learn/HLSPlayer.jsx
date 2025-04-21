@@ -20,7 +20,10 @@ const HLSPlayer = ({ videoUrl }) => {
           "mute",
           "volume",
           "fullscreen",
+          "speed", // Enable playback speed control
         ],
+        settings: ["speed"], // Add speed settings
+        speed: { selected: 1, options: [0.5, 1, 1.5, 2] }, // Configure speed options
         autoplay: false,
         fullscreen: { enabled: true, fallback: true, iosNative: true },
         theme: "#f0f0f0", // Light background theme
