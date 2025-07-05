@@ -16,7 +16,7 @@ const RefundPolicy = () => {
       <p>Refunds will be processed within 7 business days to your original payment method.</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">Contact Us</h2>
-      <p>Email: <a href="mailto:support@zero2learn.com" className="text-blue-600">support@zero2learn.com</a></p>
+      <p>Email: <a href="mailto:support@zero2learn.com" className="text-blue-600">info@zero2lab.com</a></p>
     </div>
   );
 };
