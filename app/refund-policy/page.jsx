@@ -2,7 +2,7 @@ import React from 'react';
 
 const RefundPolicy = () => {
   return (
-    <div className="p-6 max-w-4xl mx-auto text-gray-800">
+    <div className="p-6 pt-[90px] max-w-4xl mx-auto text-gray-800">
       <h1 className="text-3xl font-bold mb-4">Refund Policy</h1>
       <p>Thank you for choosing <strong>Zero2Learn</strong> for your learning journey. We are committed to providing high-quality, structured educational content. If you are not entirely satisfied with your purchase, we are here to help.</p>
 
