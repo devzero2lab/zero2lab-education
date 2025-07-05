@@ -32,7 +32,7 @@ const TermsAndConditions = () => {
       <p>Terms may be updated anytime. Continued use means acceptance of changes.</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">8. Contact</h2>
-      <p>Email: <a href="mailto:support@zero2learn.com" className="text-blue-600">support@zero2learn.com</a></p>
+      <p>Email: <a href="mailto:support@zero2learn.com" className="text-blue-600">info@zero2lab.com</a></p>
     </div>
   );
 };
