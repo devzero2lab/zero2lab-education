@@ -14,7 +14,7 @@ export async function GET(req) {
   console.log(FN);
 
   // Construct the full external URL for the video
-  const baseUrl = `http://147.79.66.105/video/uploads/${FN}/`;
+  const baseUrl = `http://147.93.19.33/video/uploads/${FN}/`;
   const fullUrl = `${baseUrl}${videoFile}`;
   
 
