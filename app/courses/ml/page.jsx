@@ -90,7 +90,7 @@ const TestimonialCard = ({ quote, name, role, image, salary, beforeAfter, rating
         </span>
       </div>
       
-      <p className="text-gray-700 mb-6 italic leading-relaxed text-sm">"{quote}"</p>
+      <p className="text-gray-700 mb-6 italic leading-relaxed text-sm">&quot;{quote}&quot;</p>
       
       {/* Career transformation */}
       <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
@@ -831,7 +831,7 @@ function Page() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 md:mb-4">
-              What You'll Achieve
+              What You&apos;ll Achieve
             </h2>
             <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
               Transform your career with these tangible outcomes
@@ -1171,7 +1171,7 @@ function Page() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Left: Value Proposition */}
               <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">What's Included:</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">What&apos;s Included:</h3>
                 <div className="space-y-4">
                   {[
                     { icon: Video, title: "60+ Hours of Expert-led Video Content", desc: "Comprehensive coverage from basics to advanced topics" },
