@@ -16,7 +16,7 @@ export async function GET(req) {
     // Ensure the video URL has the correct base path if it's missing
     const fullUrl = videoUrl.startsWith("http")
       ? videoUrl
-      : `http://147.79.66.105${videoUrl}`;
+      : `http://147.93.19.33/${videoUrl}`;
 
     const response = await fetch(fullUrl);
 
