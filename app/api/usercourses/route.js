@@ -9,29 +9,29 @@ export async function POST(request) {
     const userCourseData = await request.json();
     await connectMongoDB();
 
-    // Check if the course exists
-    const existingCourse = await Course.findById(userCourseData.courseId);
+    // Check course exists and no duplicate enrollment — parallel
+    const [existingCourse, existingEnrollment] = await Promise.all([
+      Course.findById(userCourseData.courseId).select("_id"),
+      UserCourse.findOne({
+        userId: userCourseData.userId,
+        courseId: userCourseData.courseId,
+      }).select("_id"),
+    ]);
+
     if (!existingCourse) {
       return NextResponse.json(
         { message: "Course does not exist." },
-        { status: 404 } // 404 for not found course
+        { status: 404 }
       );
     }
-
-    // Check if the user is already enrolled in the course
-    const existingEnrollment = await UserCourse.findOne({
-      userId: userCourseData.userId,
-      courseId: userCourseData.courseId,
-    });
 
     if (existingEnrollment) {
       return NextResponse.json(
         { message: "You are already enrolled in this course" },
-        { status: 400 } // Return a 400 status code indicating bad request
+        { status: 400 }
       );
     }
 
-    // Create a new UserCourse
     const newUserCourse = await UserCourse.create(userCourseData);
     return NextResponse.json(
       { message: "UserCourse created", newUserCourse },
@@ -47,41 +47,32 @@ export async function POST(request) {
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId"); // Extract "userId" query parameter
-    const action = searchParams.get("action"); // Extract "action" query parameter
+    const userId = searchParams.get("userId");
+    const action = searchParams.get("action");
 
-    // Connect to MongoDB
-    await connectMongoDB();
-
-    if (action === "count") {
-      // Return the count of enrolled courses with "Approved" status
-      const approvedCoursesCount = await UserCourse.countDocuments({
-        userId,
-        status: "Approved",
-      });
-
-      const completedCoursesCount = await UserCourse.countDocuments({
-        userId,
-        status: "Completed",
-      });
-
-      return NextResponse.json(
-        {
-          approvedCount: approvedCoursesCount,
-          completedCount: completedCoursesCount,
-        },
-        { status: 200 }
-      );
-    }
-
-    // If no userId is provided, return an empty response
     if (!userId) {
       return NextResponse.json({ userCourses: [] }, { status: 200 });
     }
 
-    // Fetch user courses filtered by userId
-    const userCourses = await UserCourse.find({ userId }).populate("courseId");
+    await connectMongoDB();
 
+    if (action === "count") {
+      // ✅ FIX: 2 countDocuments queries → 1 aggregation query
+      const counts = await UserCourse.aggregate([
+        { $match: { userId, status: { $in: ["Approved", "Completed"] } } },
+        { $group: { _id: "$status", count: { $sum: 1 } } },
+      ]);
+
+      const approvedCount = counts.find((c) => c._id === "Approved")?.count || 0;
+      const completedCount = counts.find((c) => c._id === "Completed")?.count || 0;
+
+      return NextResponse.json(
+        { approvedCount, completedCount },
+        { status: 200 }
+      );
+    }
+
+    const userCourses = await UserCourse.find({ userId }).populate("courseId");
     return NextResponse.json({ userCourses }, { status: 200 });
   } catch (error) {
     console.error("Error fetching user courses:", error);
