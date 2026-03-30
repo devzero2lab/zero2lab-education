@@ -8,7 +8,7 @@ function Footer() {
       <div className="container flex flex-wrap justify-between px-4 mx-auto sm:px-8 lg:px-16">
         {/* Brand Logo */}
         <div className="flex flex-col items-center w-full mb-6 sm:w-1/2 lg:w-1/4 lg:mb-0">
-          <h2 className="text-2xl font-bold text-indigo-700">Zero2learn</h2>
+          <h2 className="text-2xl font-bold text-indigo-700">zero2lab</h2>
           <p className="mt-2 text-lg text-center text-gray-600">
             Empowering learners with quality education
           </p>
@@ -89,7 +89,7 @@ function Footer() {
       {/* Copyright Section */}
       <div className="pt-4 mt-6 text-center border-t border-gray-400">
         <p className="text-sm text-gray-600">
-          © {new Date().getFullYear()} Zero2learn. All rights reserved.
+          © {new Date().getFullYear()} zero2lab. All rights reserved.
         </p>
       </div>
     </footer>

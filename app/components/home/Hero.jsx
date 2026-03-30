@@ -72,29 +72,29 @@ const Hero = () => {
     }
   };
 
-  
+
 
   return (
     <section className="relative overflow-clip h-[60vh] md:h-[33vw]  [background:radial-gradient(125%_125%_at_50%_20%,#111212_46%,#1e0f4d_100%)] py-16">
-      <motion.div 
+      <motion.div
         className="container mx-auto px-4 flex flex-col items-end text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <motion.div 
+        <motion.div
           className="absolute left-0 w-full md:w-8/12 h-full flex flex-col items-start mt-[5vh] z-40 px-6 md:px-28 py-7 rounded-lg"
           variants={containerVariants}
         >
-          <motion.div 
+          <motion.div
             className="relative -top-10 inline-flex items-center   text-white  rounded-full shadow-lg hover:shadow-xl transition-shadow"
             variants={itemVariants}
           >
             <BookOpenText className="mr-2 h-5 w-5" />
-            <span className="font-bold">Welcome to zero2learn</span>
+            <span className="font-bold">Welcome to zero2lab</span>
           </motion.div>
 
-          <motion.h1 
+          <motion.h1
             className="text-4xl md:text-5xl font-bold animate-glow"
             style={{
               backgroundImage: 'linear-gradient(45deg, #39e991, #27d48c, #1abf77)',
@@ -108,7 +108,7 @@ const Hero = () => {
             Learn From <span className="text-white">Experts</span>
           </motion.h1>
 
-          <motion.p 
+          <motion.p
             className="mt-4 text-white"
             variants={itemVariants}
           >
@@ -117,8 +117,8 @@ const Hero = () => {
           <br />
 
           <motion.div variants={itemVariants}>
-            <Link 
-              href={'/courses'} 
+            <Link
+              href={'/courses'}
               className="cursor-pointer inline-flex items-center bg-blue-300 text-black px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-shadow"
             >
               <BookOpenText className="mr-2 h-5 w-5" />

@@ -10,9 +10,9 @@ function FAQSection() {
 
   const faqs = [
     {
-      question: "What is Zero2Learn LMS ?",
+      question: "What is zero2lab LMS ?",
       answer:
-        "Zero2Learn LMS is an online learning platform where students can enroll in courses such as Full Stack Web Development, Mobile App Development, and Machine Learning.",
+        "zero2lab LMS is an online learning platform where students can enroll in courses such as Full Stack Web Development, Mobile App Development, and Machine Learning.",
     },
     {
       question: "Do I get a certificate after completing a course ?",
@@ -68,7 +68,7 @@ function FAQSection() {
             Frequently Asked Questions
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Find answers to common questions about Zero2Learn LMS.
+            Find answers to common questions about zero2lab LMS.
           </p>
         </div>
 
@@ -87,9 +87,8 @@ function FAQSection() {
                   {faq.question}
                 </h3>
                 <svg
-                  className={`w-6 h-6 transform transition-transform duration-300 ${
-                    activeIndex === index ? "rotate-180" : ""
-                  }`}
+                  className={`w-6 h-6 transform transition-transform duration-300 ${activeIndex === index ? "rotate-180" : ""
+                    }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -103,9 +102,8 @@ function FAQSection() {
                 </svg>
               </button>
               <div
-                className={`px-6 pb-6 transition-all duration-300 ${
-                  activeIndex === index ? "block" : "hidden"
-                }`}
+                className={`px-6 pb-6 transition-all duration-300 ${activeIndex === index ? "block" : "hidden"
+                  }`}
               >
                 <p className="text-gray-600">{faq.answer}</p>
               </div>

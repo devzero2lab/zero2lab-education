@@ -16,7 +16,7 @@ export default clerkMiddleware(async (auth, request) => {
     const proxyHeaders = new Headers(request.headers);
     proxyHeaders.set(
       "Clerk-Proxy-Url",
-      process.env.NEXT_PUBLIC_CLERK_PROXY_URL || "https://www.zero2learn.com/__clerk"
+      process.env.NEXT_PUBLIC_CLERK_PROXY_URL || "https://www.zero2lab.com/__clerk"
     );
     proxyHeaders.set("Clerk-Secret-Key", process.env.CLERK_SECRET_KEY || "");
     proxyHeaders.set(

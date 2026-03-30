@@ -4,7 +4,7 @@ const TermsAndConditions = () => {
   return (
     <div className="p-6 max-w-4xl mx-auto text-gray-800">
       <h1 className="text-3xl font-bold mb-4">Terms & Conditions</h1>
-      <p>Welcome to <strong>Zero2Learn</strong>. By using our platform, you agree to the following terms. Please read them carefully.</p>
+      <p>Welcome to <strong>zero2lab</strong>. By using our platform, you agree to the following terms. Please read them carefully.</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">1. Use of Platform</h2>
       <ul className="list-disc list-inside">
@@ -32,7 +32,7 @@ const TermsAndConditions = () => {
       <p>Terms may be updated anytime. Continued use means acceptance of changes.</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">8. Contact</h2>
-      <p>Email: <a href="mailto:support@zero2learn.com" className="text-blue-600">info@zero2lab.com</a></p>
+      <p>Email: <a href="mailto:support@zero2lab.com" className="text-blue-600">info@zero2lab.com</a></p>
     </div>
   );
 };

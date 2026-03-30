@@ -4,7 +4,7 @@ const RefundPolicy = () => {
   return (
     <div className="p-6 pt-[90px] max-w-4xl mx-auto text-gray-800">
       <h1 className="text-3xl font-bold mb-4">Refund Policy</h1>
-      <p>Thank you for choosing <strong>Zero2Learn</strong> for your learning journey. We are committed to providing high-quality, structured educational content. If you are not entirely satisfied with your purchase, we are here to help.</p>
+      <p>Thank you for choosing <strong>zero2lab</strong> for your learning journey. We are committed to providing high-quality, structured educational content. If you are not entirely satisfied with your purchase, we are here to help.</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">Subscription Refunds</h2>
       <p>
@@ -16,7 +16,7 @@ const RefundPolicy = () => {
       <p>Refunds will be processed within 7 business days to your original payment method.</p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">Contact Us</h2>
-      <p>Email: <a href="mailto:support@zero2learn.com" className="text-blue-600">info@zero2lab.com</a></p>
+      <p>Email: <a href="mailto:support@zero2lab.com" className="text-blue-600">info@zero2lab.com</a></p>
     </div>
   );
 };

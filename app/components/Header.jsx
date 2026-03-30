@@ -15,7 +15,7 @@ function Header() {
     <nav className="fixed top-0 z-50 flex items-center justify-between w-full px-4 bg-white shadow-sm backdrop-blur-sm h-14 md:px-16 lg:px-32">
       {/* Logo */}
       <Link href="/" className="text-xl font-bold text-black lg:text-2xl">
-        Zero2learn
+        zero2lab
       </Link>
 
       {/* Desktop Links */}
@@ -55,11 +55,10 @@ function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed  inset-0 h-screen w-[70vw] z-50 flex flex-col items-center justify-center space-y-6 bg-white transition-transform duration-300 md:hidden ${
-          isMenuOpen
+        className={`fixed  inset-0 h-screen w-[70vw] z-50 flex flex-col items-center justify-center space-y-6 bg-white transition-transform duration-300 md:hidden ${isMenuOpen
             ? "translate-x-0 opacity-100"
             : "-translate-x-full opacity-0"
-        }`}
+          }`}
       >
         <Link href="/" className="text-xl text-black" onClick={toggleMenu}>
           Home

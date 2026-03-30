@@ -63,7 +63,7 @@ function CertificatePage({ params }) {
   };
 
   const copyToClipboard = () => {
-    const certificateUrl = `https://www.zero2learn.com/certificates/${params.id}`;
+    const certificateUrl = `https://www.zero2lab.com/certificates/${params.id}`;
     navigator.clipboard
       .writeText(certificateUrl)
       .then(() => {
@@ -153,7 +153,7 @@ function CertificatePage({ params }) {
         <div className="relative z-10 flex flex-col items-center justify-center h-full">
           <div className="absolute top-[20px] left-[30px] p-2 bg-white rounded-lg shadow-sm">
             <QRCodeCanvas
-              value={`https://www.zero2learn.com/certificates/${params.id}`}
+              value={`https://www.zero2lab.com/certificates/${params.id}`}
               size={80}
             />
           </div>
