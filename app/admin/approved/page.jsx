@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import ApprovedList from "./ApprovedList";
 import { CheckCircle } from "lucide-react";
@@ -26,7 +26,7 @@ function ApprovedPage() {
   const [approvedCourses, setApprovedCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchApprovedCourses = async () => {
+  const fetchApprovedCourses = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${apiUrl}/api/admin/usercourses`, {
@@ -38,11 +38,11 @@ function ApprovedPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchApprovedCourses();
-  }, []);
+  }, [fetchApprovedCourses]);
 
   return (
     <div>

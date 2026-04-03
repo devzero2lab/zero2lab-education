@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import FeedbackList from "./FeedbackList";
 import { MessageSquare } from "lucide-react";
@@ -23,7 +23,7 @@ function Page() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchFeedbacks = async () => {
+  const fetchFeedbacks = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${apiUrl}/api/contactus`);
@@ -33,11 +33,11 @@ function Page() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchFeedbacks();
-  }, [apiUrl]);
+  }, [fetchFeedbacks]);
 
   return (
     <div>

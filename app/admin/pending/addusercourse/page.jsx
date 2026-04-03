@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -26,18 +26,18 @@ function AddUserCourse() {
     paymentSlip: "",
   });
 
-  const fetchCourses = async () => {
+  const fetchCourses = useCallback(async () => {
     try {
       const response = await axios.get(`${apiUrl}/api/courses`);
       setCourses(response.data.courses);
     } catch (error) {
       console.error("Error fetching courses:", error);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchCourses();
-  }, []);
+  }, [fetchCourses]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

@@ -34,7 +34,7 @@ function CertificatePage({ params }) {
     };
 
     fetchCertificate();
-  }, [params.id]);
+  }, [params.id, apiUrl]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

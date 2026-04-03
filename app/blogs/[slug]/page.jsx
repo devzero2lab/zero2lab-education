@@ -19,9 +19,14 @@ const categoryColors = {
 
 async function getBlog(slug) {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
-  const res = await fetch(`${baseUrl}/api/blogs/${slug}`, { cache: "no-store" });
-  if (!res.ok) return null;
-  return res.json();
+  try {
+    const res = await fetch(`${baseUrl}/api/blogs/${slug}`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (error) {
+    console.error(`Error fetching blog ${slug}:`, error);
+    return null;
+  }
 }
 
 export async function generateMetadata({ params }) {

@@ -120,7 +120,7 @@ function FAQSection() {
         {/* Support CTA */}
         <div className="mt-12 md:mt-20 text-center">
           <p className="mb-6 text-base md:text-lg font-bold text-[#090D24]">
-            Still have questions? We're here to help!
+            Still have questions? We&apos;re here to help!
           </p>
           <a
             href="mailto:info.zero2lab@gmail.com"

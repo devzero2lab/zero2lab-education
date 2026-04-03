@@ -309,7 +309,7 @@ function UpdateCoursePage({ params }) {
           <div className="space-y-3">
             {formData.content.length === 0 && (
               <p className="text-sm text-slate-400 text-center py-4">
-                No content items yet. Click "Add Item" to start.
+                No content items yet. Click &quot;Add Item&quot; to start.
               </p>
             )}
             {formData.content.map((item, index) => (

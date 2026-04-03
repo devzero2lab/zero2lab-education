@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import CompletedList from "./CompletedList";
 import { Award } from "lucide-react";
@@ -26,7 +26,7 @@ function CourseCompleted() {
   const [completedCourses, setCompletedCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchCompletedCourses = async () => {
+  const fetchCompletedCourses = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${apiUrl}/api/admin/usercourses`, {
@@ -38,11 +38,11 @@ function CourseCompleted() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchCompletedCourses();
-  }, []);
+  }, [fetchCompletedCourses]);
 
   return (
     <div>

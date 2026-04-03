@@ -265,9 +265,11 @@ export default function Checkout({ params }) {
                     Success! Slip Uploaded
                   </span>
                   <div className="overflow-hidden border border-gray-200 rounded-xl bg-white w-full max-w-[200px] sm:max-w-sm">
-                    <img
+                    <Image
                       src={uploadedImageUrl}
                       alt="Payment Slip Preview"
+                      width={400}
+                      height={200}
                       className="object-contain w-full h-32 sm:h-56"
                     />
                   </div>

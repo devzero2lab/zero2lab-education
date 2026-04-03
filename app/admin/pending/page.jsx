@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import PendingList from "./PendingList";
 import Link from "next/link";
@@ -27,7 +27,7 @@ function PendingPage() {
   const [pendingCourses, setPendingCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchPendingCourses = async () => {
+  const fetchPendingCourses = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${apiUrl}/api/admin/usercourses`, {
@@ -39,11 +39,11 @@ function PendingPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchPendingCourses();
-  }, []);
+  }, [fetchPendingCourses]); // Safe as apiUrl is constant
 
   return (
     <div>

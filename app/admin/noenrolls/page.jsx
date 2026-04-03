@@ -38,7 +38,7 @@ function NotEnrolls() {
       }
     };
     fetchNotEnrolledUsers();
-  }, []);
+  }, [apiUrl]);
 
   const totalPages = Math.ceil(data.length / PAGE_SIZE);
   const paginated = data.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);

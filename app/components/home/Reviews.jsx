@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import Image from "next/image";
 
 const reviews = [
   {
@@ -55,9 +56,11 @@ const ReviewCard = ({ review }) => {
   return (
     <div className={`flex-shrink-0 w-[320px] md:w-[380px] p-8 text-center bg-white border-2 border-[#090D24] rounded-[2rem] shadow-sm my-4 flex flex-col items-center ${montserrat.className}`}>
       <div className="flex items-center justify-center gap-4 mb-4">
-        <img
+        <Image
           src={review.image}
           alt={review.name}
+          width={64}
+          height={64}
           className="object-cover w-14 h-14 md:w-16 md:h-16 rounded-full border border-gray-200 shadow-inner"
         />
         <span className="font-extrabold text-[#090D24] text-lg">{review.name}</span>
@@ -65,9 +68,9 @@ const ReviewCard = ({ review }) => {
       <p
         className={`text-sm md:text-base font-medium text-[#090D24] leading-relaxed flex-grow`}
       >
-        "{expanded || review.text.length <= MAX_LENGTH
+        &quot;{expanded || review.text.length <= MAX_LENGTH
           ? review.text
-          : `${review.text.slice(0, MAX_LENGTH)}...`}"
+          : `${review.text.slice(0, MAX_LENGTH)}...`}&quot;
       </p>
       {review.text.length > MAX_LENGTH && (
         <button

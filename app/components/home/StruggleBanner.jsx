@@ -22,11 +22,11 @@ const StruggleBanner = () => {
           {/* Main Content */}
           <div className="relative z-10 max-w-2xl flex flex-col items-center">
             <h2 className="text-xl md:text-3xl lg:text-[2.2rem] font-extrabold text-[#090D24] leading-tight mb-3">
-              Still Struggling With Coding? You're Not Alone!
+              Still Struggling With Coding? You&apos;re Not Alone!
             </h2>
             
             <p className="text-[#090D24] text-sm md:text-base font-medium leading-normal mb-3">
-              Every developer has been where you are. Let's turn those challenges into stepping stones for your success
+              Every developer has been where you are. Let&apos;s turn those challenges into stepping stones for your success
             </p>
             
             <p className="text-[#090D24] text-sm md:text-base font-medium leading-normal mb-6">

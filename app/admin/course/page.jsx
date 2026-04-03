@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { Plus, BookOpen } from "lucide-react";
@@ -25,7 +25,7 @@ export default function CoursePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchCourses = async () => {
+  const fetchCourses = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`${apiUrl}/api/courses/`);
@@ -38,11 +38,11 @@ export default function CoursePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchCourses();
-  }, []);
+  }, [fetchCourses]);
 
   return (
     <div>

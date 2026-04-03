@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import MeetingList from "./MeetingList";
 import { Calendar } from "lucide-react";
@@ -23,7 +23,7 @@ function Page() {
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchMeetings = async () => {
+  const fetchMeetings = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${apiUrl}/api/meetings`);
@@ -33,11 +33,11 @@ function Page() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchMeetings();
-  }, [apiUrl]);
+  }, [fetchMeetings]);
 
   return (
     <div>
