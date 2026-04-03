@@ -70,4 +70,11 @@ const userCourseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// ✅ Indexes — O(n) full scan → O(log n) indexed lookup
+// Compound unique index: speeds up enrollment check + prevents duplicates
+userCourseSchema.index({ userId: 1, courseId: 1 }, { unique: true });
+// Status index: speeds up count aggregation queries
+userCourseSchema.index({ userId: 1, status: 1 });
+
 export const UserCourse = mongoose.models?.UserCourse || mongoose.model("UserCourse", userCourseSchema);
+

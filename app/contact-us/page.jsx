@@ -13,6 +13,9 @@ import {
   FiUser,
   FiMessageSquare,
 } from "react-icons/fi";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
 function ContactUs() {
   const router = useRouter();
@@ -65,7 +68,7 @@ function ContactUs() {
   };
 
   return (
-    <div>
+    <div className={montserrat.className}>
       <Head>
         <title>Contact Us | Zero2lab Education LMS</title>
         <meta
@@ -74,40 +77,38 @@ function ContactUs() {
         />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
-        <main className="max-w-4xl px-4 py-12 mx-auto">
+      <div className="mt-[120px] mb-20 w-full max-w-[1300px] mx-auto px-6 md:px-12">
+        <main className="max-w-5xl mx-auto">
           {/* Page Header */}
-          <div className="mb-6 text-center">
-            <h1 className="mt-10 mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
-                Get in Touch
-              </span>
+          <div className="mb-12 text-center">
+            <h1 className="mb-4 text-4xl md:text-5xl font-extrabold text-[#090D24]">
+              Get in Touch
             </h1>
-            <p className="max-w-2xl mx-auto text-xl text-gray-600">
+            <p className="max-w-2xl mx-auto text-lg md:text-xl font-medium text-gray-600">
               We&apos;re here to help and answer any questions you might have.
               Our team usually responds within 24 hours.
             </p>
           </div>
 
           {/* Content Grid */}
-          <div className="grid gap-12 md:grid-cols-2">
+          <div className="grid gap-12 lg:grid-cols-2">
             {/* Contact Form Section */}
-            <div className="p-8 bg-white shadow-xl rounded-2xl">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-3 bg-indigo-100 rounded-lg">
-                  <FiMessageSquare className="w-6 h-6 text-indigo-600" />
+            <div className="p-8 md:p-10 bg-white border-2 border-gray-200 rounded-[2rem] shadow-sm">
+              <div className="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-100">
+                <div className="p-3 bg-[#D9FFA5] border-2 border-[#090D24] rounded-2xl">
+                  <FiMessageSquare className="w-6 h-6 text-[#090D24]" strokeWidth={2.5} />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-extrabold text-[#090D24]">
                   Send us a message
                 </h2>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {/* Name Input */}
                   <div className="flex flex-col gap-2">
-                    <label className="flex items-center gap-2 text-gray-700">
-                      <FiUser className="w-5 h-5 text-indigo-600" />
+                    <label className="flex items-center gap-2 font-bold text-[#090D24]">
+                      <FiUser className="w-5 h-5 text-gray-500" strokeWidth={2.5} />
                       Your Name
                     </label>
                     <input
@@ -118,28 +119,28 @@ function ContactUs() {
                         }`.trim() || "User"
                       }
                       disabled
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full px-5 py-4 font-medium border-2 border-gray-200 rounded-2xl bg-gray-50 text-gray-700 cursor-not-allowed"
                     />
                   </div>
 
                   {/* Email Input */}
                   <div className="flex flex-col gap-2">
-                    <label className="flex items-center gap-2 text-gray-700">
-                      <FiMail className="w-5 h-5 text-indigo-600" />
+                    <label className="flex items-center gap-2 font-bold text-[#090D24]">
+                      <FiMail className="w-5 h-5 text-gray-500" strokeWidth={2.5} />
                       Your Email
                     </label>
                     <input
                       type="email"
                       value={user?.emailAddresses[0]?.emailAddress || ""}
                       disabled
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full px-5 py-4 font-medium border-2 border-gray-200 rounded-2xl bg-gray-50 text-gray-700 cursor-not-allowed"
                     />
                   </div>
 
                   {/* Message Textarea */}
                   <div className="flex flex-col gap-2">
-                    <label className="flex items-center gap-2 text-gray-700">
-                      <FiSend className="w-5 h-5 text-indigo-600" />
+                    <label className="flex items-center gap-2 font-bold text-[#090D24]">
+                      <FiSend className="w-5 h-5 text-gray-500" strokeWidth={2.5} />
                       Your Message
                     </label>
                     <textarea
@@ -147,7 +148,7 @@ function ContactUs() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Write your message here..."
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full px-5 py-4 font-medium border-2 border-gray-200 rounded-2xl resize-none focus:outline-none focus:ring-4 focus:ring-[#090D24]/10 focus:border-[#090D24] transition-all bg-white"
                       disabled={loading}
                     />
                   </div>
@@ -157,7 +158,7 @@ function ContactUs() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 px-6 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full py-4 px-6 flex items-center justify-center gap-2 bg-[#090D24] hover:bg-black text-white font-extrabold rounded-2xl transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed active:scale-[0.98]"
                 >
                   {loading ? (
                     <>
@@ -185,7 +186,7 @@ function ContactUs() {
                     </>
                   ) : (
                     <>
-                      <FiSend className="w-5 h-5" />
+                      <FiSend className="w-5 h-5" strokeWidth={2.5} />
                       Send Message
                     </>
                   )}
@@ -196,29 +197,29 @@ function ContactUs() {
             {/* Contact Information Section */}
             <div className="space-y-8">
               {/* Contact Details Card */}
-              <div className="p-8 bg-white shadow-xl rounded-2xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-indigo-100 rounded-lg">
-                    <FiPhone className="w-6 h-6 text-indigo-600" />
+              <div className="p-8 md:p-10 bg-white border-2 border-gray-200 rounded-[2rem] shadow-sm">
+                <div className="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-100">
+                  <div className="p-3 bg-[#D9FFA5] border-2 border-[#090D24] rounded-2xl">
+                    <FiPhone className="w-6 h-6 text-[#090D24]" strokeWidth={2.5} />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Contact Information
+                  <h2 className="text-2xl font-extrabold text-[#090D24]">
+                    Contact Info
                   </h2>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {/* Email Info */}
-                  <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-indigo-50 rounded-lg">
-                      <FiMail className="w-6 h-6 text-indigo-600" />
+                  <div className="flex items-start gap-5">
+                    <div className="p-3 bg-gray-100 rounded-[1rem]">
+                      <FiMail className="w-6 h-6 text-[#090D24]" strokeWidth={2.5} />
                     </div>
                     <div>
-                      <h3 className="mb-1 font-semibold text-gray-800">
+                      <h3 className="mb-1 text-lg font-bold text-[#090D24]">
                         Email
                       </h3>
                       <a
                         href="mailto:info.zero2lab@gmail.com"
-                        className="text-indigo-600 transition-colors hover:text-indigo-800"
+                        className="text-base font-medium text-gray-600 transition-colors hover:text-[#090D24] hover:underline"
                       >
                         info.zero2lab@gmail.com
                       </a>
@@ -226,17 +227,17 @@ function ContactUs() {
                   </div>
 
                   {/* Phone Info */}
-                  <div className="flex items-start gap-4">
-                    <div className="p-2.5 bg-indigo-50 rounded-lg">
-                      <FiPhone className="w-6 h-6 text-indigo-600" />
+                  <div className="flex items-start gap-5">
+                    <div className="p-3 bg-gray-100 rounded-[1rem]">
+                      <FiPhone className="w-6 h-6 text-[#090D24]" strokeWidth={2.5} />
                     </div>
                     <div>
-                      <h3 className="mb-1 font-semibold text-gray-800">
+                      <h3 className="mb-1 text-lg font-bold text-[#090D24]">
                         Phone
                       </h3>
                       <a
                         href="tel:0765752518"
-                        className="text-gray-700 transition-colors hover:text-indigo-600"
+                        className="text-base font-medium text-gray-600 transition-colors hover:text-[#090D24] hover:underline"
                       >
                         0765752518
                       </a>
@@ -246,29 +247,29 @@ function ContactUs() {
               </div>
 
               {/* Why Contact Us Card */}
-              <div className="p-8 bg-indigo-50 rounded-2xl">
-                <h3 className="mb-4 text-lg font-semibold text-gray-900">
+              <div className="p-8 md:p-10 bg-[#f8ffec] border-2 border-[#D9FFA5] rounded-[2rem]">
+                <h3 className="mb-5 text-xl font-extrabold text-[#090D24]">
                   Why contact us?
                 </h3>
-                <ul className="space-y-3 text-gray-600">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-indigo-600 rounded-full" />
+                <ul className="space-y-4 text-base font-medium text-[#090D24]/80">
+                  <li className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-[#090D24] rounded-full shrink-0" />
                     Technical support and troubleshooting
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-indigo-600 rounded-full" />
+                  <li className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-[#090D24] rounded-full shrink-0" />
                     Course enrollment inquiries
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-indigo-600 rounded-full" />
+                  <li className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-[#090D24] rounded-full shrink-0" />
                     Partnership and collaboration opportunities
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-indigo-600 rounded-full" />
+                  <li className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-[#090D24] rounded-full shrink-0" />
                     Feedback and suggestions
                   </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-indigo-600 rounded-full" />
+                  <li className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-[#090D24] rounded-full shrink-0" />
                     Account and billing questions
                   </li>
                 </ul>

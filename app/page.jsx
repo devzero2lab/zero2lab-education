@@ -1,9 +1,9 @@
 import React from "react";
 import Hero from "./components/home/Hero";
+import StruggleBanner from "./components/home/StruggleBanner";
 import Features from "./components/home/Features";
 import Reviews from "./components/home/Reviews";
 import Link from "next/link";
-import PromoBanner from "./components/home/PromoBanner";
 import CourseStats from "./components/home/CourseStats";
 import FAQSection from "./components/home/FAQSection";
 
@@ -13,20 +13,18 @@ function Home() {
       {/* hero section */}
       <Hero />
 
-      {/* PromoBanner */}
-      <PromoBanner />
+      {/* Struggle Banner */}
+      <StruggleBanner />
 
-      {/* Features section */}
-      <br />
+      
       <Features />
 
-      {/* CourseStats */}
-      <CourseStats />
+     
 
       {/* Reviews section */}
-      <div className="relative z-30 flex flex-col items-center w-full px-6 mt-5 text-center md:px-8 lg:px-16">
-        <div className="flex items-center justify-between w-full px-5 text-start max-w-7xl lg:px-0">
-          <h2 className="text-2xl font-semibold md:text-3xl">
+      <div className="relative z-30 flex flex-col items-center w-full mt-12 md:mt-20">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24 text-center mb-4">
+          <h2 className="text-2xl md:text-4xl lg:text-[2.5rem] font-extrabold text-[#090D24]">
             See for yourself what others think
           </h2>
         </div>

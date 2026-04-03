@@ -2,50 +2,46 @@
 import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import VideoSection from "./VideoSection";
-import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
 export default function Page({ params }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
   const { isSignedIn, user } = useUser();
-  const { type, id } = params; // Extract dynamic route parameters
-  const [courseData, setCourseData] = useState(null); // Store fetched course data
-  const [currentDay, setCurrentDay] = useState(1); // Track the selected day
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const { id } = params;
+  const [courseData, setCourseData] = useState(null);
+  const [currentDay, setCurrentDay] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     const fetchCourseData = async () => {
       if (!isSignedIn || !user) {
-        router.push("/sign-in"); // Redirect to the login page
+        router.push("/sign-in");
         return;
       }
 
       try {
-        // Fetch the courses the user is enrolled in
-        const response = await axios.get(
-          `${apiUrl}/api/usercourses?userId=${user.id}`
-        );
-        const userCourses = response.data?.userCourses || [];
+        const [enrollRes, courseRes] = await Promise.all([
+          fetch(`${apiUrl}/api/usercourses?userId=${user.id}&action=check&courseId=${id}`),
+          fetch(`${apiUrl}/api/recordings/${id}`),
+        ]);
 
-        // Check if the user is enrolled in the current course
-        const isEnrolled = userCourses.some(
-          (userCourse) => userCourse.courseId._id === id
-        );
+        const { isEnrolled } = await enrollRes.json();
 
         if (!isEnrolled) {
-          setRedirecting(true); // Prevent further rendering
-          router.push("/not-enrolled"); // Redirect if the user is not enrolled
-          return; // Stop further execution
+          setRedirecting(true);
+          router.push("/not-enrolled");
+          return;
         }
 
-        const courseResponse = await axios.get(
-          `${apiUrl}/api/recordings/${id}`
-        );
-        if (courseResponse.data && courseResponse.data.course) {
-          setCourseData(courseResponse.data.course);
+        const courseJson = await courseRes.json();
+        if (courseJson?.course) {
+          setCourseData(courseJson.course);
         } else {
           console.error("Course data not found.");
         }
@@ -60,39 +56,42 @@ export default function Page({ params }) {
   }, [isSignedIn, user, id, apiUrl, router]);
 
   if (redirecting) {
-    return null; // Prevent rendering while redirecting
+    return null;
   }
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-lg text-gray-500">Loading...</p>
+      <div className={`${montserrat.className} flex items-center justify-center min-h-[calc(100vh-100px)] mt-[100px]`}>
+        <div className="flex flex-col items-center gap-4">
+           <div className="w-10 h-10 border-4 border-gray-200 border-t-[#090D24] rounded-full animate-spin"></div>
+           <p className="font-bold text-[#090D24]">Loading Course...</p>
+        </div>
       </div>
     );
   }
 
   if (!courseData) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-lg text-gray-500">Course not found.</p>
+      <div className={`${montserrat.className} flex items-center justify-center min-h-[calc(100vh-100px)] mt-[100px]`}>
+        <p className="text-lg font-bold text-gray-500">Course not found.</p>
       </div>
     );
   }
 
   const currentLesson =
     courseData.content?.find((lesson) => lesson.day === currentDay) || null;
-  console.log(currentLesson);
 
   return (
-    <div className="flex flex-col h-screen md:flex-row">
-      {/* Sidebar */}
+    <div className={`${montserrat.className} flex flex-col md:flex-row h-[calc(100vh-100px)] mt-[100px] w-full overflow-hidden`}>
+      {/* Sidebar - fixed heights and scrolling handled internally */}
       <Sidebar
         lessons={courseData.content || []}
         currentDay={currentDay}
         setCurrentDay={setCurrentDay}
       />
-      {/* Video Section */}
+      {/* Video Section - scrolling handled internally */}
       <VideoSection currentLesson={currentLesson} />
     </div>
   );
 }
+

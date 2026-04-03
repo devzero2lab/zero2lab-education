@@ -57,7 +57,7 @@ export async function GET(request) {
     await connectMongoDB();
 
     if (action === "count") {
-      // ✅ FIX: 2 countDocuments queries → 1 aggregation query
+      // ✅ 2 countDocuments queries → 1 aggregation query
       const counts = await UserCourse.aggregate([
         { $match: { userId, status: { $in: ["Approved", "Completed"] } } },
         { $group: { _id: "$status", count: { $sum: 1 } } },
@@ -68,6 +68,19 @@ export async function GET(request) {
 
       return NextResponse.json(
         { approvedCount, completedCount },
+        { status: 200 }
+      );
+    }
+
+    // ✅ Lightweight enrollment check — single indexed lookup, no populate
+    if (action === "check") {
+      const courseId = searchParams.get("courseId");
+      if (!courseId) {
+        return NextResponse.json({ error: "courseId is required" }, { status: 400 });
+      }
+      const enrollment = await UserCourse.findOne({ userId, courseId }).select("_id status");
+      return NextResponse.json(
+        { isEnrolled: !!enrollment, status: enrollment?.status || null },
         { status: 200 }
       );
     }

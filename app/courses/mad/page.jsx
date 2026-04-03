@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import axios from "axios";
 import FlLearningThings from "./FlLearningThings";
 
 function Page() {
@@ -17,14 +16,12 @@ function Page() {
     const checkEnrollmentStatus = async () => {
       if (isLoaded && isSignedIn && user) {
         try {
-          const response = await axios.get(`${apiUrl}/api/usercourses`, {
-            params: { userId: user.id },
-          });
-          const userCourses = response.data.userCourses || [];
-          const enrolled = userCourses.some(
-            (course) => course.courseId._id === courseId
+          // ✅ Lightweight single-lookup check instead of full list fetch
+          const res = await fetch(
+            `${apiUrl}/api/usercourses?userId=${user.id}&action=check&courseId=${courseId}`
           );
-          setIsEnrolled(enrolled);
+          const data = await res.json();
+          setIsEnrolled(data.isEnrolled || false);
         } catch (error) {
           console.error("Error checking enrollment status:", error);
         } finally {

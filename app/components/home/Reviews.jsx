@@ -41,7 +41,11 @@ const reviews = [
   },
 ];
 
-const MAX_LENGTH = 100; // Maximum characters before truncation
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
+
+const MAX_LENGTH = 140; // Maximum characters before truncation
 
 const ReviewCard = ({ review }) => {
   const [expanded, setExpanded] = useState(false);
@@ -49,28 +53,26 @@ const ReviewCard = ({ review }) => {
   const toggleExpanded = () => setExpanded(!expanded);
 
   return (
-    <div className="flex-shrink-0 w-64 p-6 text-center bg-gray-100 rounded-lg shadow-md">
-      <div className="flex items-center justify-center gap-4 font-bold">
+    <div className={`flex-shrink-0 w-[320px] md:w-[380px] p-8 text-center bg-white border-2 border-[#090D24] rounded-[2rem] shadow-sm my-4 flex flex-col items-center ${montserrat.className}`}>
+      <div className="flex items-center justify-center gap-4 mb-4">
         <img
           src={review.image}
           alt={review.name}
-          className="object-cover w-12 h-12 rounded-full"
+          className="object-cover w-14 h-14 md:w-16 md:h-16 rounded-full border border-gray-200 shadow-inner"
         />
-        <span>{review.name}</span>
+        <span className="font-extrabold text-[#090D24] text-lg">{review.name}</span>
       </div>
       <p
-        className={`mt-2 text-sm font-medium text-gray-700 ${
-          expanded || review.text.length <= MAX_LENGTH ? "custom-justify" : ""
-        }`}
+        className={`text-sm md:text-base font-medium text-[#090D24] leading-relaxed flex-grow`}
       >
-        {expanded || review.text.length <= MAX_LENGTH
+        "{expanded || review.text.length <= MAX_LENGTH
           ? review.text
-          : `${review.text.slice(0, MAX_LENGTH)}...`}
+          : `${review.text.slice(0, MAX_LENGTH)}...`}"
       </p>
       {review.text.length > MAX_LENGTH && (
         <button
           onClick={toggleExpanded}
-          className="mt-2 text-blue-500 hover:underline"
+          className="mt-4 font-bold text-blue-600 hover:text-blue-800 transition-colors"
         >
           {expanded ? "Read Less" : "Read More"}
         </button>
@@ -83,23 +85,23 @@ const Reviews = () => {
   const duplicatedReviews = [...reviews, ...reviews]; // Duplicate for infinite scroll effect
 
   return (
-    <div className="relative w-full overflow-hidden bg-white py-9">
+    <div className={`relative w-full overflow-hidden bg-white py-12 ${montserrat.className}`}>
       {/* Gradient overlays for the edges */}
       <div className="absolute inset-0 z-10 pointer-events-none">
-        <div className="absolute top-0 left-0 h-full w-28 bg-gradient-to-r from-white to-transparent"></div>
-        <div className="absolute top-0 right-0 h-full w-28 bg-gradient-to-l from-white to-transparent"></div>
+        <div className="absolute top-0 left-0 h-full w-32 bg-gradient-to-r from-white to-transparent"></div>
+        <div className="absolute top-0 right-0 h-full w-32 bg-gradient-to-l from-white to-transparent"></div>
       </div>
 
       {/* Scrolling Slider */}
       <motion.div
-        className="flex items-center gap-8"
+        className="flex items-stretch gap-6"
         animate={{
           x: ["0%", "-100%"],
-          transition: {
-            ease: "linear",
-            duration: 80, // Adjust speed here
-            repeat: Infinity,
-          },
+        }}
+        transition={{
+          ease: "linear",
+          duration: 60, // Adjust speed here
+          repeat: Infinity,
         }}
       >
         {duplicatedReviews.map((review, index) => (

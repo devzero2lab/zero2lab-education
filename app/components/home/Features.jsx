@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
 function Features() {
   const courses = [
@@ -72,85 +75,68 @@ function Features() {
     },
   };
 
-  const cardHoverVariants = {
-    hover: {
-      y: -5,
-      transition: { type: "spring", stiffness: 300 },
-    },
-  };
-
-  const imageHoverVariants = {
-    hover: {
-      scale: 1.05,
-      transition: { duration: 0.3 },
-    },
-  };
-
   return (
-    <section className="relative z-30 flex flex-col items-center w-full pb-5">
+    <section className={`relative z-30 flex flex-col items-center w-full py-12 md:py-16 ${montserrat.className}`}>
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex items-center justify-between w-full px-5 max-w-7xl"
+        className="flex items-center justify-center w-full px-6 md:px-12 max-w-[1300px] mb-8 md:mb-12"
       >
         <motion.h2
           variants={itemVariants}
-          className="mb-6 text-3xl font-bold text-gray-900 font-inter"
+          className="text-3xl md:text-5xl font-extrabold text-[#090D24] text-center"
         >
           Popular Courses
         </motion.h2>
       </motion.div>
 
-      <div
-        className="grid grid-cols-1 gap-8 px-5 mx-auto max-w-7xl sm:grid-cols-2 lg:grid-cols-3"
+      <motion.div
+        className="grid grid-cols-1 gap-8 px-6 md:px-12 mx-auto max-w-[1300px] sm:grid-cols-2 lg:grid-cols-3"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "0px 0px -100px 0px" }}
       >
         {courses.map((course) => (
-          <div
+          <motion.div
             key={course.id}
             variants={itemVariants}
-            whileHover="hover"
-            className="relative transition-all duration-300 ease-out bg-white shadow-lg group rounded-xl hover:shadow-2xl"
+            className="flex flex-col relative transition-all duration-300 ease-out bg-white border-2 border-[#090D24] rounded-2xl md:rounded-[2rem] shadow-sm hover:shadow-md group overflow-hidden"
           >
             <Link
               href="/courses"
-              className="block"
+              className="flex-1 flex flex-col"
               aria-label={`Course: ${course.title}`}
             >
               {/* Course Image */}
-              <div className="overflow-hidden rounded-xl">
-                <div className="overflow-hidden rounded-xl" whileHover="hover">
-                  <Image
-                    width={600}
-                    height={440}
-                    className="object-contain w-full transition-transform duration-300 group-hover:scale-105"
-                    src={course.image}
-                    alt={course.title}
-                  />
-                </div>
+              <div className="overflow-hidden w-full h-full bg-[#f8ffec]">
+                <Image
+                  width={600}
+                  height={440}
+                  className="object-contain w-full h-full transition-transform duration-300 group-hover:scale-105"
+                  src={course.image}
+                  alt={course.title}
+                />
               </div>
             </Link>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Call to Action */}
-      <div
-        className="mt-9"
+      <motion.div
+        className="mt-12 md:mt-20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
       >
         <Link
           href="/courses"
-          className="px-8 py-3 text-lg font-semibold text-white transition-all transform rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:scale-105 hover:shadow-xl"
+          className="px-8 py-4 text-lg font-bold text-white transition-all transform rounded-full bg-[#090D24] hover:bg-black shadow-md active:scale-95 inline-block"
         >
           View All Courses
         </Link>
-      </div>
+      </motion.div>
     </section>
   );
 }
