@@ -49,6 +49,14 @@ const userCourseSchema = new mongoose.Schema(
       ref: "Course",
       required: true,
     },
+    promoCode: {
+      type: String,
+      required: false,
+    },
+    finalPrice: {
+      type: Number,
+      required: false,
+    },
     paymentSlip: {
       type: String, // URL or file path of the uploaded slip
       required: true,

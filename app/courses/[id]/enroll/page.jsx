@@ -29,6 +29,51 @@ export default function Checkout({ params }) {
   const [slipImages, setSlipImages] = useState([]);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
+  const [promoCodeInput, setPromoCodeInput] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState(null);
+  const [promoError, setPromoError] = useState("");
+  const [isValidatingPromo, setIsValidatingPromo] = useState(false);
+
+  const currentBasePrice = course ? (course.discountPrice > 0 ? course.discountPrice : course.price) : 0;
+  const finalPrice = appliedPromo ? appliedPromo.discountedPrice : currentBasePrice;
+
+  const handleApplyPromo = async () => {
+    setPromoError("");
+    const inputCode = promoCodeInput.trim();
+
+    if (!inputCode) {
+      setPromoError("Please enter a code");
+      return;
+    }
+
+    setIsValidatingPromo(true);
+    try {
+      const res = await axios.post(`${apiUrl}/api/promo/validate`, {
+        code: inputCode,
+        coursePrice: currentBasePrice,
+      });
+      const data = res.data;
+
+      if (data.valid) {
+        setAppliedPromo({
+          code: inputCode,
+          discountPercent: data.discountPercent,
+          discountedPrice: data.discountedPrice,
+        });
+        toast.success(`Promotion code applied! ${data.discountPercent}% discount.`);
+      } else {
+        setAppliedPromo(null);
+        setPromoError(data.message || "Invalid promotion code");
+        toast.error(data.message || "Invalid promotion code");
+      }
+    } catch {
+      setPromoError("Failed to validate code. Try again.");
+      toast.error("Failed to validate code.");
+    } finally {
+      setIsValidatingPromo(false);
+    }
+  };
+
   useEffect(() => {
     if (isLoaded && isSignedIn) {
       setFormData((prevFormData) => ({
@@ -105,10 +150,16 @@ export default function Checkout({ params }) {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${apiUrl}/api/usercourses/`, {
+      const payload = {
         ...formData,
         paymentSlip: paymentSlipUrl,
-      });
+      };
+      
+      if (appliedPromo) {
+        payload.promoCode = appliedPromo.code;
+      }
+
+      const response = await axios.post(`${apiUrl}/api/usercourses/`, payload);
 
       if (response.data.message === "You are already enrolled in this course") {
         toast.error(response.data.message);
@@ -209,20 +260,23 @@ export default function Checkout({ params }) {
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-100 gap-1 sm:gap-0 w-full overflow-hidden">
                   <span className="font-semibold text-gray-500 text-sm sm:text-base">Price</span>
                   <div className="w-full sm:w-auto text-left sm:text-right mt-1 sm:mt-0">
-                    {course.discountPrice > 0 ? (
+                    <div className="flex flex-col sm:items-end w-full">
                       <div className="flex items-center sm:justify-end gap-2 sm:gap-3 flex-wrap">
-                        <span className="text-base sm:text-lg font-bold text-gray-400 line-through">
-                          Rs.{course.price}
-                        </span>
-                        <span className="text-lg sm:text-xl font-bold text-[#090D24] bg-[#D9FFA5] px-2 sm:px-3 py-1 rounded-lg">
-                          Rs.{course.discountPrice}
+                        {course.discountPrice > 0 && !appliedPromo && (
+                          <span className="text-base sm:text-lg font-bold text-gray-400 line-through">
+                            Rs.{course.price}
+                          </span>
+                        )}
+                        {appliedPromo && (
+                          <span className="text-base sm:text-lg font-bold text-gray-400 line-through">
+                            Rs.{currentBasePrice}
+                          </span>
+                        )}
+                        <span className="text-lg sm:text-xl font-bold text-[#090D24] bg-[#D9FFA5] px-2 sm:px-3 py-1 rounded-lg shadow-sm">
+                          Rs.{finalPrice}
                         </span>
                       </div>
-                    ) : (
-                      <span className="text-lg sm:text-xl font-bold text-[#090D24]">
-                        Rs.{course.price}
-                      </span>
-                    )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-100 gap-1 sm:gap-0 w-full overflow-hidden">
@@ -232,6 +286,64 @@ export default function Checkout({ params }) {
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-100 gap-1 sm:gap-0 w-full overflow-hidden">
                   <span className="font-semibold text-gray-500 text-sm sm:text-base">Difficulty Level</span>
                   <span className="font-bold text-[#090D24] text-sm sm:text-lg capitalize break-words">{course.level}</span>
+                </div>
+
+                {/* Promo Code Section */}
+                <div className="mt-6 pt-5 border-t border-gray-100/80">
+                  <label className="text-xs sm:text-sm font-semibold text-gray-700 block mb-3">
+                    Have a Promotion Code?
+                  </label>
+                  <div className="flex gap-2.5">
+                    <input
+                      type="text"
+                      value={promoCodeInput}
+                      onChange={(e) => setPromoCodeInput(e.target.value)}
+                      placeholder="Enter 5-digit code"
+                      maxLength={5}
+                      disabled={appliedPromo !== null}
+                      className="flex-1 px-4 py-2.5 text-sm sm:text-base border border-gray-200 rounded-xl bg-white text-gray-800 font-medium outline-none focus:ring-2 focus:ring-[#090D24]/20 focus:border-[#090D24] transition-all disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                    />
+                    {!appliedPromo ? (
+                      <button
+                        type="button"
+                        onClick={handleApplyPromo}
+                        className="px-5 py-2.5 bg-[#090D24] hover:bg-gray-800 text-[#D9FFA5] font-semibold rounded-xl transition-all duration-300 text-sm whitespace-nowrap shadow-sm hover:shadow-md"
+                      >
+                        Apply
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAppliedPromo(null);
+                          setPromoCodeInput("");
+                          setPromoError("");
+                        }}
+                        className="px-5 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-semibold rounded-xl transition-all duration-300 text-sm whitespace-nowrap border border-red-200/60"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                  
+                  {promoError && (
+                    <p className="text-red-500 text-xs sm:text-sm mt-2.5 font-medium flex items-center gap-1.5 animate-pulse">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {promoError}
+                    </p>
+                  )}
+                  {appliedPromo && (
+                    <p className="text-green-700 text-xs sm:text-sm mt-3 font-medium flex items-center gap-2 bg-green-50/50 px-3 py-2.5 rounded-xl border border-green-100/50">
+                      <span className="bg-green-100 text-green-600 p-1 rounded-full shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
+                      Promotion applied! You got {appliedPromo.discount * 100}% off your course.
+                    </p>
+                  )}
                 </div>
               </div>
             )}

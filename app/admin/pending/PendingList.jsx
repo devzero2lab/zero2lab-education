@@ -81,6 +81,18 @@ function PendingList({ courses, fetchPendingCourses }) {
               <StatusBadge status={course.status} />
             </div>
 
+            {/* Promo Info conditionally rendered */}
+            {course.promoCode && (
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 px-2.5 py-1.5 rounded-lg border border-green-100 mb-3 w-max">
+                <span className="bg-green-100 text-green-600 rounded-full p-0.5 shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+                Promo: {course.promoCode} &bull; Expected: Rs.{course.finalPrice}
+              </div>
+            )}
+
             {/* Contact info */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-500 mb-3">
               <div className="flex items-center gap-1.5">

@@ -13,11 +13,13 @@ import {
   X,
   LayoutDashboard,
   FileText,
+  Tag,
 } from "lucide-react";
 
 const menuItems = [
   { menu: "Courses", path: "/admin/course", icon: BookOpen },
   { menu: "Blogs", path: "/admin/blogs", icon: FileText },
+  { menu: "Promo Codes", path: "/admin/promocodes", icon: Tag },
   { menu: "Pending Access", path: "/admin/pending", icon: Clock },
   { menu: "Approved Access", path: "/admin/approved", icon: CheckCircle },
   { menu: "Completed", path: "/admin/completed", icon: Award },

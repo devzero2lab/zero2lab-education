@@ -1,6 +1,7 @@
 import connectMongoDB from "@/lib/db";
 import { UserCourse } from "@/models/userCourse";
 import { Course } from "@/models/course";
+import { PromoCode } from "@/models/promoCode";
 import { NextResponse } from "next/server";
 
 // Create a UserCourse
@@ -11,7 +12,7 @@ export async function POST(request) {
 
     // Check course exists and no duplicate enrollment — parallel
     const [existingCourse, existingEnrollment] = await Promise.all([
-      Course.findById(userCourseData.courseId).select("_id"),
+      Course.findById(userCourseData.courseId).select("_id price discountPrice"),
       UserCourse.findOne({
         userId: userCourseData.userId,
         courseId: userCourseData.courseId,
@@ -32,7 +33,32 @@ export async function POST(request) {
       );
     }
 
-    const newUserCourse = await UserCourse.create(userCourseData);
+    let basePrice = existingCourse.discountPrice > 0 ? existingCourse.discountPrice : existingCourse.price;
+    let expectedFinalPrice = basePrice;
+    let appliedPromoCode = null;
+
+    if (userCourseData.promoCode) {
+      const promo = await PromoCode.findOne({
+        code: userCourseData.promoCode.trim().toUpperCase(),
+        isActive: true,
+      });
+
+      if (!promo) {
+        return NextResponse.json({ message: "Invalid or inactive promotion code" }, { status: 400 });
+      }
+
+      expectedFinalPrice = Math.round(basePrice * (1 - promo.discountPercent / 100));
+      appliedPromoCode = promo.code;
+
+      // Increment usage count (fire-and-forget, don't block enrollment)
+      PromoCode.findByIdAndUpdate(promo._id, { $inc: { usageCount: 1 } }).exec();
+    }
+
+    const newUserCourse = await UserCourse.create({
+      ...userCourseData,
+      promoCode: appliedPromoCode,
+      finalPrice: expectedFinalPrice,
+    });
     return NextResponse.json(
       { message: "UserCourse created", newUserCourse },
       { status: 201 }
