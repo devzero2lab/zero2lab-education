@@ -76,7 +76,7 @@ function Features() {
   };
 
   return (
-    <section className={`relative z-30 flex flex-col items-center w-full py-12 md:py-16 ${montserrat.className}`}>
+    <section className={`relative z-30 flex flex-col items-center w-full  ${montserrat.className}`}>
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -85,7 +85,7 @@ function Features() {
       >
         <motion.h2
           variants={itemVariants}
-          className="text-3xl md:text-5xl font-extrabold text-[#090D24] text-center"
+          className="text-2xl md:text-4xl font-extrabold text-[#090D24] text-center"
         >
           Popular Courses
         </motion.h2>
