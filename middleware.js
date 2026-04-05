@@ -8,6 +8,7 @@ const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
   "/courses/:id/learn(.*)",
+  "/diagram(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {

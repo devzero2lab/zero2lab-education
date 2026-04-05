@@ -1,10 +1,17 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { FaDownload, FaLink } from "react-icons/fa";
+import { FaDownload, FaLink, FaCheckCircle } from "react-icons/fa";
+import { MdVerified } from "react-icons/md";
 import { QRCodeCanvas } from "qrcode.react";
 import Loader from "@/app/components/Loader";
 import axios from "axios";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
 
 function CertificatePage({ params }) {
   const [html2pdf, setHtml2pdf] = useState(null);
@@ -12,11 +19,10 @@ function CertificatePage({ params }) {
   const [loading, setLoading] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [certificate, setCertificate] = useState(null);
-  const [copyButtonText, setCopyButtonText] = useState("Copy URL");
+  const [copyStatus, setCopyStatus] = useState("idle"); // idle | copied | failed
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {
-    // Fetch certificate details
     const fetchCertificate = async () => {
       setLoading(true);
       try {
@@ -32,7 +38,6 @@ function CertificatePage({ params }) {
         setLoading(false);
       }
     };
-
     fetchCertificate();
   }, [params.id, apiUrl]);
 
@@ -48,7 +53,6 @@ function CertificatePage({ params }) {
     if (html2pdf) {
       setIsDownloading(true);
       const element = document.getElementById("certificate");
-
       html2pdf()
         .set({
           margin: 0,
@@ -67,21 +71,17 @@ function CertificatePage({ params }) {
     navigator.clipboard
       .writeText(certificateUrl)
       .then(() => {
-        setCopyButtonText("Copied!");
-        setTimeout(() => setCopyButtonText("Copy URL"), 2000); // Reset button text after 2 seconds
+        setCopyStatus("copied");
+        setTimeout(() => setCopyStatus("idle"), 2000);
       })
       .catch(() => {
-        setCopyButtonText("Failed to Copy");
-        setTimeout(() => setCopyButtonText("Copy URL"), 2000); // Reset button text after 2 seconds
+        setCopyStatus("failed");
+        setTimeout(() => setCopyStatus("idle"), 2000);
       });
   };
 
   if (loading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <Loader />;
   }
 
   // Reusable Protected Text Component
@@ -104,87 +104,154 @@ function CertificatePage({ params }) {
 
   if (!certificate) {
     return (
-      <div className="mt-10 text-center text-red-500">
-        Certificate not found.
+      <div className={`min-h-screen bg-white flex items-center justify-center px-6 ${montserrat.className}`}>
+        <div className="text-center p-10 bg-white border-2 border-[#090D24] rounded-2xl md:rounded-[2rem] shadow-sm max-w-sm w-full">
+          <div className="w-16 h-16 rounded-full bg-[#D9FFA5] border-2 border-[#090D24] flex items-center justify-center mx-auto mb-5">
+            <MdVerified className="w-8 h-8 text-[#090D24]" />
+          </div>
+          <h2 className="text-xl font-black text-[#090D24] mb-2">Certificate Not Found</h2>
+          <p className="text-sm font-medium text-gray-500 leading-relaxed">
+            This certificate may have been removed or does not exist.
+          </p>
+        </div>
       </div>
     );
   }
 
+  const copyLabel =
+    copyStatus === "copied" ? "Copied!" : copyStatus === "failed" ? "Failed" : "Copy Link";
+
   return (
-    <div className="flex flex-col items-center min-h-screen py-12 mt-10 bg-gradient-to-br from-gray-50 to-blue-50">
-      <div className="mb-8">
-        <button
-          onClick={downloadCertificate}
-          disabled={isDownloading}
-          className="flex items-center gap-2 px-6 py-3 text-white transition-all transform bg-blue-600 rounded-lg shadow-lg hover:bg-blue-700 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <FaDownload className="text-lg" />
-          {isDownloading ? "Generating..." : "Download Certificate"}
-        </button>
-      </div>
+    <div className={`min-h-screen bg-white ${montserrat.className}`}>
+      <div className="max-w-[1300px] mx-auto px-6 md:px-12 lg:px-16 xl:px-24 pt-28 pb-20">
 
-      {/* Copy URL Button */}
-      <div className="mb-8">
-        <button
-          onClick={copyToClipboard}
-          className="flex items-center gap-2 px-6 py-3 text-white transition-all transform bg-green-600 rounded-lg shadow-lg hover:bg-green-700 hover:scale-105"
-        >
-          <FaLink className="text-lg" />
-          {copyButtonText}
-        </button>
-      </div>
-
-      <div
-        id="certificate"
-        className="relative w-[1123px] h-[794px] bg-white shadow-2xl rounded-xl overflow-hidden border-8 border-gray-200 transition-transform duration-300 hover:scale-105"
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="https://v8gv75m9qo.ufs.sh/f/NWfsvG3BrCsZhUExsC2LZVgOQ3HxDl8z9njdkT7ARYcXyFmB"
-            alt="Certificate Background"
-            layout="fill"
-            className="object-cover"
-            priority
-            draggable={false}
-            onLoad={() => setImageLoaded(true)}
-          />
+        {/* ── Page Header ── */}
+        <div className="mb-10">
+          <span className="inline-flex items-center gap-2 text-xs font-bold px-3 py-1.5 bg-[#D9FFA5] border border-[#090D24]/20 text-[#090D24] rounded-full mb-5">
+            <MdVerified className="w-3.5 h-3.5" />
+            Verified Certificate
+          </span>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-[#090D24] leading-tight mb-3">
+            Certificate of Completion
+          </h1>
+          <p className="text-base font-medium text-gray-500 leading-relaxed max-w-xl">
+            Congratulations,{" "}
+            <span className="font-bold text-[#090D24]">
+              {certificate.firstName} {certificate.lastName}
+            </span>
+            ! You have successfully completed{" "}
+            <span className="font-bold text-[#090D24]">
+              {certificate.courseId?.courseName}
+            </span>
+            .
+          </p>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center h-full">
-          <div className="absolute top-[20px] left-[30px] p-2 bg-white rounded-lg shadow-sm">
-            <QRCodeCanvas
-              value={`https://www.zero2lab.com/certificates/${params.id}`}
-              size={80}
-            />
+        {/* ── Action Buttons ── */}
+        <div className="flex flex-wrap gap-3 mb-10">
+          <button
+            onClick={downloadCertificate}
+            disabled={isDownloading}
+            className="flex items-center gap-2.5 bg-[#090D24] text-white px-7 py-3.5 rounded-full text-sm font-bold hover:bg-black transition-all shadow-md active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            <FaDownload className={`text-sm ${isDownloading ? "animate-bounce" : ""}`} />
+            {isDownloading ? "Generating PDF…" : "Download PDF"}
+          </button>
+
+          <button
+            onClick={copyToClipboard}
+            className="flex items-center gap-2.5 bg-white text-[#090D24] border-2 border-[#090D24] px-7 py-3.5 rounded-full text-sm font-bold hover:bg-[#f8ffec] transition-all shadow-sm active:scale-95"
+          >
+            {copyStatus === "copied" ? (
+              <FaCheckCircle className="text-sm text-[#090D24]" />
+            ) : (
+              <FaLink className="text-sm" />
+            )}
+            {copyLabel}
+          </button>
+        </div>
+
+        {/* ── Certificate Preview (Wrapped in scrollable area to protect html2pdf rendering) ── */}
+        <div className="w-full flex justify-center mb-8 border-2 border-[#090D24] rounded-2xl md:rounded-[2rem] overflow-hidden shadow-sm bg-gray-50">
+          <div className="w-full overflow-x-auto p-4 md:p-8 flex justify-center hide-scrollbar">
+            {/* The actual element captured by html2pdf - Must have NO borders/shadows/margins */}
+            <div
+              id="certificate"
+              className="relative shrink-0 bg-white"
+              style={{ width: "1123px", height: "794px" }}
+            >
+              {/* Using standard HTML img instead of next/image to prevent html2canvas zooming glitch */}
+              <img
+                src="https://v8gv75m9qo.ufs.sh/f/NWfsvG3BrCsZhUExsC2LZVgOQ3HxDl8z9njdkT7ARYcXyFmB"
+                alt="Certificate Background"
+                className="absolute inset-0 w-full h-full"
+                style={{ objectFit: "cover" }}
+                crossOrigin="anonymous"
+                onLoad={() => setImageLoaded(true)}
+              />
+
+              <div className="relative z-10 flex flex-col items-center justify-center h-full">
+                {/* QR Code — top left */}
+                <div className="absolute top-[20px] left-[30px] p-2 bg-white rounded-lg shadow-sm">
+                  <QRCodeCanvas
+                    value={`https://www.zero2lab.com/certificates/${params.id}`}
+                    size={80}
+                  />
+                </div>
+
+                {/* Certificate ID — top right */}
+                <ProtectedText className="absolute top-[30px] right-[30px] text-[12px] font-bold text-gray-500">
+                  Certificate ID: {params.id}
+                </ProtectedText>
+
+                {/* Course Name */}
+                <ProtectedText className="absolute top-[215px] w-full text-center text-[38px] font-extrabold text-[#090D24]">
+                  {certificate.courseId?.courseName}
+                </ProtectedText>
+
+                {/* Recipient Name */}
+                <ProtectedText
+                  className="absolute top-[375px] w-full text-center text-[26px] font-black text-[#090D24] tracking-wide"
+                  style={{
+                    textShadow: "1px 1px 2px rgba(0,0,0,0.05)",
+                  }}
+                >
+                  {certificate.firstName} {certificate.lastName}
+                </ProtectedText>
+
+                {/* Issue Date */}
+                <ProtectedText
+                  className="absolute right-[280px] top-[592px] text-[15px] font-bold text-[#090D24]"
+                  style={{
+                    textShadow: "1px 1px 2px rgba(0,0,0,0.05)",
+                  }}
+                >
+                  {new Date().toLocaleDateString()}
+                </ProtectedText>
+              </div>
+            </div>
           </div>
-
-          {/* Certificate ID */}
-          <ProtectedText className="absolute top-[30px] right-[30px] text-xs text-gray-500">
-            Certificate ID: {params.id}
-          </ProtectedText>
-
-          {/* Main Course Title */}
-
-          {/* Recipient Name */}
-          <ProtectedText className="absolute top-[220px] text-4xl font-bold text-black">
-            {certificate.courseId.courseName}
-          </ProtectedText>
-
-          {/* Course Completion Statement */}
-          <ProtectedText
-            className="absolute top-[390px] text-[18px] font-playfair text-black"
-            style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.1)" }}
-          >
-            {certificate.firstName} {certificate.lastName}
-          </ProtectedText>
-
-          <ProtectedText
-            className="absolute right-[290px] top-[583px] text-[15px] font-playfair text-black"
-            style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.1)" }}
-          >
-            {new Date().toLocaleDateString()}
-          </ProtectedText>
         </div>
+
+        {/* ── Meta Details Strip ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { label: "Recipient", value: `${certificate.firstName} ${certificate.lastName}` },
+            { label: "Course", value: certificate.courseId?.courseName },
+            { label: "Status", value: certificate.status ?? "Completed" },
+          ].map(({ label, value }) => (
+            <div
+              key={label}
+              className="bg-white border-2 border-[#090D24] rounded-2xl px-5 py-4 shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
+                {label}
+              </p>
+              <p className="text-sm font-bold text-[#090D24] line-clamp-1">{value}</p>
+            </div>
+          ))}
+        </div>
+
       </div>
     </div>
   );

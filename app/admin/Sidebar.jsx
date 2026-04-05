@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
   FileText,
   Tag,
+  TrendingUp,
 } from "lucide-react";
 
 const menuItems = [
@@ -23,6 +24,7 @@ const menuItems = [
   { menu: "Pending Access", path: "/admin/pending", icon: Clock },
   { menu: "Approved Access", path: "/admin/approved", icon: CheckCircle },
   { menu: "Completed", path: "/admin/completed", icon: Award },
+  { menu: "Student Progress", path: "/admin/progress", icon: TrendingUp },
   { menu: "Meetings", path: "/admin/schedule-meetings", icon: Calendar },
   { menu: "Feedbacks", path: "/admin/feedbacks", icon: MessageSquare },
   { menu: "Not Enrolled", path: "/admin/noenrolls", icon: UserX },

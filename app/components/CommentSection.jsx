@@ -4,6 +4,9 @@ import { useUser, SignInButton } from "@clerk/nextjs";
 import { MessageSquare, Trash2, Send, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
 function timeAgo(date) {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -68,11 +71,15 @@ export default function CommentSection({ blogId, initialComments = [] }) {
   };
 
   return (
-    <section className="mt-12">
-      <div className="flex items-center gap-2 mb-6">
-        <MessageSquare size={20} className="text-slate-700" />
-        <h2 className="text-xl font-bold text-slate-900">
-          Comments <span className="text-base font-normal text-slate-400">({comments.length})</span>
+    <section className={`mt-14 ${montserrat.className}`}>
+      {/* Section header */}
+      <div className="flex items-center gap-3 mb-7">
+        <div className="w-8 h-8 rounded-full bg-[#D9FFA5] border-2 border-[#090D24] flex items-center justify-center">
+          <MessageSquare size={15} className="text-[#090D24]" />
+        </div>
+        <h2 className="text-xl font-black text-[#090D24]">
+          Comments{" "}
+          <span className="text-base font-medium text-slate-400">({comments.length})</span>
         </h2>
       </div>
 
@@ -80,21 +87,24 @@ export default function CommentSection({ blogId, initialComments = [] }) {
       {isSignedIn ? (
         <form onSubmit={handleSubmit} className="mb-8">
           <div className="flex gap-3">
+            {/* Avatar */}
             <div className="flex-shrink-0">
               {user?.imageUrl ? (
                 <Image
                   src={user.imageUrl}
                   alt={user.fullName || "You"}
-                  width={38}
-                  height={38}
-                  className="rounded-full border border-slate-200"
+                  width={40}
+                  height={40}
+                  className="rounded-full border-2 border-[#090D24]/20"
                 />
               ) : (
-                <div className="w-9 h-9 rounded-full bg-[#D9FFA5] border border-[#090D24] flex items-center justify-center text-sm font-bold text-[#090D24]">
+                <div className="w-10 h-10 rounded-full bg-[#D9FFA5] border-2 border-[#090D24] flex items-center justify-center text-sm font-black text-[#090D24]">
                   {user?.firstName?.[0]?.toUpperCase()}
                 </div>
               )}
             </div>
+
+            {/* Input area */}
             <div className="flex-1">
               <textarea
                 value={text}
@@ -102,14 +112,14 @@ export default function CommentSection({ blogId, initialComments = [] }) {
                 placeholder="Share your thoughts..."
                 rows={3}
                 maxLength={1000}
-                className="w-full px-4 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#090D24] focus:border-transparent bg-white placeholder-slate-400 resize-none transition"
+                className="w-full px-5 py-3.5 text-sm border-2 border-[#090D24]/15 rounded-2xl focus:outline-none focus:border-[#090D24] bg-white placeholder-slate-400 resize-none transition-colors font-medium"
               />
-              <div className="flex items-center justify-between mt-2">
-                <span className="text-xs text-slate-400">{text.length}/1000</span>
+              <div className="flex items-center justify-between mt-2.5">
+                <span className="text-xs text-slate-400 font-medium">{text.length}/1000</span>
                 <button
                   type="submit"
                   disabled={submitting || !text.trim()}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#090D24] rounded-xl hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-[#090D24] rounded-full hover:bg-black transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send size={14} />
                   {submitting ? "Posting..." : "Post Comment"}
@@ -119,13 +129,13 @@ export default function CommentSection({ blogId, initialComments = [] }) {
           </div>
         </form>
       ) : (
-        <div className="mb-8 p-5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+        <div className="mb-8 p-6 bg-[#f8ffec] border-2 border-[#090D24]/15 rounded-2xl flex items-center justify-between">
           <div>
-            <p className="text-sm font-semibold text-slate-700">Sign in to join the conversation</p>
-            <p className="text-xs text-slate-400 mt-0.5">Share your thoughts and insights</p>
+            <p className="text-sm font-bold text-[#090D24]">Sign in to join the conversation</p>
+            <p className="text-xs text-slate-500 font-medium mt-0.5">Share your thoughts and insights</p>
           </div>
           <SignInButton mode="modal">
-            <button className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#090D24] rounded-xl hover:bg-black transition-colors">
+            <button className="flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-[#090D24] rounded-full hover:bg-black transition-all shadow-md active:scale-95">
               <LogIn size={14} />
               Sign In
             </button>
@@ -134,51 +144,57 @@ export default function CommentSection({ blogId, initialComments = [] }) {
       )}
 
       {/* Comments list */}
-      <div className="space-y-5">
+      <div className="space-y-4">
         {comments.length === 0 ? (
-          <div className="text-center py-12 text-slate-400">
-            <MessageSquare size={32} className="mx-auto mb-3 opacity-30" />
-            <p className="text-sm">No comments yet. Be the first!</p>
+          <div className="text-center py-14">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#D9FFA5] border-2 border-[#090D24] flex items-center justify-center">
+              <MessageSquare size={24} className="text-[#090D24]" />
+            </div>
+            <p className="text-sm font-bold text-[#090D24] mb-1">No comments yet</p>
+            <p className="text-xs text-slate-400 font-medium">Be the first to share your thoughts!</p>
           </div>
         ) : (
           comments.map((comment) => {
             const canDelete = isSignedIn && (user?.id === comment.userId);
             return (
               <div key={comment._id} className="flex gap-3 group">
+                {/* Avatar */}
                 <div className="flex-shrink-0">
                   {comment.avatarUrl ? (
                     <Image
                       src={comment.avatarUrl}
                       alt={comment.name}
-                      width={36}
-                      height={36}
-                      className="rounded-full border border-slate-200"
+                      width={38}
+                      height={38}
+                      className="rounded-full border-2 border-[#090D24]/20"
                     />
                   ) : (
-                    <div className="w-9 h-9 rounded-full bg-[#D9FFA5] border border-[#090D24] flex items-center justify-center text-sm font-bold text-[#090D24]">
+                    <div className="w-10 h-10 rounded-full bg-[#D9FFA5] border-2 border-[#090D24] flex items-center justify-center text-sm font-black text-[#090D24]">
                       {comment.name?.[0]?.toUpperCase()}
                     </div>
                   )}
                 </div>
+
+                {/* Bubble */}
                 <div className="flex-1 min-w-0">
-                  <div className="bg-white border border-slate-100 rounded-xl px-4 py-3 shadow-sm">
-                    <div className="flex items-center justify-between mb-1.5">
+                  <div className="bg-white border-2 border-[#090D24]/10 rounded-2xl px-5 py-4 shadow-sm hover:border-[#090D24]/20 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-slate-800">{comment.name}</span>
-                        <span className="text-xs text-slate-400">{timeAgo(comment.createdAt)}</span>
+                        <span className="text-sm font-black text-[#090D24]">{comment.name}</span>
+                        <span className="text-xs text-slate-400 font-medium">{timeAgo(comment.createdAt)}</span>
                       </div>
                       {canDelete && (
                         <button
                           onClick={() => handleDelete(comment._id)}
                           disabled={deletingId === comment._id}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-full text-slate-400 hover:text-red-500 hover:bg-red-50"
                           title="Delete comment"
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={13} />
                         </button>
                       )}
                     </div>
-                    <p className="text-sm text-slate-600 leading-relaxed">{comment.text}</p>
+                    <p className="text-sm text-slate-600 leading-relaxed font-medium">{comment.text}</p>
                   </div>
                 </div>
               </div>

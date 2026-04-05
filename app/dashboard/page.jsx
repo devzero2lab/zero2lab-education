@@ -22,25 +22,57 @@ function Page() {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Map of courseId → { completedLessons, totalLessons, percentage }
+  const [progressMap, setProgressMap] = useState({});
+
+  // Redirect unenrolled/unauthenticated users without a render-time side effect
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push("/sign-in");
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [countRes, coursesRes, certsRes] = await Promise.all([
-          fetch(`${apiUrl}/api/usercourses?userId=${userID}&action=count`),
+
+        // 3 parallel requests — no sequential waterfall, no redundant count call
+        const [coursesRes, certsRes, allProgressRes] = await Promise.all([
           fetch(`${apiUrl}/api/usercourses?userId=${userID}`),
           fetch(`${apiUrl}/api/usercertificate?userID=${userID}`),
+          fetch(`${apiUrl}/api/progress?userId=${userID}`),
         ]);
 
-        const countData = await countRes.json();
         const coursesData = await coursesRes.json();
         const certsData = await certsRes.json();
+        const allProgressData = await allProgressRes.json();
 
-        setApprovedCount(countData.approvedCount);
-        setCompletedCount(countData.completedCount);
-        setEnrolledCourses(coursesData.userCourses);
+        const courses = coursesData.userCourses || [];
+        setEnrolledCourses(courses);
+
+        // Derive counts from the course list — no separate count API call needed
+        setApprovedCount(courses.filter((c) => c.status === "Approved").length);
+        setCompletedCount(courses.filter((c) => c.status === "Completed").length);
+
         setCertificates(certsData.completedCourses);
+
+        // Build progressMap from batch data.
+        // totalLessons comes from the already-populated courseId.content on each course.
+        const rawProgress = allProgressData.progressMap || {};
+        const newProgressMap = {};
+        courses.forEach((c) => {
+          const id = c.courseId._id.toString();
+          const p = rawProgress[id];
+          if (p) {
+            const totalLessons = c.courseId.content?.length || 0;
+            const { completedCount } = p;
+            const percentage =
+              totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+            newProgressMap[id] = { completedCount, totalLessons, percentage };
+          }
+        });
+        setProgressMap(newProgressMap);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -54,15 +86,10 @@ function Page() {
   }, [isLoaded, isSignedIn, userID, apiUrl]);
 
   if (!isLoaded) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <div><Loader /></div>;
   }
 
   if (!isSignedIn) {
-    router.push("/sign-in");
     return null;
   }
 
@@ -144,48 +171,69 @@ function Page() {
               <div className="p-4 bg-gray-50 rounded-2xl mb-4 border-2 border-gray-100">
                 <FaBook className="w-10 h-10 text-[#090D24]/30" />
               </div>
-              <h3 className="text-lg font-bold text-[#090D24]">
-                No courses enrolled yet
-              </h3>
-              <p className="mt-1.5 text-sm text-gray-500 font-medium">
-                Explore our courses to get started!
-              </p>
+              <h3 className="text-lg font-bold text-[#090D24]">No courses enrolled yet</h3>
+              <p className="mt-1.5 text-sm text-gray-500 font-medium">Explore our courses to get started!</p>
             </div>
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
               {enrolledCourses.map((courseData, index) => {
                 const { courseId, status } = courseData;
+                const progress = progressMap[courseId._id];
+                const isAccessible = status === "Approved" || status === "Completed";
+
                 return (
                   <div
                     key={index}
                     className="p-4 transition-all duration-300 border-2 border-gray-100 group rounded-2xl hover:border-[#090D24] hover:shadow-[4px_4px_0_0_#D9FFA5] bg-white"
                   >
-                    {status === "Approved" || status === "Completed" ? (
-                      <Link
-                        href={`/courses/${courseId._id}/learn`}
-                        className="flex items-center justify-between"
-                      >
-                        <div>
-                          <h3 className="text-base sm:text-lg font-semibold text-[#090D24] line-clamp-1">
-                            {courseId.courseName}
-                          </h3>
-                          <div className="flex items-center mt-2.5 space-x-2">
-                            <span
-                              className={`px-3 py-1 rounded-full text-xs font-bold border-2 ${
-                                status === "Approved"
-                                  ? "bg-[#D9FFA5] text-[#090D24] border-[#090D24]"
-                                  : "bg-blue-100 text-blue-800 border-blue-800"
-                              }`}
-                            >
-                              {status}
-                            </span>
+                    {isAccessible ? (
+                      <Link href={`/courses/${courseId._id}/learn`} className="block">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-base sm:text-lg font-semibold text-[#090D24] line-clamp-1">
+                              {courseId.courseName}
+                            </h3>
+                            <div className="flex items-center mt-2 space-x-2">
+                              <span
+                                className={`px-3 py-1 rounded-full text-xs font-bold border-2 ${
+                                  status === "Approved"
+                                    ? "bg-[#D9FFA5] text-[#090D24] border-[#090D24]"
+                                    : "bg-blue-100 text-blue-800 border-blue-800"
+                                }`}
+                              >
+                                {status}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="p-2 sm:p-3 bg-gray-50 border border-gray-200 rounded-xl group-hover:bg-[#090D24] transition-colors shrink-0 ml-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
                           </div>
                         </div>
-                        <div className="p-2 sm:p-3 bg-gray-50 border border-gray-200 rounded-xl group-hover:bg-[#090D24] transition-colors shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
+
+                        {/* Progress Bar */}
+                        {progress && status !== "Completed" && (
+                          <div className="mt-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs font-semibold text-gray-500">
+                                {progress.completedCount}/{progress.totalLessons} lessons
+                              </span>
+                              <span className="text-xs font-bold text-[#090D24]">
+                                {progress.percentage}%
+                              </span>
+                            </div>
+                            <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden border border-gray-200">
+                              <div
+                                className="h-full rounded-full transition-all duration-700"
+                                style={{
+                                  width: `${progress.percentage}%`,
+                                  backgroundColor: progress.percentage === 100 ? "#22c55e" : "#090D24",
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
                       </Link>
                     ) : (
                       <div className="flex items-center justify-between opacity-70">
@@ -210,10 +258,10 @@ function Page() {
         </div>
       </section>
 
-      {/* user certificates */}
+      {/* User certificates */}
       <Certificates certificates={certificates} loading={loading} />
 
-      {/* meeting section */}
+      {/* Meeting section */}
       <BookMeeting />
     </div>
   );
