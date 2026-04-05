@@ -14,18 +14,26 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
   useEffect(() => {
     let hls = null;
     let player = null;
+    let isCancelled = false;
+    const abortController = new AbortController();
     
     const initPlayer = async () => {
       try {
         setIsLoading(true);
-        // 1. Signed Cookies ලබා ගැනීම — page.jsx already fetches these once for the
-        //    whole course session, so skip the call if cookiesReady flag is set.
+        setError(null);
+
+        // 1. Signed Cookies ලබා ගැනීම
         if (!cookiesReady) {
-          const response = await fetch(`/api/video-access?courseId=${courseId}&videoUrl=${encodeURIComponent(videoUrl)}`);
+          const response = await fetch(
+            `/api/video-access?courseId=${courseId}&videoUrl=${encodeURIComponent(videoUrl)}`,
+            { signal: abortController.signal }
+          );
           if (!response.ok) {
             throw new Error('Failed to obtain secure video access cookies.');
           }
         }
+
+        if (isCancelled) return;
 
         const video = videoRef.current;
         if (!video) return;
@@ -79,6 +87,11 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
               },
             };
 
+            if (isCancelled) {
+              hls.destroy();
+              return;
+            }
+
             // Plyr UI එක ආරම්භ කිරීම
             player = new Plyr(video, defaultOptions);
             setIsLoading(false);
@@ -106,12 +119,17 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
         // 3. Apple Safari බ්‍රවුසරය සඳහා (එහි HLS ස්වභාවිකවම වැඩ කරයි)
         else if (video.canPlayType('application/vnd.apple.mpegurl')) {
           video.src = videoUrl;
-          player = new Plyr(video, defaultOptions);
-          setIsLoading(false);
+          if (!isCancelled) {
+            player = new Plyr(video, defaultOptions);
+            setIsLoading(false);
+          }
         }
       } catch (err) {
-        setError(err.message || 'An error occurred while initializing the secure player.');
-        setIsLoading(false);
+        if (err.name === 'AbortError') return;
+        if (!isCancelled) {
+          setError(err.message || 'An error occurred while initializing the secure player.');
+          setIsLoading(false);
+        }
       }
     };
 
@@ -119,8 +137,24 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
 
     // Component එක ඉවත් වන විට ප්ලේයරයද මතකයෙන් ඉවත් කිරීම (Memory Leak වැළැක්වීමට)
     return () => {
-      if (hls) hls.destroy();
-      if (player) player.destroy();
+      isCancelled = true;
+      abortController.abort();
+      
+      if (hls) {
+        hls.destroy();
+      }
+      
+      if (player) {
+        player.pause();
+        player.destroy();
+      }
+
+      // Explicitly pause the video element as a final fallback
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.src = "";
+        videoRef.current.load();
+      }
     };
   }, [videoUrl, courseId, cookiesReady]);
 

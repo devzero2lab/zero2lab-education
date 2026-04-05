@@ -181,6 +181,7 @@ function CertificatePage({ params }) {
               style={{ width: "1123px", height: "794px" }}
             >
               {/* Using standard HTML img instead of next/image to prevent html2canvas zooming glitch */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://v8gv75m9qo.ufs.sh/f/NWfsvG3BrCsZhUExsC2LZVgOQ3HxDl8z9njdkT7ARYcXyFmB"
                 alt="Certificate Background"
