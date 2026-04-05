@@ -125,42 +125,93 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
   }, [videoUrl, courseId]);
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 group">
-      
+    <div className="relative w-full h-full bg-zinc-950 group flex items-center justify-center">
+      {/* 
+        Custom Plyr Theming 
+        Using Zero2Lab Brand Colors: Navy (#090D24) and Lime (#D9FFA5)
+      */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        :root {
+          --plyr-color-main: #D9FFA5;
+          --plyr-video-control-color: #ffffff;
+          --plyr-video-control-color-hover: #090D24;
+          --plyr-video-control-background-hover: #D9FFA5;
+          --plyr-menu-background: rgba(9, 13, 36, 0.95);
+          --plyr-menu-color: #ffffff;
+          --plyr-tooltip-background: #090D24;
+          --plyr-tooltip-color: #ffffff;
+        }
+        .plyr {
+          width: 100% !important;
+          height: 100% !important;
+          max-width: 100% !important;
+        }
+        .plyr__video-wrapper {
+          background: #000 !important;
+        }
+        .plyr__video-wrapper video {
+          object-fit: contain !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+        .plyr--video .plyr__control--overlaid {
+          background: rgba(217, 255, 165, 0.85);
+          color: #090D24;
+        }
+        .plyr--video .plyr__control--overlaid:hover {
+          background: #D9FFA5;
+        }
+        .plyr--full-ui input[type=range] {
+          color: #D9FFA5;
+        }
+        .plyr__control--pressed {
+          color: #090D24 !important;
+        }
+      `}} />
+
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/80 z-10 backdrop-blur-sm">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-emerald-500 text-sm font-medium animate-pulse">Securing connection & Loading Player...</p>
+        <div className="absolute inset-0 flex items-center justify-center bg-[#090D24]/90 z-20 backdrop-blur-md transition-all duration-500">
+          <div className="flex flex-col items-center gap-6">
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-[#D9FFA5]/20 rounded-full"></div>
+              <div className="absolute top-0 left-0 w-16 h-16 border-4 border-[#D9FFA5] border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <div className="space-y-2 text-center">
+              <p className="text-[#D9FFA5] text-lg font-bold tracking-tight animate-pulse">ZERO2LAB SECURE PLAYER</p>
+              <p className="text-white/60 text-xs font-medium uppercase tracking-[0.2em]">Initializing Stream...</p>
+            </div>
           </div>
         </div>
       )}
       
       {error && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 z-10 p-6 text-center">
-          <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4">
-            <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#090D24] z-30 p-8 text-center animate-in fade-in duration-500">
+          <div className="w-20 h-20 bg-red-500/10 rounded-3xl flex items-center justify-center mb-6 ring-1 ring-red-500/20">
+            <svg className="w-10 h-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <p className="text-red-400 font-medium text-lg">{error}</p>
+          <h3 className="text-white text-xl font-bold mb-2">Playback Error</h3>
+          <p className="text-white/60 font-medium max-w-md mx-auto mb-8 leading-relaxed">{error}</p>
           <button 
             onClick={() => window.location.reload()} 
-            className="mt-6 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-colors text-sm font-medium"
+            className="px-8 py-3 bg-[#D9FFA5] hover:bg-[#c4eb8a] text-[#090D24] rounded-2xl transition-all duration-300 text-sm font-bold shadow-lg shadow-lime-500/20 active:scale-95"
           >
-            Try Again
+            Reconnect & Try Again
           </button>
         </div>
       )}
 
-      {/* Plyr සඳහා Video Tag එක */}
-      <video 
-        ref={videoRef} 
-        className={`w-full h-full transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-        crossOrigin="use-credentials"
-        controlsList="nodownload"
-        playsInline
-      />
+      {/* Plyr Video Element */}
+      <div className="w-full h-full flex items-center justify-center">
+        <video 
+          ref={videoRef} 
+          className={`w-full h-full object-contain transition-opacity duration-1000 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+          crossOrigin="use-credentials"
+          controlsList="nodownload"
+          playsInline
+        />
+      </div>
     </div>
   );
 }

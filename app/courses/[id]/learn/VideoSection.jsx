@@ -69,13 +69,18 @@ export default function VideoSection({
 
   return (
     <div className="flex-1 w-full overflow-y-auto bg-white scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
-      {/* Video Player */}
-      <div className="w-full bg-black aspect-video shadow-sm">
-        <SecureVideoPlayerWrapper
-          videoUrl={proxiedVideoUrl}
-          courseId={courseId}
-          cookiesReady={cookiesReady}
-        />
+      {/* Video Player Section */}
+      <div className="w-full bg-slate-50/50 border-b border-gray-100 flex items-center justify-center p-0 sm:p-2 md:p-4">
+        <div className="w-full max-w-6xl mx-auto shadow-2xl rounded-none sm:rounded-2xl overflow-hidden ring-1 ring-black/5 bg-white">
+          <div className="aspect-video w-full overflow-hidden">
+            <SecureVideoPlayerWrapper
+              key={currentLesson.day}
+              videoUrl={proxiedVideoUrl}
+              courseId={courseId}
+              cookiesReady={cookiesReady}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Content Section */}
