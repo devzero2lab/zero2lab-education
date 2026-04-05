@@ -5,6 +5,8 @@ import connectMongoDB from "@/lib/db";
 import { UserCourse } from "@/models/userCourse";
 import { Course } from "@/models/course";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   try {
     // 1. Verify User Authentication via Clerk

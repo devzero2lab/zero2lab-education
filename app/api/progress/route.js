@@ -5,6 +5,8 @@ import { UserCourse } from "@/models/userCourse";
 import { Course } from "@/models/course";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 // ─── GET: Fetch student's progress for a course ───────────────────────────────
 // Query params: ?userId=...&courseId=...
 export async function GET(request) {

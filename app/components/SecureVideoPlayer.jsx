@@ -122,7 +122,7 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
       if (hls) hls.destroy();
       if (player) player.destroy();
     };
-  }, [videoUrl, courseId]);
+  }, [videoUrl, courseId, cookiesReady]);
 
   return (
     <div className="relative w-full h-full bg-zinc-950 group flex items-center justify-center">

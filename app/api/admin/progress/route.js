@@ -5,6 +5,8 @@ import { UserCourse } from "@/models/userCourse";
 import { Course } from "@/models/course";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 // Admin-only: Get all students' progress across all courses
 // Middleware already ensures only admins reach this route
 export async function GET(request) {
