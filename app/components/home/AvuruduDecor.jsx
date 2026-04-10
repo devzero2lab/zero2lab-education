@@ -71,6 +71,7 @@ const AvuruduDecor = () => {
                 fill
                 className="object-cover object-center pointer-events-none"
                 priority
+                unoptimized={true}
               />
             </div>
             
