@@ -1,22 +1,29 @@
 import React from "react";
 import Hero from "./components/home/Hero";
+import AvuruduDecor from "./components/home/AvuruduDecor";
 import StruggleBanner from "./components/home/StruggleBanner";
 import Features from "./components/home/Features";
 import Reviews from "./components/home/Reviews";
 import Link from "next/link";
 import CourseStats from "./components/home/CourseStats";
 import FAQSection from "./components/home/FAQSection";
+import PromoBanner from "./components/home/PromoBanner";
 
 function Home() {
   return (
     <div className="mt-12">
+      {/* Avurudu Decor Component */}
+      <AvuruduDecor />
+
       {/* hero section */}
       <Hero />
 
       {/* Struggle Banner */}
       <StruggleBanner />
 
-      
+      {/* Promo Banner */}
+      <PromoBanner />
+
       <Features />
 
      

@@ -9,7 +9,7 @@ const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '600'
 
 const Hero = () => {
   return (
-    <section className={`relative bg-white pt-14 overflow-hidden ${montserrat.className}`}>
+    <section className={`relative bg-white pt-4 md:pt-8 overflow-hidden ${montserrat.className}`}>
       <div className="w-full max-w-[1300px] mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
