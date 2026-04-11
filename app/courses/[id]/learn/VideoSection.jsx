@@ -2,34 +2,137 @@
 import React, { useState } from "react";
 import SecureVideoPlayerWrapper from "@/app/components/SecureVideoPlayerWrapper";
 import { FaPlayCircle, FaCheckCircle } from "react-icons/fa";
+import { FiChevronDown, FiChevronUp, FiBookOpen } from "react-icons/fi";
 
-function parseTextWithLinks(text) {
-  const urlRegex = /https?:\/\/[^\s]+/g;
-  const parts = text.split(urlRegex);
-  const urls = text.match(urlRegex);
+// ─── Enhanced Markdown-like Renderer ──────────────────────────────────────────
+function formatInline(text) {
+  // Links
+  let html = text.replace(
+    /https?:\/\/[^\s]+/g,
+    (url) =>
+      `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-medium underline underline-offset-2 hover:text-blue-800 transition-colors break-all">${url}</a>`
+  );
+  // Bold
+  html = html.replace(
+    /\*\*(.+?)\*\*/g,
+    '<strong class="font-semibold text-gray-900">$1</strong>'
+  );
+  // Inline code
+  html = html.replace(
+    /`([^`]+)`/g,
+    '<code class="px-1.5 py-0.5 bg-gray-100 border border-gray-200 rounded text-xs font-mono text-blue-700">$1</code>'
+  );
+  return html;
+}
 
+function LessonContent({ notes }) {
+  if (!notes) return null;
+
+  const lines = notes.split("\n");
   const elements = [];
-  parts.forEach((part, index) => {
-    elements.push(<span key={`text-${index}`}>{part}</span>);
-    if (urls && urls[index]) {
-      elements.push(
-        <React.Fragment key={`link-${index}`}>
-          <br />
-          <a
-            href={urls[index]}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 font-medium underline underline-offset-2 hover:text-[#090D24] transition-colors break-words lg:break-all whitespace-pre-wrap"
-          >
-            {urls[index]}
-          </a>
-          <br />
-        </React.Fragment>
-      );
-    }
-  });
+  let inCodeBlock = false;
+  let codeLines = [];
+  let codeLang = "";
 
-  return elements;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Code block toggle
+    if (line.startsWith("```")) {
+      if (inCodeBlock) {
+        elements.push(
+          <div key={`code-${i}`} className="my-3 rounded-lg overflow-hidden border border-gray-200">
+            {codeLang && (
+              <div className="px-3 py-1 bg-gray-100 text-[10px] font-mono text-gray-500 uppercase border-b border-gray-200">
+                {codeLang}
+              </div>
+            )}
+            <pre className="px-4 py-3 bg-gray-50 overflow-x-auto text-xs font-mono leading-relaxed text-gray-800">
+              {codeLines.join("\n")}
+            </pre>
+          </div>
+        );
+        codeLines = [];
+        codeLang = "";
+        inCodeBlock = false;
+      } else {
+        inCodeBlock = true;
+        codeLang = line.slice(3).trim();
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeLines.push(line);
+      continue;
+    }
+
+    // Heading 1
+    if (line.startsWith("# ")) {
+      elements.push(
+        <h2 key={i} className="text-lg font-bold text-gray-900 mt-5 mb-2 first:mt-0 border-b border-gray-100 pb-1">
+          {line.slice(2)}
+        </h2>
+      );
+      continue;
+    }
+    // Heading 2
+    if (line.startsWith("## ")) {
+      elements.push(
+        <h3 key={i} className="text-base font-bold text-gray-800 mt-4 mb-1.5">
+          {line.slice(3)}
+        </h3>
+      );
+      continue;
+    }
+    // Heading 3
+    if (line.startsWith("### ")) {
+      elements.push(
+        <h4 key={i} className="text-sm font-semibold text-gray-700 mt-3 mb-1">
+          {line.slice(4)}
+        </h4>
+      );
+      continue;
+    }
+    // Bullet list
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      const text = line.slice(2);
+      elements.push(
+        <div key={i} className="flex gap-2 text-sm text-gray-700 ml-3 mb-1 leading-relaxed">
+          <span className="text-gray-400 shrink-0 mt-1">•</span>
+          <span dangerouslySetInnerHTML={{ __html: formatInline(text) }} />
+        </div>
+      );
+      continue;
+    }
+    // Numbered list
+    const numMatch = line.match(/^(\d+)\.\s/);
+    if (numMatch) {
+      const text = line.slice(numMatch[0].length);
+      elements.push(
+        <div key={i} className="flex gap-2 text-sm text-gray-700 ml-3 mb-1 leading-relaxed">
+          <span className="text-gray-400 shrink-0 font-mono text-xs mt-0.5">{numMatch[1]}.</span>
+          <span dangerouslySetInnerHTML={{ __html: formatInline(text) }} />
+        </div>
+      );
+      continue;
+    }
+    // Empty line
+    if (!line.trim()) {
+      elements.push(<div key={i} className="h-2" />);
+      continue;
+    }
+    // Regular paragraph
+    elements.push(
+      <p
+        key={i}
+        className="text-sm text-gray-700 mb-1.5 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: formatInline(line) }}
+      />
+    );
+  }
+
+  return <div className="space-y-0">{elements}</div>;
 }
 
 export default function VideoSection({
@@ -41,6 +144,7 @@ export default function VideoSection({
   cookiesReady,
 }) {
   const [isMarking, setIsMarking] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(true);
 
   if (!currentLesson) {
     return (
@@ -56,6 +160,7 @@ export default function VideoSection({
 
   const isCompleted = completedLessons.includes(currentLesson.day);
   const proxiedVideoUrl = `/api/proxy?videoUrl=${encodeURIComponent(currentLesson.videoUrl)}`;
+  const hasNotes = currentLesson.notes && currentLesson.notes.trim().length > 0;
 
   const handleMarkComplete = async () => {
     if (isCompleted || isMarking) return;
@@ -122,19 +227,47 @@ export default function VideoSection({
           )}
         </div>
 
-        {/* Lesson Notes */}
+        {/* Lesson Notes — Collapsible */}
         <div className="w-full break-words overflow-hidden">
-          <h2 className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-            Lesson Notes
-          </h2>
-          <div className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal whitespace-pre-wrap w-full overflow-x-hidden">
-            {currentLesson.notes
-              ? parseTextWithLinks(currentLesson.notes)
-              : <span className="text-gray-400 italic">No notes available.</span>
-            }
-          </div>
+          <button
+            onClick={() => setNotesOpen(!notesOpen)}
+            className="w-full flex items-center justify-between mb-3 group"
+          >
+            <div className="flex items-center gap-2">
+              <FiBookOpen className="w-4 h-4 text-gray-400" />
+              <h2 className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                Lesson Content
+              </h2>
+              {hasNotes && (
+                <span className="text-[10px] font-medium text-green-600 bg-green-50 border border-green-200 px-1.5 py-0.5 rounded-full">
+                  Available
+                </span>
+              )}
+            </div>
+            {notesOpen ? (
+              <FiChevronUp className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
+            ) : (
+              <FiChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
+            )}
+          </button>
+
+          {notesOpen && (
+            <div className="bg-gray-50/50 border border-gray-100 rounded-xl p-4 sm:p-6">
+              {hasNotes ? (
+                <LessonContent notes={currentLesson.notes} />
+              ) : (
+                <div className="text-center py-6">
+                  <FiBookOpen className="w-8 h-8 text-gray-200 mx-auto mb-2" />
+                  <p className="text-gray-400 italic text-sm">
+                    No content available for this lesson yet.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
+

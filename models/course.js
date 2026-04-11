@@ -67,6 +67,11 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    aiCreditsGrant: {
+      type: Number,
+      default: 50,
+      min: 0,
+    },
     content: {
       type: [
         {

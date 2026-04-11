@@ -313,44 +313,61 @@ function UpdateCoursePage({ params }) {
               </p>
             )}
             {formData.content.map((item, index) => (
-              <div key={index} className="p-3 border border-slate-200 rounded-xl bg-slate-50">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <input
-                    type="number"
-                    name="day"
-                    placeholder="Day #"
-                    min="1"
-                    value={item.day}
-                    onChange={(e) => handleContentChange(index, e)}
-                    className={inputClass}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="videoUrl"
-                    placeholder="Video URL"
-                    value={item.videoUrl}
-                    onChange={(e) => handleContentChange(index, e)}
-                    className={inputClass}
-                    required
-                  />
-                  <input
-                    type="text"
+              <div key={index} className="p-4 border border-slate-200 rounded-xl bg-slate-50">
+                {/* Top row: Day + Video URL + Remove */}
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-20 shrink-0">
+                    <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-1">Day</label>
+                    <input
+                      type="number"
+                      name="day"
+                      placeholder="#"
+                      min="1"
+                      value={item.day}
+                      onChange={(e) => handleContentChange(index, e)}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-[10px] font-semibold text-slate-500 uppercase mb-1">Video URL</label>
+                    <input
+                      type="text"
+                      name="videoUrl"
+                      placeholder="https://..."
+                      value={item.videoUrl}
+                      onChange={(e) => handleContentChange(index, e)}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveContent(index)}
+                    className="mt-5 p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Remove lesson"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+
+                {/* Lesson Content textarea */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[10px] font-semibold text-slate-500 uppercase">
+                      📚 Lesson Content <span className="text-slate-400 normal-case">(shown to students & used by AI Tutor)</span>
+                    </label>
+                    <span className="text-[10px] text-slate-400">{(item.notes || "").length} chars</span>
+                  </div>
+                  <textarea
                     name="notes"
-                    placeholder="Notes (optional)"
+                    placeholder={"Enter lesson content here...\n\nExample:\n# Introduction to Machine Learning\n\n## Key Concepts\n- Supervised vs Unsupervised Learning\n- Training data and test data\n- Model evaluation metrics\n\n## Important Notes\nMachine learning is a subset of AI...\n\nThis content helps AI Tutor answer student questions accurately."}
                     value={item.notes}
                     onChange={(e) => handleContentChange(index, e)}
-                    className={inputClass}
+                    className={`${inputClass} resize-y font-mono text-xs leading-relaxed`}
+                    rows={6}
                   />
                 </div>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveContent(index)}
-                  className="mt-2 inline-flex items-center gap-1 text-xs text-red-500 hover:text-red-700 transition-colors"
-                >
-                  <Trash2 size={12} />
-                  Remove
-                </button>
               </div>
             ))}
           </div>

@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Sidebar from "./Sidebar";
 import VideoSection from "./VideoSection";
+import AiTutorChat from "./AiTutorChat";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Montserrat } from "next/font/google";
@@ -148,6 +149,12 @@ export default function Page({ params }) {
         completedLessons={completedLessons}
         onLessonComplete={handleLessonComplete}
         cookiesReady={cookiesReady}
+      />
+      <AiTutorChat
+        courseId={id}
+        currentDay={currentDay}
+        courseName={courseData?.courseName}
+        lessonNotes={currentLesson?.notes}
       />
     </div>
   );

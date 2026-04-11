@@ -1,5 +1,7 @@
 import connectMongoDB from "@/lib/db";
 import { UserCourse } from "@/models/userCourse";
+import { User } from "@/models/user";
+import { Course } from "@/models/course";
 import { NextResponse } from "next/server";
 
 // Get a single UserCourse by ID
@@ -26,6 +28,16 @@ export async function PUT(request, { params }) {
     const { id } = params;
     const updatedData = await request.json();
     await connectMongoDB();
+
+    // Check current status before update (for credit granting logic)
+    const currentUserCourse = await UserCourse.findById(id).select("status userId courseId");
+    if (!currentUserCourse) {
+      return NextResponse.json(
+        { error: "UserCourse not found" },
+        { status: 404 }
+      );
+    }
+
     const updatedUserCourse = await UserCourse.findByIdAndUpdate(
       id,
       updatedData,
@@ -33,12 +45,34 @@ export async function PUT(request, { params }) {
         new: true,
       }
     ).populate("courseId");
+
     if (!updatedUserCourse) {
       return NextResponse.json(
         { error: "UserCourse not found" },
         { status: 404 }
       );
     }
+
+    // ── Grant AI credits when status changes to "Approved" ───────────────
+    if (
+      updatedData.status === "Approved" &&
+      currentUserCourse.status !== "Approved"
+    ) {
+      const course = await Course.findById(currentUserCourse.courseId).select(
+        "aiCreditsGrant"
+      );
+      const creditsToGrant = course?.aiCreditsGrant || 50;
+
+      await User.findOneAndUpdate(
+        { clerkId: currentUserCourse.userId },
+        { $inc: { aiCredits: creditsToGrant } }
+      );
+
+      console.log(
+        `✅ Granted ${creditsToGrant} AI credits to user ${currentUserCourse.userId}`
+      );
+    }
+
     return NextResponse.json(
       { message: "UserCourse updated", updatedUserCourse },
       { status: 200 }

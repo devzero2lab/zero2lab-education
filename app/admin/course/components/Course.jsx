@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
-import { Pencil, Trash2, Tag } from "lucide-react";
+import { Pencil, Trash2, Tag, FileText } from "lucide-react";
 
 function Course({ courses, fetchCourses }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -97,6 +97,13 @@ function Course({ courses, fetchCourses }) {
 
             {/* Actions */}
             <div className="flex gap-2 mt-auto pt-3">
+              <Link
+                href={`/admin/course/${course._id}/content`}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
+              >
+                <FileText size={13} />
+                Content
+              </Link>
               <Link
                 href={`/admin/course/${course._id}`}
                 className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
