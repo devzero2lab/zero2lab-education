@@ -6,14 +6,15 @@ import Hls from 'hls.js';
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css'; // Plyr හි අලංකාර UI එක සඳහා අනිවාර්ය වේ
 
-export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) {
+export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady, isAiTutorOpen }) {
   const videoRef = useRef(null);
+  const hlsRef = useRef(null);
+  const playerRef = useRef(null);
+  const pauseTimeoutRef = useRef(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let hls = null;
-    let player = null;
     let isCancelled = false;
     const abortController = new AbortController();
     
@@ -53,12 +54,18 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
 
         // 2. HLS.js සහ Plyr සම්බන්ධ කිරීම
         if (Hls.isSupported()) {
-          hls = new Hls({
+          const hls = new Hls({
             xhrSetup: (xhr) => {
               xhr.withCredentials = true; // ආරක්ෂිත Cookies යැවීම
-            }
+            },
+            // Bandwidth Optimization
+            capLevelToPlayerSize: true, // Don't load 1080p if the player size is small on the screen
+            maxBufferLength: 15,        // Ensure only maximum of 15 seconds are loaded ahead
+            maxMaxBufferLength: 30,     // Absolute maximum buffer allowed 
+            maxBufferSize: 30 * 1000 * 1000, // Maximum buffer memory size (30MB) limitation
           });
-          
+          hlsRef.current = hls;
+
           hls.loadSource(videoUrl);
           hls.attachMedia(video);
           
@@ -78,9 +85,9 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
                 if (newQuality === 0) {
                   hls.currentLevel = -1; // -1 යනු HLS හි Auto mode එකයි
                 } else {
-                  hls.levels.forEach((level, levelIndex) => {
+                  hlsRef.current.levels.forEach((level, levelIndex) => {
                     if (level.height === newQuality) {
-                      hls.currentLevel = levelIndex;
+                      hlsRef.current.currentLevel = levelIndex;
                     }
                   });
                 }
@@ -88,39 +95,40 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
             };
 
             if (isCancelled) {
-              hls.destroy();
+              hlsRef.current.destroy();
               return;
             }
 
             // Plyr UI එක ආරම්භ කිරීම
-            player = new Plyr(video, defaultOptions);
+            const player = new Plyr(video, defaultOptions);
+            playerRef.current = player;
             setIsLoading(false);
           });
 
           // දෝෂ හඳුනාගැනීම (Error Handling)
-          hls.on(Hls.Events.ERROR, (event, data) => {
+          hlsRef.current.on(Hls.Events.ERROR, (event, data) => {
             if (data.fatal) {
               switch (data.type) {
                 case Hls.ErrorTypes.NETWORK_ERROR:
                   setError('Network error encountered. Please check your connection.');
-                  hls?.startLoad();
+                  hlsRef.current?.startLoad();
                   break;
                 case Hls.ErrorTypes.MEDIA_ERROR:
-                  hls?.recoverMediaError();
+                  hlsRef.current?.recoverMediaError();
                   break;
                 default:
                   setError('An unrecoverable playback error occurred.');
-                  hls?.destroy();
+                  hlsRef.current?.destroy();
                   break;
               }
             }
           });
         } 
-        // 3. Apple Safari බ්‍රවුසරය සඳහා (එහි HLS ස්වභාවිකවම වැඩ කරයි)
         else if (video.canPlayType('application/vnd.apple.mpegurl')) {
           video.src = videoUrl;
           if (!isCancelled) {
-            player = new Plyr(video, defaultOptions);
+            const player = new Plyr(video, defaultOptions);
+            playerRef.current = player;
             setIsLoading(false);
           }
         }
@@ -140,13 +148,15 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
       isCancelled = true;
       abortController.abort();
       
-      if (hls) {
-        hls.destroy();
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
       }
       
-      if (player) {
-        player.pause();
-        player.destroy();
+      if (playerRef.current) {
+        playerRef.current.pause();
+        playerRef.current.destroy();
+        playerRef.current = null;
       }
 
       // Explicitly pause the video element as a final fallback
@@ -157,6 +167,71 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
       }
     };
   }, [videoUrl, courseId, cookiesReady]);
+
+  // Pause network and player when AI Tutor opens to save bandwidth
+  useEffect(() => {
+    if (isAiTutorOpen) {
+      if (playerRef.current) {
+        playerRef.current.pause();
+      } else if (videoRef.current) {
+        videoRef.current.pause();
+      }
+      
+      if (hlsRef.current) {
+        hlsRef.current.stopLoad(); // Stop downloading fragments in background
+      }
+    } else {
+      if (hlsRef.current) {
+        hlsRef.current.startLoad(); // Resume downloading fragments if needed
+      }
+      // Note: we intentionally do not auto-resume the video playback here
+      // to let the user manually resume when they are ready.
+    }
+  }, [isAiTutorOpen]);
+
+  // Bandwidth optimization: Stop HLS background fetching if paused for more than 5 seconds
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handlePause = () => {
+      if (pauseTimeoutRef.current) {
+        clearTimeout(pauseTimeoutRef.current);
+      }
+      
+      // If AI Tutor is open, it's already handled immediately by the other useEffect
+      if (isAiTutorOpen) return;
+
+      pauseTimeoutRef.current = setTimeout(() => {
+        if (hlsRef.current && video.paused) {
+          console.log("[Optimization] Video paused for 5s. Stopping background HLS loading...");
+          hlsRef.current.stopLoad();
+        }
+      }, 5000);
+    };
+
+    const handlePlay = () => {
+      if (pauseTimeoutRef.current) {
+        clearTimeout(pauseTimeoutRef.current);
+        pauseTimeoutRef.current = null;
+      }
+      
+      if (hlsRef.current && !isAiTutorOpen) {
+        hlsRef.current.startLoad();
+      }
+    };
+
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('play', handlePlay);
+
+    return () => {
+      if (pauseTimeoutRef.current) {
+        clearTimeout(pauseTimeoutRef.current);
+      }
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('play', handlePlay);
+    };
+  }, [isAiTutorOpen]);
 
   return (
     <div className="relative w-full h-full bg-zinc-950 group flex items-center justify-center">
@@ -244,6 +319,7 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady }) 
           crossOrigin="use-credentials"
           controlsList="nodownload"
           playsInline
+          preload="metadata"
         />
       </div>
     </div>

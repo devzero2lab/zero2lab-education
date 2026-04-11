@@ -142,6 +142,7 @@ export default function VideoSection({
   completedLessons = [],
   onLessonComplete,
   cookiesReady,
+  isAiTutorOpen,
 }) {
   const [isMarking, setIsMarking] = useState(false);
   const [notesOpen, setNotesOpen] = useState(true);
@@ -183,6 +184,7 @@ export default function VideoSection({
               videoUrl={proxiedVideoUrl}
               courseId={courseId}
               cookiesReady={cookiesReady}
+              isAiTutorOpen={isAiTutorOpen}
             />
           </div>
         </div>

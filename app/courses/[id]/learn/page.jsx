@@ -22,6 +22,7 @@ export default function Page({ params }) {
   const [redirecting, setRedirecting] = useState(false);
   const [completedLessons, setCompletedLessons] = useState([]);
   const [cookiesReady, setCookiesReady] = useState(false);
+  const [isAiTutorOpen, setIsAiTutorOpen] = useState(false);
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -149,12 +150,15 @@ export default function Page({ params }) {
         completedLessons={completedLessons}
         onLessonComplete={handleLessonComplete}
         cookiesReady={cookiesReady}
+        isAiTutorOpen={isAiTutorOpen}
       />
       <AiTutorChat
         courseId={id}
         currentDay={currentDay}
         courseName={courseData?.courseName}
         lessonNotes={currentLesson?.notes}
+        isOpen={isAiTutorOpen}
+        setIsOpen={setIsAiTutorOpen}
       />
     </div>
   );

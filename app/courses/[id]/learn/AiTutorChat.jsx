@@ -5,9 +5,8 @@ import { FiMessageCircle, FiX, FiSend, FiZap, FiAlertCircle, FiMaximize2, FiMini
 import { HiSparkles } from "react-icons/hi2";
 import "./ai-tutor-chat.css";
 
-export default function AiTutorChat({ courseId, currentDay, courseName, lessonNotes }) {
+export default function AiTutorChat({ courseId, currentDay, courseName, lessonNotes, isOpen, setIsOpen }) {
   const { user } = useUser();
-  const [isOpen, setIsOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
