@@ -21,15 +21,15 @@ const FallingPetals = () => {
         const startX = Math.random() * 100;
         const duration = 6 + Math.random() * 8; // 6 to 14 seconds
         const delay = Math.random() * 5;
-        const size = 10 + Math.random() * 12; 
-        
+        const size = 10 + Math.random() * 12;
+
         return (
           <div
             key={i}
             className="absolute -top-[60px] text-[#e62020] drop-shadow-md mix-blend-multiply opacity-0 falling-petal"
-            style={{ 
-              left: `${startX}%`, 
-              width: size, 
+            style={{
+              left: `${startX}%`,
+              width: size,
               height: size * 1.2,
               animationDuration: `${duration}s`,
               animationDelay: `${delay}s`
@@ -62,10 +62,10 @@ const AvuruduDecor = () => {
         >
           {/* Banner Container */}
           <div className="relative w-full h-[70px] md:h-[90px] lg:h-[100px] flex items-center justify-center bg-green-950 group">
-            
+
             {/* Highly Aesthetic Animated Background Image - Used Pure CSS for performance */}
             <div className="absolute inset-0 w-full h-full animated-bg">
-              <Image 
+              <Image
                 src="/images/avurudu_premium_banner.png"
                 alt="Ultra Premium Avurudu Festive Art with Erabadu and Koha"
                 fill
@@ -74,7 +74,7 @@ const AvuruduDecor = () => {
                 unoptimized={true}
               />
             </div>
-            
+
             {/* Soft gradient overlays for perfect text contrast & rich vibes */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/60 pointer-events-none"></div>
             <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-green-900/40 pointer-events-none mix-blend-overlay"></div>
@@ -84,16 +84,16 @@ const AvuruduDecor = () => {
 
             {/* Glassmorphic floating text box */}
             <div className="relative z-20 px-5 md:px-10 py-2 md:py-2.5 bg-[#090D24]/40 backdrop-blur-md border border-white/20 rounded-full shadow-[0_4px_16px_0_rgba(0,0,0,0.3)] flex items-center space-x-2 text-white overflow-hidden transform hover:scale-105 transition-transform duration-500 hover:bg-[#090D24]/60">
-              
+
               <div className="flex flex-col md:flex-row md:items-center text-center relative z-10 w-full px-1">
                 <span className="font-black text-sm md:text-lg lg:text-xl tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-[#FFD54F] bg-clip-text">
                   සුභ අලුත් අවුරුද්දක් වේවා!
                 </span>
-                
+
                 <span className="hidden md:inline-block font-bold mx-3 md:mx-4 opacity-50 text-white text-base">
                   |
                 </span>
-                
+
                 <span className="font-semibold text-[10px] md:text-sm lg:text-base flex items-center justify-center drop-shadow-md text-[#F1F8E9] mt-0.5 md:mt-0 opacity-90 tracking-wide">
                   Enjoy a special <span className="bg-[#FF9800] text-[#090D24] px-1.5 md:px-2 py-0.5 mx-1.5 rounded-md font-extrabold shadow-sm md:text-[15px]">50% DISCOUNT</span> this season
                   <Sparkles className="w-3 h-3 md:w-4 md:h-4 ml-1 md:ml-1.5 text-[#FFD54F] animate-pulse" />
@@ -114,7 +114,7 @@ const AvuruduDecor = () => {
             </button>
 
           </div>
-          
+
           <style jsx>{`
             @keyframes shimmer {
               100% {

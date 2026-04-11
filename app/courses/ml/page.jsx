@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import MLLearningThings from "./MLLearningThings";
 import {
   Clock, Globe, Star, CheckCircle, ChevronRight, PlayCircle,
   Play, Video, Code, Folder, ExternalLink, Monitor, Award,
@@ -114,15 +115,6 @@ function Page() {
     }
   ];
 
-  const outcomes = [
-    "Build 5+ real-world AI & Data Science projects for your portfolio",
-    "Master in-demand tools used by top companies worldwide",
-    "Earn a verifiable certificate valued by global employers",
-    "Understand linear algebra, calculus, and statistics in depth",
-    "Deploy machine learning models to production environments",
-    "Work with Python, NumPy, Pandas, Scikit-learn, and more",
-  ];
-
   const toggleCurriculum = (index) => {
     setOpenCurriculumSet((prev) => {
       const next = new Set(prev);
@@ -137,25 +129,19 @@ function Page() {
     <div className={`${inter.className} bg-[#f7f8fa] min-h-screen`} style={{ color: "#1a1a2e" }}>
 
       {/* ── HERO BANNER ── */}
-      <div style={{ background: "linear-gradient(135deg, #0f1130 0%, #1a1040 60%, #0d0d2b 100%)" }}
-        className="text-white pt-20 pb-10 md:pt-28 md:pb-16 px-4 sm:px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="lg:pr-[360px] xl:pr-[390px]">
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-4 font-medium">
-              <span>Courses</span>
-              <ChevronRight className="w-3 h-3" />
-              <span>Machine Learning</span>
-            </div>
+      <div style={{ background: "linear-gradient(135deg, #0b0d21 0%, #161036 50%, #0d0d2b 100%)" }}
+        className="text-white pt-20 pb-12 md:pt-28 md:pb-20 px-4 sm:px-6 relative overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 rounded-full bg-blue-600/10 blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-10 w-72 h-72 rounded-full bg-purple-600/10 blur-[100px] pointer-events-none"></div>
 
-            {/* Badge */}
-            <span className="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-sm mb-3"
-              style={{ background: "#d4f5a0", color: "#0f1130" }}>
-              Bestseller
-            </span>
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="lg:pr-[360px] xl:pr-[390px]">
+            
+            
 
             {/* Title */}
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight mb-3 tracking-tight">
+            <h1 className="text-2xl mt-10 md:text-3xl lg:text-4xl font-extrabold leading-tight mb-3 tracking-tight">
               Mastering Machine Learning:<br className="hidden sm:block" />
               From Zero to Professional Engineer
             </h1>
@@ -201,25 +187,15 @@ function Page() {
           <div className="w-full lg:flex-1 min-w-0 pt-6 pb-16 space-y-10">
 
             {/* WHAT YOU'LL LEARN */}
-            <section className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <h2 className="text-base font-bold text-gray-900 mb-4">What you&apos;ll learn</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {outcomes.map((item, idx) => (
-                  <div key={idx} className="flex gap-2.5 items-start">
-                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span className="text-[13px] text-gray-700 leading-relaxed">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
+            <MLLearningThings />
 
             {/* REQUIREMENTS */}
-            <section>
-              <h2 className="text-base font-bold text-gray-900 mb-3">Requirements</h2>
-              <ul className="space-y-2">
+            <section className="px-1">
+              <h2 className="text-[17px] font-bold text-gray-900 mb-4">Requirements</h2>
+              <ul className="space-y-2.5">
                 {["Basic understanding of logic or mathematics.", "A computer with internet access.", "No previous programming experience needed — we teach you everything from scratch!"].map((req, i) => (
-                  <li key={i} className="flex items-start gap-2 text-[13px] text-gray-700">
-                    <span className="text-gray-400 mt-0.5">•</span>
+                  <li key={i} className="flex items-start gap-2.5 text-[13px] text-gray-700 hover:text-gray-900 transition-colors">
+                    <span className="text-gray-300 mt-0.5">•</span>
                     <span>{req}</span>
                   </li>
                 ))}
@@ -227,69 +203,83 @@ function Page() {
             </section>
 
             {/* DESCRIPTION */}
-            <section>
-              <h2 className="text-base font-bold text-gray-900 mb-3">Description</h2>
-              <div className="text-[13px] text-gray-700 space-y-3 leading-relaxed">
+            <section className="px-1">
+              <h2 className="text-[17px] font-bold text-gray-900 mb-4">Description</h2>
+              <div className="text-[13px] text-gray-700 space-y-3.5 leading-relaxed">
                 <p>Are you ready to start your path to becoming a Data Scientist or AI Engineer?</p>
                 <p>This comprehensive course will be your guide to learning how to use the power of Python to analyze data, create beautiful visualizations, and use powerful machine learning algorithms. Data Scientist has been ranked the #1 job on Glassdoor with an average salary of over $120,000 in the United States.</p>
-                <p>We designed this course to be <strong>highly practical</strong>. We won&apos;t just teach you the theory — we make sure you actively build real-world models and applications to cement your understanding.</p>
+                <p>We designed this course to be <strong className="text-gray-900 font-semibold">highly practical</strong>. We won&apos;t just teach you the theory — we make sure you actively build real-world models and applications to cement your understanding.</p>
               </div>
             </section>
 
             {/* CURRICULUM */}
-            <section>
-              <h2 className="text-base font-bold text-gray-900 mb-1">Course Content</h2>
-              <p className="text-xs text-gray-500 mb-4 font-medium">
-                {curriculumData.length} sections &nbsp;•&nbsp; {totalLectures} lectures &nbsp;•&nbsp; 60h 15m total
-              </p>
+            <section className="w-full">
+              <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 px-1">
+                 <div>
+                   <h2 className="text-2xl md:text-3xl font-extrabold text-[#090D24] tracking-tight mb-2">Course Content</h2>
+                   <p className="text-[13px] text-[#090D24]/60 font-semibold uppercase tracking-wider">
+                     {curriculumData.length} sections &nbsp;•&nbsp; {totalLectures} lectures &nbsp;•&nbsp; 60h 15m total
+                   </p>
+                 </div>
+              </div>
 
-              <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
-                {curriculumData.map((item, index) => (
-                  <div key={index} className="border-b border-gray-100 last:border-b-0">
-                    <button
-                      className="w-full flex items-center justify-between px-5 py-3.5 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
-                      onClick={() => toggleCurriculum(index)}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <ChevronRight className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${openCurriculumSet.has(index) ? 'rotate-90' : ''}`} />
-                        <span className="text-[13px] font-semibold text-gray-900">{item.title}</span>
-                      </div>
-                      <span className="text-[11px] text-gray-400 font-medium hidden sm:block shrink-0">
-                        {item.modules.length} lectures
-                      </span>
-                    </button>
-
-                    {openCurriculumSet.has(index) && (
-                      <div className="px-5 py-3 bg-white border-t border-gray-100 space-y-2.5">
-                        {item.modules.map((mod, modIdx) => (
-                          <div key={modIdx} className="flex items-center justify-between gap-3 group cursor-pointer">
-                            <div className="flex items-center gap-2.5">
-                              <PlayCircle className="w-3.5 h-3.5 text-gray-400 shrink-0 group-hover:text-blue-600 transition-colors" />
-                              <span className="text-[12px] text-gray-700 group-hover:text-blue-600 transition-colors">{mod}</span>
-                            </div>
-                            <span className="text-[11px] text-gray-400 shrink-0 hidden sm:block">03:45</span>
+              <div className="bg-white border border-gray-200/70 rounded-2xl md:rounded-[1.5rem] overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                {curriculumData.map((item, index) => {
+                  const isOpen = openCurriculumSet.has(index);
+                  return (
+                    <div key={index} className={`border-b border-gray-100 last:border-b-0 transition-colors duration-300 ${isOpen ? 'bg-[#f8ffec]/30' : 'bg-white'}`}>
+                      <button
+                        className="w-full flex items-center justify-between px-6 py-5 text-left group hover:bg-gray-50/50 transition-colors"
+                        onClick={() => toggleCurriculum(index)}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className={`flex-shrink-0 w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-[#D9FFA5] border-[#D9FFA5] rotate-90 shadow-sm' : 'bg-white group-hover:border-gray-300'}`}>
+                            <ChevronRight className="w-4 h-4 text-gray-700" strokeWidth={2.5} />
                           </div>
-                        ))}
+                          <span className="text-[15px] font-bold text-gray-900 tracking-tight">{item.title}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                           <span className={`text-[11px] font-semibold px-3 py-1 bg-gray-50 border border-gray-200 rounded-full hidden sm:block transition-colors duration-300 ${isOpen ? 'text-gray-800' : 'text-gray-500'}`}>
+                             {item.modules.length} lectures
+                           </span>
+                        </div>
+                      </button>
+
+                      <div className={`overflow-hidden transition-all duration-[400ms] ease-in-out ${isOpen ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                        <div className="px-6 pb-5 pt-1 space-y-2.5">
+                          {item.modules.map((mod, modIdx) => (
+                            <div key={modIdx} className="flex items-center justify-between gap-3 group cursor-pointer bg-white border border-gray-100/80 rounded-xl p-3 hover:border-gray-200 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 ml-12">
+                              <div className="flex items-center gap-3">
+                                <PlayCircle className="w-4 h-4 text-gray-400 shrink-0 group-hover:text-blue-600 transition-colors duration-300" strokeWidth={2} />
+                                <span className="text-[13px] font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-300">{mod}</span>
+                              </div>
+                              <div className="flex items-center gap-4">
+                                <span className="text-[11px] font-medium text-gray-400 group-hover:text-gray-600 shrink-0 hidden sm:block transition-colors duration-300">03:45</span>
+                                <span className="text-[10px] uppercase font-bold text-white bg-blue-600 px-2 py-1 rounded md:hidden group-hover:bg-blue-700 transition-colors">Play</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    )}
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
             </section>
 
             {/* TESTIMONIALS */}
-            <section>
-              <div className="flex items-center gap-2 mb-5">
+            <section className="px-1">
+              <div className="flex items-center gap-2 mb-6">
                 <div className="flex text-amber-400 gap-0.5">
                   {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
                 </div>
-                <h2 className="text-base font-bold text-gray-900">4.9 course rating</h2>
-                <span className="text-xs text-gray-500 font-medium">• 206 ratings</span>
+                <h2 className="text-[17px] font-bold text-gray-900">4.9 course rating</h2>
+                <span className="text-xs text-gray-500 font-medium ml-1">• 206 ratings</span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {testimonials.map((test, i) => (
-                  <div key={i} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                  <div key={i} className="bg-white border border-gray-200/60 rounded-2xl p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
                     <div className="flex items-center gap-3 mb-3">
                       <Image
                         src={test.image}
@@ -306,10 +296,10 @@ function Page() {
                         {[...Array(test.rating)].map((_, j) => <Star key={j} className="w-3 h-3 fill-current" />)}
                       </div>
                     </div>
-                    <p className="text-[12px] text-gray-700 leading-relaxed line-clamp-4 mb-3">
-                      {test.quote}
+                    <p className="text-[12px] text-gray-700 leading-relaxed mb-4 flex-grow">
+                      "{test.quote}"
                     </p>
-                    <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-gray-50 border border-gray-200 rounded text-[10px] font-semibold text-gray-500 uppercase tracking-wide">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-50 border border-gray-100 rounded-md text-[10.5px] font-semibold text-gray-500 uppercase tracking-wider w-fit">
                       <Briefcase className="w-2.5 h-2.5 text-gray-400" />
                       <span>{test.beforeAfter.split(" → ")[0]}</span>
                       <ArrowRight className="w-2.5 h-2.5 text-gray-400" />
@@ -321,13 +311,13 @@ function Page() {
             </section>
 
             {/* FAQ */}
-            <section>
-              <h2 className="text-base font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-              <div className="space-y-2">
+            <section className="px-1">
+              <h2 className="text-[17px] font-bold text-gray-900 mb-5">Frequently Asked Questions</h2>
+              <div className="space-y-3">
                 {faqData.map((item, index) => (
-                  <div key={index} className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                  <div key={index} className="bg-white border border-gray-200/60 rounded-2xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-300">
                     <button
-                      className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition-colors"
+                      className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50/80 transition-colors"
                       onClick={() => setOpenFaq(openFaq === index ? null : index)}
                     >
                       <span className="text-[13px] font-semibold text-gray-900 pr-4">{item.q}</span>
@@ -350,43 +340,43 @@ function Page() {
           {/* ── RIGHT STICKY SIDEBAR ── */}
           <div className="w-full lg:w-[320px] xl:w-[340px] shrink-0 lg:sticky top-6
             order-first lg:order-last -mt-4 md:-mt-8 lg:-mt-[280px] xl:-mt-[300px]
-            mb-6 lg:mb-0 max-w-[380px] mx-auto lg:mx-0">
+            mb-6 lg:mb-0 max-w-[380px] mx-auto lg:mx-0 z-20">
 
-            <div className="bg-white rounded-xl shadow-lg shadow-gray-200/60 border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-2xl border border-gray-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden transform transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.1)] hover:-translate-y-1">
 
               {/* Thumbnail */}
               <div
-                className="relative w-full aspect-video bg-gray-900 cursor-pointer group"
+                className="relative w-full aspect-video bg-gray-900 cursor-pointer group overflow-hidden"
                 onClick={() => setIsVideoOpen(true)}
               >
                 <Image
                   src="/images/homepage/hero.png"
                   alt="Course Preview"
                   fill
-                  className="object-cover opacity-75 group-hover:opacity-90 transition-opacity duration-300"
+                  className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                  <div className="w-12 h-12 bg-white/95 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
-                    <Play className="w-5 h-5 text-gray-900 fill-current ml-0.5" />
+                  <div className="w-12 h-12 bg-white/95 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300 text-gray-900 group-hover:text-blue-600">
+                    <Play className="w-5 h-5 fill-current ml-0.5" />
                   </div>
-                  <span className="text-white text-xs font-semibold bg-black/50 px-3 py-1 rounded-full tracking-wide">
+                  <span className="text-white text-xs font-semibold bg-black/60 backdrop-blur-sm px-3.5 py-1.5 rounded-full tracking-wide">
                     Preview this course
                   </span>
                 </div>
               </div>
 
-              {/* Card Body */}
+              {/* Card Body - clean and minimal */}
               <div className="p-5 space-y-4">
 
-                {/* Price */}
-                <div>
-                  <div className="flex items-baseline gap-2 mb-0.5">
-                    <span className="text-2xl font-extrabold text-gray-900">LKR 16,500</span>
-                    <span className="text-sm text-gray-400 line-through">30,000</span>
-                    <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">45% off</span>
+                {/* Price & Timer */}
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-baseline flex-wrap gap-2">
+                    <span className="text-2xl md:text-[28px] font-extrabold text-gray-900 tracking-tight">LKR 16,500</span>
+                    <span className="text-sm text-gray-400 line-through font-medium">30,000</span>
+                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded ml-auto">45% OFF</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[11px] font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 w-fit mt-2">
-                    <Clock className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-red-600 bg-red-50 border border-red-50 rounded-lg px-2.5 py-1.5 w-fit">
+                    <Clock className="w-3.5 h-3.5 text-emerald-600" />
                     <span><strong>2 days</strong> left at this price!</span>
                   </div>
                 </div>
@@ -394,73 +384,74 @@ function Page() {
                 {/* CTA Buttons */}
                 <div className="space-y-2.5">
                   {loading ? (
-                    <button disabled className="w-full py-3 rounded-lg text-sm font-bold bg-gray-100 text-gray-400">
-                      Checking...
-                    </button>
+                     <button disabled className="w-full py-3 rounded-xl border border-gray-200 text-sm font-bold bg-gray-50 text-gray-400 cursor-not-allowed">
+                       Checking...
+                     </button>
                   ) : isEnrolled ? (
                     <Link href="/dashboard"
-                      className="w-full py-3 rounded-lg text-white flex justify-center items-center text-sm font-bold transition-all duration-200 hover:opacity-90"
-                      style={{ background: "#0f1130" }}>
+                      className="w-full py-3 rounded-xl text-white flex justify-center items-center text-[13.5px] font-bold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 bg-[#0f1130] hover:bg-[#1a1040]">
                       Go to Dashboard
                     </Link>
                   ) : (
-                    <>
-                      <Link href={`/courses/${courseId}/enroll`}
-                        className="w-full py-3 rounded-lg text-white flex justify-center items-center text-sm font-bold transition-all duration-200 hover:opacity-90 shadow-sm"
-                        style={{ background: "#7c3aed" }}>
-                        Add to Cart
-                      </Link>
+                    <div className="flex gap-2">
                       <button
-                        className="w-full py-3 rounded-lg border border-gray-800 bg-white text-gray-900 text-sm font-bold hover:bg-gray-50 transition-colors duration-200">
+                        className="flex-1 py-3 rounded-xl text-white text-[13.5px] font-bold tracking-wide transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 bg-blue-600 hover:bg-blue-700">
                         Buy Now
                       </button>
-                    </>
+                      <Link href={`/courses/${courseId}/enroll`}
+                        className="px-4 py-3 rounded-xl text-blue-600 bg-blue-50 border border-blue-100 flex items-center justify-center transition-all duration-300 hover:bg-blue-100 hover:shadow-sm hover:-translate-y-0.5"
+                        aria-label="Add to Cart">
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z" /></svg>
+                      </Link>
+                    </div>
                   )}
-                  <p className="text-center text-[11px] text-gray-400 font-medium">
+                  <p className="text-center text-[11px] text-gray-500 font-medium tracking-wide pt-1">
                     30-Day Money-Back Guarantee
                   </p>
                 </div>
 
-                {/* Course Includes */}
-                <div className="pt-3 border-t border-gray-100">
-                  <h3 className="text-[12px] font-bold text-gray-900 mb-3 uppercase tracking-wide">This course includes:</h3>
-                  <div className="space-y-2.5">
+                {/* Course Includes - Compact 2 Column Grid */}
+                <div className="pt-4 border-t border-gray-100">
+                  <h3 className="text-[12px] font-bold text-gray-900 mb-3 uppercase tracking-wide">Includes</h3>
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-3">
                     {[
-                      { icon: Video, text: "60 hours on-demand video" },
-                      { icon: Code, text: "5+ real-world projects" },
-                      { icon: Folder, text: "Coding labs & assignments" },
-                      { icon: ExternalLink, text: "Full lifetime access" },
-                      { icon: Monitor, text: "Access on mobile and TV" },
-                      { icon: Award, text: "Certificate of completion" },
+                      { icon: Video, text: "60h video" },
+                      { icon: Code, text: "5+ projects" },
+                      { icon: Folder, text: "Coding labs" },
+                      { icon: ExternalLink, text: "Lifetime" },
+                      { icon: Monitor, text: "Mobile/TV" },
+                      { icon: Award, text: "Certificate" },
                     ].map(({ icon: Icon, text }, i) => (
-                      <div key={i} className="flex items-center gap-3 text-[12px] text-gray-700">
-                        <Icon className="w-3.5 h-3.5 text-gray-500 shrink-0" />
-                        <span>{text}</span>
+                      <div key={i} className="flex items-center gap-2 text-[11.5px] font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                        <Icon className="w-3.5 h-3.5 text-gray-400 shrink-0" strokeWidth={2} />
+                        <span className="truncate">{text}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Share */}
-                <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <button className="text-[12px] font-semibold text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1.5">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {/* Share Info */}
+                <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                  <button className="text-[12px] font-semibold text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-2 group">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-blue-600 transition-colors">
                       <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
                       <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
                     </svg>
-                    Share this course
+                    Share Course
                   </button>
                 </div>
 
               </div>
             </div>
 
-            {/* Team banner below card */}
-            <div className="mt-4 border border-gray-200 rounded-xl p-4 bg-white shadow-sm text-center">
-              <h4 className="text-[13px] font-bold text-gray-900 mb-1">Training 5+ employees?</h4>
-              <p className="text-[11px] text-gray-500 mb-3 leading-relaxed">Get your team access to 10+ top courses anytime, anywhere.</p>
-              <button className="w-full py-2 rounded-lg border border-gray-800 text-gray-900 text-[12px] font-bold hover:bg-gray-50 transition-colors">
-                Try Zero2Lab Business
+            {/* Team banner compact */}
+            <div className="mt-4 border border-gray-200/60 rounded-xl p-4 bg-white flex items-center justify-between gap-3 group hover:border-gray-300 hover:shadow-sm transition-all duration-300">
+              <div>
+                <h4 className="text-[13px] font-bold text-gray-900 tracking-tight">Got a team?</h4>
+                <p className="text-[11px] text-gray-500 font-medium mt-0.5">Train 5+ employees</p>
+              </div>
+              <button className="px-3.5 py-1.5 rounded-lg border border-gray-300 text-gray-700 bg-gray-50 text-[11px] font-bold hover:bg-gray-100 transition-colors whitespace-nowrap">
+                Try Biz
               </button>
             </div>
           </div>

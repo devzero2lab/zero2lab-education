@@ -9,46 +9,62 @@ const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '600'
 
 const Hero = () => {
   return (
-    <section className={`relative bg-white pt-4 md:pt-8 overflow-hidden ${montserrat.className}`}>
+    <section className={`relative bg-transparent pt-6 md:pt-10 pb-4 overflow-hidden ${montserrat.className}`}>
       <div className="w-full max-w-[1300px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
           
           {/* Left Column: Content */}
           <motion.div 
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-5 z-10 mt-8 lg:mt-0"
+            transition={{ duration: 0.7 }}
+            className="lg:col-span-5 z-10 mt-6 lg:mt-0"
           >
             
 
-            <h1 className="text-[1.8rem] md:text-[3rem] xl:text-5xl font-bold text-[#090D24] leading-[1.12] mb-6 md:mb-8">
+            <h1 className="text-[1.8rem] md:text-[2.8rem] xl:text-[3.2rem] font-extrabold text-[#090D24] leading-[1.1] mb-5 md:mb-7">
               Build things
-             that actually get you
-               hired
+              <br />
+              that actually get you
+              <br />
+              <span className="relative inline-block">
+                hired
+                <svg className="absolute -bottom-1 left-0 w-full h-2 text-[#D9FFA5]" viewBox="0 0 200 8" preserveAspectRatio="none">
+                  <path d="M0,5 Q50,0 100,5 T200,5" stroke="currentColor" strokeWidth="3" fill="none" />
+                </svg>
+              </span>
             </h1>
 
-            <p className="text-base md:text-[1.1rem] text-[#090D24] max-w-lg mb-8 md:mb-10 leading-relaxed font-medium">
-              <span>
-                Take your knowledge to the next level with guided learning and
-              </span>{" "}
-              practice
+            <p className="text-sm md:text-base text-gray-500 max-w-md mb-7 md:mb-9 leading-relaxed font-medium">
+              Take your knowledge to the next level with guided learning and real-world practice. Join thousands of students building their careers.
             </p>
 
-            <Link
-              href="/courses"
-              className="inline-block bg-[#090D24] text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-black transition-all shadow-md active:scale-95"
-            >
-              Explore programs
-            </Link>
+            {/* CTA Buttons */}
+            <div className="flex items-center gap-4 flex-wrap">
+              <Link
+                href="/courses"
+                className="inline-flex items-center bg-[#090D24] text-white px-7 py-3.5 rounded-full text-base font-bold hover:bg-black transition-all shadow-md shadow-gray-900/10 active:scale-95"
+              >
+                Explore programs
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+              <Link
+                href="/about-us"
+                className="inline-flex items-center px-6 py-3.5 rounded-full text-base font-bold text-[#090D24] border border-gray-300 hover:border-gray-400 hover:bg-gray-50/50 transition-all active:scale-95"
+              >
+                Learn more
+              </Link>
+            </div>
           </motion.div>
 
-          {/* Right Column: Complete Hero Image */}
+          {/* Right Column: Hero Image */}
           <div className="lg:col-span-7 w-full flex items-center justify-center lg:justify-end">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.9 }}
               className="w-full"
             >
               <Image
@@ -63,9 +79,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      
-      {/* Decorative subtle gradient */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-blue-50/40 blur-[120px] rounded-full -z-10"></div>
     </section>
   );
 };
