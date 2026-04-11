@@ -17,6 +17,7 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady, is
   useEffect(() => {
     let isCancelled = false;
     const abortController = new AbortController();
+    const videoElement = videoRef.current;
     
     const initPlayer = async () => {
       try {
@@ -160,10 +161,10 @@ export default function SecureVideoPlayer({ videoUrl, courseId, cookiesReady, is
       }
 
       // Explicitly pause the video element as a final fallback
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.src = "";
-        videoRef.current.load();
+      if (videoElement) {
+        videoElement.pause();
+        videoElement.src = "";
+        videoElement.load();
       }
     };
   }, [videoUrl, courseId, cookiesReady]);

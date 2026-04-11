@@ -297,7 +297,7 @@ function Page() {
                       </div>
                     </div>
                     <p className="text-[12px] text-gray-700 leading-relaxed mb-4 flex-grow">
-                      "{test.quote}"
+                      &quot;{test.quote}&quot;
                     </p>
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-gray-50 border border-gray-100 rounded-md text-[10.5px] font-semibold text-gray-500 uppercase tracking-wider w-fit">
                       <Briefcase className="w-2.5 h-2.5 text-gray-400" />

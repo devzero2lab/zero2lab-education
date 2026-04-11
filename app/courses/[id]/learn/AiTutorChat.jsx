@@ -19,6 +19,28 @@ export default function AiTutorChat({ courseId, currentDay, courseName, lessonNo
   const inputRef = useRef(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+  const fetchCredits = useCallback(async () => {
+    try {
+      const res = await fetch(`${apiUrl}/api/ai-tutor/credits`, {
+        credentials: "include",
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log("[AI Tutor] Credits fetched:", data.credits);
+        setCredits(data.credits ?? 0);
+        setCreditsLoaded(true);
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        console.error("[AI Tutor] Credits fetch failed:", res.status, errData);
+        // If 401/404, don't block — set loaded with 0 so user sees the issue clearly
+        setCreditsLoaded(true);
+      }
+    } catch (err) {
+      console.error("[AI Tutor] Failed to fetch credits:", err);
+      setCreditsLoaded(true);
+    }
+  }, [apiUrl]);
+
   // Reset conversation when lesson changes
   useEffect(() => {
     setMessages([]);
@@ -31,7 +53,7 @@ export default function AiTutorChat({ courseId, currentDay, courseName, lessonNo
     if (isOpen && user) {
       fetchCredits();
     }
-  }, [isOpen, user]);
+  }, [isOpen, user, fetchCredits]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -89,27 +111,6 @@ export default function AiTutorChat({ courseId, currentDay, courseName, lessonNo
     if (isOpen) setIsFullScreen(false);
   };
 
-  const fetchCredits = async () => {
-    try {
-      const res = await fetch(`${apiUrl}/api/ai-tutor/credits`, {
-        credentials: "include",
-      });
-      if (res.ok) {
-        const data = await res.json();
-        console.log("[AI Tutor] Credits fetched:", data.credits);
-        setCredits(data.credits ?? 0);
-        setCreditsLoaded(true);
-      } else {
-        const errData = await res.json().catch(() => ({}));
-        console.error("[AI Tutor] Credits fetch failed:", res.status, errData);
-        // If 401/404, don't block — set loaded with 0 so user sees the issue clearly
-        setCreditsLoaded(true);
-      }
-    } catch (err) {
-      console.error("[AI Tutor] Failed to fetch credits:", err);
-      setCreditsLoaded(true);
-    }
-  };
 
   const handleSend = useCallback(async () => {
     if (!input.trim() || isStreaming) return;
@@ -236,7 +237,7 @@ export default function AiTutorChat({ courseId, currentDay, courseName, lessonNo
     } finally {
       setIsStreaming(false);
     }
-  }, [input, isStreaming, courseId, currentDay, conversationId, apiUrl]);
+  }, [input, isStreaming, courseId, currentDay, conversationId, apiUrl, fetchCredits]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
